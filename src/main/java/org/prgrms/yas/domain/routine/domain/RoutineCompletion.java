@@ -37,6 +37,9 @@ public class RoutineCompletion {
   @Column(nullable = false)
   private String goalTime;
 
+  @Column(nullable = false)
+  private String duration;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "routine_id")
   private Routine routine;

@@ -20,6 +20,7 @@ import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.RoutineCompletion;
+import org.prgrms.yas.domain.user.domain.User;
 
 @Table(name = "routine_post")
 @Entity
@@ -40,6 +41,10 @@ public class RoutinePost extends BaseEntity {
 
   @OneToMany(mappedBy = "routinePost")
   private List<Comment> comments = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   public void addComment(Comment comment) {
     this.comments.add(comment);

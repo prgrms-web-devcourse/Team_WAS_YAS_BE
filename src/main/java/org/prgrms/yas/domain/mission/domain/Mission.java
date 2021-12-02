@@ -22,7 +22,7 @@ public class Mission {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false, length = 30)
+  @Column(nullable = false, length = 50)
   private String name;
 
   @Column(nullable = false)
