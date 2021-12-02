@@ -27,7 +27,7 @@ public class Routine {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false,length = 40)
+  @Column(nullable = false,length = 60)
   private String name;
 
   @Column(nullable = false)
