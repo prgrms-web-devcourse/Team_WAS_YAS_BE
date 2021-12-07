@@ -2,6 +2,7 @@ package org.prgrms.yas.domain.routine.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -130,6 +131,32 @@ class RoutineControllerTest {
     Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
 
     mockMvc.perform(delete("/routines/{id}",routineId)
+               .contentType(MediaType.APPLICATION_JSON))
+           .andExpect(status().isOk())
+           .andDo(print());
+  }
+
+  @Test
+  void findRoutinesTest() throws Exception {
+    List<String> findWeek = new ArrayList<>();
+    findWeek.add("MON");
+    findWeek.add("TUE");
+
+
+    List<String> findCategory = new ArrayList<>();
+    findCategory.add("EXERCISE");
+
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+                                                                    .startTime(LocalDate.now())
+                                                                    .durationTime(LocalDate.now())
+                                                                    .weeks(findWeek)
+                                                                    .routineCategory(findCategory)
+                                                                    .color("black").emoji(">_<")
+                                                                    .build();
+
+    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
+
+    mockMvc.perform(get("/routines",findId)
                .contentType(MediaType.APPLICATION_JSON))
            .andExpect(status().isOk())
            .andDo(print());

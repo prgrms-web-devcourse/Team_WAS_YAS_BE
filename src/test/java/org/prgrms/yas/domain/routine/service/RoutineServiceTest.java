@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.user.domain.User;
@@ -120,6 +121,30 @@ class RoutineServiceTest {
     routineService.updateRoutine(routineId,routineUpdateRequest);
     Routine findRoutine = routineRepository.getById(routineId);
     //Assertions.assertThat(findRoutine.getWeeks()).isEqualTo();
+
+  }
+
+  @Test
+  void findRoutinesTest() throws NotFoundException {
+    List<String> findWeek = new ArrayList<>();
+    findWeek.add("MON");
+    findWeek.add("TUE");
+
+
+    List<String> findCategory = new ArrayList<>();
+    findCategory.add("EXERCISE");
+
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+                                                                    .startTime(LocalDate.now())
+                                                                    .durationTime(LocalDate.now())
+                                                                    .weeks(findWeek)
+                                                                    .routineCategory(findCategory)
+                                                                    .color("black").emoji(">_<")
+                                                                    .build();
+
+    routineService.saveRoutine(findId,routineCreateRequest);
+    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(findId);
+    Assertions.assertThat(routineDetailResponses.size()).isEqualTo(1);
 
   }
 }

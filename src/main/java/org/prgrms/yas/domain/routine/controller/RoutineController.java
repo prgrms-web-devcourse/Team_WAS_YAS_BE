@@ -1,11 +1,13 @@
 package org.prgrms.yas.domain.routine.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
@@ -14,6 +16,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,4 +58,10 @@ public class RoutineController {
     RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id, routineUpdateRequest);
     return ResponseEntity.ok(routineUpdateResponse);
   }
+
+//  @GetMapping
+//  public ResponseEntity<List<RoutineDetailResponse>> get() throws NotFoundException {
+//    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(id); // userID
+//    return ResponseEntity.ok(routineDetailResponses);
+//  }
 }

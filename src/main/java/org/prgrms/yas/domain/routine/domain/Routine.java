@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
@@ -116,5 +117,13 @@ public class Routine {
 
   public void updateRoutine(List<Week> weeks) {
     this.weeks = weeks;
+  }
+
+  public RoutineDetailResponse toRoutineDetailResponse() {
+    return RoutineDetailResponse.builder().routineId(this.getId()).color(this.getColor())
+                                .durationTime(this.getDurationTime()).startTime(this.startTime)
+                                .weeks(this.getStringWeeks(this.weeks))
+                                .routineCategory(this.getStringCategory(this.getRoutineCategory()))
+                                .emoji(this.emoji).name(this.name).build();
   }
 }
