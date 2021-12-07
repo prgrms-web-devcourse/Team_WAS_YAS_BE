@@ -21,18 +21,18 @@ public class RoutineCreateResponse {
   private String name;
   private List<String> routineCategory;
   private LocalDate startTime;
-  private LocalDate goalTime;
+  private LocalDate durationTime;
   private List<String> weeks;
   private String color;
   private String emoji;
 
   @Builder
-  public RoutineCreateResponse(Long routineId, String name, LocalDate startTime, LocalDate goalTime,
+  public RoutineCreateResponse(Long routineId, String name, LocalDate startTime, LocalDate durationTime,
       List<String> weeks, List<String> routineCategory, String emoji, String color) {
     this.routineId = routineId;
     this.name = name;
     this.startTime = startTime;
-    this.goalTime = goalTime;
+    this.durationTime = durationTime;
     this.weeks = weeks;
     this.routineCategory = routineCategory;
     this.color = color;

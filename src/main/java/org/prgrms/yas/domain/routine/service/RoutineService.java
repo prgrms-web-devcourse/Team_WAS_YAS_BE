@@ -24,11 +24,11 @@ public class RoutineService {
   private final UserRepository userRepository;
 
   @Transactional
-  public RoutineCreateResponse routineSave(Long userId, RoutineCreateRequest routineCreateRequest) {
+  public RoutineCreateResponse saveRoutine(Long userId, RoutineCreateRequest routineCreateRequest) {
     User user = userRepository.getById(userId);
     Routine routine = Routine.builder().user(user).name(routineCreateRequest.getName())
                              .startTime(routineCreateRequest.getStartTime())
-                             .goalTime(routineCreateRequest.getGoalTime()).weeks(
+                             .durationTime(routineCreateRequest.getDurationTime()).weeks(
             routineCreateRequest.getEnumWeeks(routineCreateRequest.getWeeks())).routineCategory(
             routineCreateRequest.getEnumRoutineCategory(routineCreateRequest.getRoutineCategory()))
                              .color(routineCreateRequest.getColor())
@@ -40,8 +40,8 @@ public class RoutineService {
                                                                        .routineId(routine.getId())
                                                                        .startTime(
                                                                            routine.getStartTime())
-                                                                       .goalTime(
-                                                                           routine.getGoalTime())
+                                                                       .durationTime(
+                                                                           routine.getDurationTime())
                                                                        .weeks(
                                                                            routine.getStringWeeks(
                                                                                routine.getWeeks()))
@@ -56,7 +56,7 @@ public class RoutineService {
 
 
   @Transactional
-  public RoutineDeleteResponse routineDelete(Long routineId) throws NotFoundException {
+  public RoutineDeleteResponse deleteRoutine(Long routineId) throws NotFoundException {
     Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
     routineRepository.deleteById(routineId);
     return RoutineDeleteResponse.builder().routineId(routineId).build();
@@ -64,12 +64,11 @@ public class RoutineService {
   }
 
   @Transactional
-  public RoutineUpdateResponse routineUpdate(Long routineId, RoutineUpdateRequest routineUpdateRequest) throws NotFoundException {
+  public RoutineUpdateResponse updateRoutine(Long routineId, RoutineUpdateRequest routineUpdateRequest) throws NotFoundException {
     Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
     routine.updateRoutine(routineUpdateRequest.getEnumWeeks(routineUpdateRequest.getWeeks()));
-    //세이브 안하면 변경 감지 일어나서 자동 저장 되는데 로직이 끝나기전 아래같은 거 반환했을때도 변경 댐?
     return RoutineUpdateResponse.builder().name(routine.getName()).routineId(routine.getId())
-                                .startTime(routine.getStartTime()).goalTime(routine.getGoalTime())
+                                .startTime(routine.getStartTime()).durationTime(routine.getDurationTime())
                                 .weeks(routine.getStringWeeks(routine.getWeeks())).routineCategory(
             routine.getStringCategory(routine.getRoutineCategory())).color(routine.getColor())
                                 .emoji(routine.getEmoji()).build();
@@ -78,6 +77,7 @@ public class RoutineService {
   public void findId(Long routineId) throws NotFoundException {
     Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
   }
+
 }
     // 그럼 그냥 토큰 만들지말고 토큰 객체만 만들어서 일단 개발해봐요
 

@@ -21,17 +21,17 @@ public class RoutineCreateRequest {
   private String name;
   private List<String> routineCategory;
   private LocalDate startTime;
-  private LocalDate goalTime;
+  private LocalDate durationTime;
   private List<String> weeks;
   private String emoji;
   private String color;
 
   @Builder
-  public RoutineCreateRequest(String name, LocalDate startTime, LocalDate goalTime,
+  public RoutineCreateRequest(String name, LocalDate startTime, LocalDate durationTime,
       List<String> weeks, List<String> routineCategory, String color, String emoji) {
     this.name = name;
     this.startTime = startTime;
-    this.goalTime = goalTime;
+    this.durationTime = durationTime;
     this.weeks = weeks;
     this.routineCategory = routineCategory;
     this.color = color;

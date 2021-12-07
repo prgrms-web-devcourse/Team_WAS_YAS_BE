@@ -14,18 +14,18 @@ public class RoutineUpdateResponse {
   private String name;
   private List<String> routineCategory;
   private LocalDate startTime;
-  private LocalDate goalTime;
+  private LocalDate durationTime;
   private List<String> weeks;
   private String color;
   private String emoji;
 
   @Builder
-  public RoutineUpdateResponse(Long routineId, String name, LocalDate startTime, LocalDate goalTime,
+  public RoutineUpdateResponse(Long routineId, String name, LocalDate startTime, LocalDate durationTime,
       List<String> weeks, List<String> routineCategory, String color, String emoji) {
     this.routineId = routineId;
     this.name = name;
     this.startTime = startTime;
-    this.goalTime = goalTime;
+    this.durationTime = durationTime;
     this.weeks = weeks;
     this.routineCategory = routineCategory;
     this.color = color;

@@ -56,7 +56,7 @@ public class Routine {
   private LocalDate startTime;
 
   @Column(nullable = false)
-  private LocalDate goalTime;
+  private LocalDate durationTime;
 
 //  @Column(nullable = false)
 //  private Week week;
@@ -87,11 +87,11 @@ public class Routine {
   }
 
   @Builder
-  public Routine(User user,String name, LocalDate startTime, LocalDate goalTime, List<Week> weeks,List<RoutineCategory> routineCategory, String color, String emoji) {
+  public Routine(User user,String name, LocalDate startTime, LocalDate durationTime, List<Week> weeks,List<RoutineCategory> routineCategory, String color, String emoji) {
     this.user = user;
     this.name = name;
     this.startTime = startTime;
-    this.goalTime = goalTime;
+    this.durationTime = durationTime;
     this.weeks = weeks;
     this.routineCategory = routineCategory;
     this.color = color;

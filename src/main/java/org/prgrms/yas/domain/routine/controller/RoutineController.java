@@ -45,14 +45,14 @@ public class RoutineController {
   @DeleteMapping("/{id}")
   public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id )
       throws NotFoundException {
-    RoutineDeleteResponse routineDeleteResponse = routineService.routineDelete(id);
+    RoutineDeleteResponse routineDeleteResponse = routineService.deleteRoutine(id);
     return ResponseEntity.ok(routineDeleteResponse);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<RoutineUpdateResponse> update(@PathVariable("id") Long id,
       @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest) throws NotFoundException {
-    RoutineUpdateResponse routineUpdateResponse = routineService.routineUpdate(id, routineUpdateRequest);
+    RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id, routineUpdateRequest);
     return ResponseEntity.ok(routineUpdateResponse);
   }
 }

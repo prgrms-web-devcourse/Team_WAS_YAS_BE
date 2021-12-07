@@ -63,7 +63,7 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
                                                                     .startTime(LocalDate.now())
-                                                                    .goalTime(LocalDate.now())
+                                                                    .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .build();
@@ -87,13 +87,13 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
                                                                     .startTime(LocalDate.now())
-                                                                    .goalTime(LocalDate.now())
+                                                                    .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black").emoji(">_<")
                                                                     .build();
 
-    Long routineId = routineService.routineSave(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
 
     List<String> findWeek2 = new ArrayList<>();
     findWeek2.add("MON");
@@ -121,13 +121,13 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
                                                                     .startTime(LocalDate.now())
-                                                                    .goalTime(LocalDate.now())
+                                                                    .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black").emoji(">_<")
                                                                     .build();
 
-    Long routineId = routineService.routineSave(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
 
     mockMvc.perform(delete("/routines/{id}",routineId)
                .contentType(MediaType.APPLICATION_JSON))
