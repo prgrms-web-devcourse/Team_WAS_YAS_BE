@@ -1,8 +1,11 @@
 package org.prgrms.yas.domain.user.service;
 
+import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.dto.UserJoinRequest;
 import org.prgrms.yas.domain.user.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,26 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-  private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
+  private final UserRepository userRepository;
+
+  public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
     this.passwordEncoder = passwordEncoder;
+    this.userRepository = userRepository;
   }
 
-  @Transactional
-  public Long join(UserJoinRequest userJoinRequest) {
-    checkDuplicateUser(userJoinRequest);
-    User user = userJoinRequest.toEntity();
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
+  @Transactional(readOnly = true)
+  public User signIn(String username, String credentials) {
+    User user = userRepository.findByEmail(username)
+                              .orElseThrow(() -> new UsernameNotFoundException("회원이 없습니다."));
+    user.checkPassword(passwordEncoder, credentials);
 
-    return userRepository.save(user).getId();
-  }
-
-  private void checkDuplicateUser(UserJoinRequest userJoinRequest){
-    if(userRepository.existsUserByEmail(userJoinRequest.getEmail())){
-      throw new RuntimeException("중복 회원 이메일");
-    }
+    return user;
   }
 }

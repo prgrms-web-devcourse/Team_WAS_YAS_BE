@@ -35,7 +35,7 @@ public class MissionCompletion {
   private String goalTime;
 
   @Column(nullable = false)
-  private int order;
+  private int procedure;
 
   @Column(nullable = false)
   private String emoji;
