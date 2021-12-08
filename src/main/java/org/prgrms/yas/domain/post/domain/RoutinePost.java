@@ -2,7 +2,6 @@ package org.prgrms.yas.domain.post.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,8 +18,6 @@ import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.routine.domain.Routine;
-import org.prgrms.yas.domain.routine.domain.RoutineCompletion;
-import org.prgrms.yas.domain.user.domain.User;
 
 @Table(name = "routine_post")
 @Entity

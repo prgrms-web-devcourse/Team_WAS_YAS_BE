@@ -224,3 +224,6 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,gradle,java
+
+/src/main/resources/application-local.yml
+/src/main/resources/application.yml
