@@ -29,7 +29,7 @@ public class Mission {
   private LocalDateTime goalTime;
 
   @Column(nullable = false)
-  private int order;
+  private int procedure;
 
   @Column(nullable = false)
   private String emoji;

@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
 @Table(name = "routine")

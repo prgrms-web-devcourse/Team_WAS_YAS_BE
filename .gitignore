@@ -227,5 +227,3 @@ gradle-app.setting
 
 /src/main/resources/application-local.yml
 /src/main/resources/application.yml
-
-.env
