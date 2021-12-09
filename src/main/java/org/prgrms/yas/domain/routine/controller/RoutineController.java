@@ -1,10 +1,12 @@
 package org.prgrms.yas.domain.routine.controller;
 
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
@@ -13,6 +15,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,7 +38,8 @@ public class RoutineController {
 
   ) {
     RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(token.getId(),
-        routineCreateRequest);
+        routineCreateRequest
+    );
     return ResponseEntity.ok(routineCreateResponse);
   }
 
@@ -51,7 +55,16 @@ public class RoutineController {
       @PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
   ) throws NotFoundException {
     RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id,
-        routineUpdateRequest);
+        routineUpdateRequest
+    );
     return ResponseEntity.ok(routineUpdateResponse);
+  }
+
+  @GetMapping
+  public ResponseEntity<List<RoutineDetailResponse>> get(
+      @AuthenticationPrincipal JwtAuthentication token
+  ) throws NotFoundException {
+    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
+    return ResponseEntity.ok(routineDetailResponses);
   }
 }

@@ -1,11 +1,15 @@
 package org.prgrms.yas.domain.routine.service;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
@@ -89,9 +93,19 @@ public class RoutineService {
                                 .build();
   }
 
+  @Transactional
   public void findId(Long routineId) throws NotFoundException {
     Routine routine = routineRepository.findById(routineId)
                                        .orElseThrow(NotFoundException::new);
   }
 
+  @Transactional
+  public List<RoutineDetailResponse> findRoutines(Long userId) throws NotFoundException {
+    User user = userRepository.findById(userId)
+                              .orElseThrow(NotFoundException::new);
+    List<Routine> routines = routineRepository.getByUser(user);
+    return routines.stream()
+                   .map(Routine::toRoutineDetailResponse)
+                   .collect(toList());
+  }
 }
