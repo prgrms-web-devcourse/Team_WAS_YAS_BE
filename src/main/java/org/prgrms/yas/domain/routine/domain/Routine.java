@@ -61,14 +61,14 @@ public class Routine {
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
   @Enumerated(EnumType.STRING)
-  List<Week> weeks = new ArrayList<>();
+  private List<Week> weeks = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
   @OneToMany(mappedBy = "routine")
-  List<RoutineCompletion> routineCompletions = new ArrayList<>();
+  private List<RoutineCompletion> routineCompletions = new ArrayList<>();
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;

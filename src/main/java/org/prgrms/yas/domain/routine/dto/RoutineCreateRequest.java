@@ -3,6 +3,7 @@ package org.prgrms.yas.domain.routine.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.domain.Week;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineCreateRequest {
 
   private String name;
@@ -37,16 +38,16 @@ public class RoutineCreateRequest {
 
   public List<Week> getEnumWeeks(List<String> weeks) {
     List<Week> result = new ArrayList<>();
-    for (String x : weeks) {
-      result.add(Week.valueOf(x));
+    for (String week : weeks) {
+      result.add(Week.valueOf(week));
     }
     return result;
   }
 
   public List<RoutineCategory> getEnumRoutineCategory(List<String> routineCategory) {
     List<RoutineCategory> result = new ArrayList<>();
-    for (String x : routineCategory) {
-      result.add(RoutineCategory.valueOf(x));
+    for (String category : routineCategory) {
+      result.add(RoutineCategory.valueOf(category));
     }
     return result;
   }

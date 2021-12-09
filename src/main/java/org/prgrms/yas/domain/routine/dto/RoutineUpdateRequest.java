@@ -15,8 +15,8 @@ public class RoutineUpdateRequest {
 
   public List<Week> getEnumWeeks(List<String> weeks) {
     List<Week> result = new ArrayList<>();
-    for (String x : weeks) {
-      result.add(Week.valueOf(x));
+    for (String week : weeks) {
+      result.add(Week.valueOf(week));
     }
     return result;
   }
