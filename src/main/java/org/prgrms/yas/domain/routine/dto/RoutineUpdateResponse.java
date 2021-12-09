@@ -20,8 +20,10 @@ public class RoutineUpdateResponse {
   private String emoji;
 
   @Builder
-  public RoutineUpdateResponse(Long routineId, String name, LocalDate startTime, LocalDate durationTime,
-      List<String> weeks, List<String> routineCategory, String color, String emoji) {
+  public RoutineUpdateResponse(
+      Long routineId, String name, LocalDate startTime, LocalDate durationTime, List<String> weeks,
+      List<String> routineCategory, String color, String emoji
+  ) {
     this.routineId = routineId;
     this.name = name;
     this.startTime = startTime;
@@ -32,12 +34,12 @@ public class RoutineUpdateResponse {
     this.emoji = emoji;
   }
 
-  public List<String> getStringWeeks(List<Week> weeks){
+  public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
-    for (Week x : weeks) {
-      result.add(x.toString());
+    for (Week week : weeks) {
+      result.add(week.toString());
     }
-    return  result;
+    return result;
   }
 
 }

@@ -19,23 +19,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.NoArgsConstructor;
-import org.hibernate.internal.CoreMessageLogger;
-import org.prgrms.yas.domain.routine.domain.RoutineCategory;
-import org.prgrms.yas.domain.routine.domain.Week;
 
 @Entity
 @Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false,length = 20)
+  @Column(nullable = false, length = 20)
   private String name;
 
-  @Column(nullable = false,length = 30)
+  @Column(nullable = false, length = 30)
   private String nickname;
 
   @Column(nullable = false)
@@ -44,7 +42,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
-  @Column(name = "profile_image", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "profile_image", columnDefinition = "TEXT")
   private String profileImage;
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -73,7 +71,6 @@ public class User {
     this.provider = provider;
     this.providerId = providerId;
   }
-
 
   public UserResponse toResponse() {
     return UserResponse.builder()

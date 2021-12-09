@@ -15,11 +15,12 @@ import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.domain.UserRepository;
+import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.test.annotation.Rollback;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -39,10 +40,15 @@ class RoutineServiceTest {
   @BeforeEach
   void setting() {
 
-    User user = User.builder().name("oni").nickname("oni").email("kcs@naver.com").password("1234")
+    User user = User.builder()
+                    .name("oni")
+                    .nickname("oni")
+                    .email("kcs@naver.com")
+                    .password("1234")
                     .build();
 
-    findId = userRepository.save(user).getId();
+    findId = userRepository.save(user)
+                           .getId();
 
   }
 
@@ -55,16 +61,20 @@ class RoutineServiceTest {
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-    RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(findId,routineCreateRequest);
-    Assertions.assertThat(routineCreateResponse.getName()).isEqualTo(routineCreateRequest.getName());
+    RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(findId,
+        routineCreateRequest);
+    Assertions.assertThat(routineCreateResponse.getName())
+              .isEqualTo(routineCreateRequest.getName());
 
   }
 
@@ -74,20 +84,21 @@ class RoutineServiceTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-
-    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId, routineCreateRequest)
+                                   .getRoutineId();
     routineService.deleteRoutine(routineId);
     assertThrows(NotFoundException.class, () -> routineService.findId(routineId));
   }
@@ -98,30 +109,31 @@ class RoutineServiceTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId, routineCreateRequest)
+                                   .getRoutineId();
 
     List<String> findWeek2 = new ArrayList<>();
     findWeek2.add("MON");
     findWeek2.add("WED");
 
-    RoutineUpdateRequest routineUpdateRequest = RoutineUpdateRequest.builder().weeks(findWeek2)
+    RoutineUpdateRequest routineUpdateRequest = RoutineUpdateRequest.builder()
+                                                                    .weeks(findWeek2)
                                                                     .build();
-    routineService.updateRoutine(routineId,routineUpdateRequest);
+    routineService.updateRoutine(routineId, routineUpdateRequest);
     Routine findRoutine = routineRepository.getById(routineId);
-    //Assertions.assertThat(findRoutine.getWeeks()).isEqualTo();
-
   }
 
   @Test

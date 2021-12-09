@@ -27,8 +27,10 @@ public class RoutineCreateResponse {
   private String emoji;
 
   @Builder
-  public RoutineCreateResponse(Long routineId, String name, LocalDate startTime, LocalDate durationTime,
-      List<String> weeks, List<String> routineCategory, String emoji, String color) {
+  public RoutineCreateResponse(
+      Long routineId, String name, LocalDate startTime, LocalDate durationTime, List<String> weeks,
+      List<String> routineCategory, String emoji, String color
+  ) {
     this.routineId = routineId;
     this.name = name;
     this.startTime = startTime;
@@ -39,12 +41,12 @@ public class RoutineCreateResponse {
     this.emoji = emoji;
   }
 
-  public List<String> getStringWeeks(List<Week> weeks){
+  public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
     for (Week x : weeks) {
       result.add(x.toString());
     }
-    return  result;
+    return result;
   }
 
 
