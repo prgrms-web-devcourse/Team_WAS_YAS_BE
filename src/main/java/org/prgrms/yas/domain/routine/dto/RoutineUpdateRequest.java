@@ -25,6 +25,4 @@ public class RoutineUpdateRequest {
   public RoutineUpdateRequest(List<String> weeks) {
     this.weeks = weeks;
   }
-
-
 }

@@ -68,7 +68,7 @@ public class Routine {
   private User user;
 
   @OneToMany(mappedBy = "routine")
-  private List<RoutineCompletion> routineCompletions = new ArrayList<>();
+  List<RoutineCompletion> routineCompletions = new ArrayList<>();
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
@@ -100,16 +100,16 @@ public class Routine {
 
   public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
-    for (Week x : weeks) {
-      result.add(x.toString());
+    for (Week week : weeks) {
+      result.add(week.toString());
     }
     return result;
   }
 
   public List<String> getStringCategory(List<RoutineCategory> routineCategory) {
     List<String> result = new ArrayList<>();
-    for (RoutineCategory x : routineCategory) {
-      result.add(x.toString());
+    for (RoutineCategory category : routineCategory) {
+      result.add(category.toString());
     }
     return result;
   }

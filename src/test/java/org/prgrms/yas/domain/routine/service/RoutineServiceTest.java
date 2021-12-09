@@ -133,7 +133,5 @@ class RoutineServiceTest {
                                                                     .build();
     routineService.updateRoutine(routineId, routineUpdateRequest);
     Routine findRoutine = routineRepository.getById(routineId);
-    //Assertions.assertThat(findRoutine.getWeeks()).isEqualTo();
-
   }
 }

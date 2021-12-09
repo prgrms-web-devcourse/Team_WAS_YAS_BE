@@ -95,9 +95,3 @@ public class RoutineService {
   }
 
 }
-// 그럼 그냥 토큰 만들지말고 토큰 객체만 만들어서 일단 개발해봐요
-
-//    Routine routine = routineCreateRequest.toEntity(); // 요거가 바뀔거니까 어차피 저거 쓰겠네요 넹 그렇게 되겠죠?
-// 여기서 유저 매핑 해주세요
-
-
