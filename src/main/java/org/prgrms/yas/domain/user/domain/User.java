@@ -11,19 +11,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Builder;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
   @Column(nullable = false, length = 20)
@@ -38,7 +42,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
-  @Column(name = "profile_image", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "profile_image", columnDefinition = "TEXT")
   private String profileImage;
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -66,9 +70,6 @@ public class User {
     this.roles = Role.ROLE_USER;
     this.provider = provider;
     this.providerId = providerId;
-  }
-
-  protected User() {
   }
 
   public UserResponse toResponse() {

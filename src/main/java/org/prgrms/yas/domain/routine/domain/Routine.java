@@ -3,8 +3,12 @@ package org.prgrms.yas.domain.routine.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,34 +17,51 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import jdk.jfr.Category;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
 @Table(name = "routine")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
+@DynamicInsert
 public class Routine {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false,length = 60)
+  @Column(nullable = false, length = 60)
   private String name;
 
-  @Column(nullable = false)
-  private RoutineCategory routineCategory;
+  private String color;
+
+  private String emoji;
+
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "routine_category", joinColumns = @JoinColumn(name = "id"))
+  @Enumerated(EnumType.STRING)
+  List<RoutineCategory> routineCategory;
 
   @Column(nullable = false)
   private LocalDate startTime;
 
   @Column(nullable = false)
-  private LocalDate goalTime;
+  private LocalDate durationTime;
 
-  @Column(nullable = false)
-  private Week week;
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
+  @Enumerated(EnumType.STRING)
+  private List<Week> weeks = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -60,5 +81,40 @@ public class Routine {
   public Routine addRoutineCompletions(List<RoutineCompletion> routineCompletions) {
     routineCompletions.forEach(this::addRoutineCompletion);
     return this;
+  }
+
+  @Builder
+  public Routine(
+      User user, String name, LocalDate startTime, LocalDate durationTime, List<Week> weeks,
+      List<RoutineCategory> routineCategory, String color, String emoji
+  ) {
+    this.user = user;
+    this.name = name;
+    this.startTime = startTime;
+    this.durationTime = durationTime;
+    this.weeks = weeks;
+    this.routineCategory = routineCategory;
+    this.color = color;
+    this.emoji = emoji;
+  }
+
+  public List<String> getStringWeeks(List<Week> weeks) {
+    List<String> result = new ArrayList<>();
+    for (Week week : weeks) {
+      result.add(week.toString());
+    }
+    return result;
+  }
+
+  public List<String> getStringCategory(List<RoutineCategory> routineCategory) {
+    List<String> result = new ArrayList<>();
+    for (RoutineCategory category : routineCategory) {
+      result.add(category.toString());
+    }
+    return result;
+  }
+
+  public void updateRoutine(List<Week> weeks) {
+    this.weeks = weeks;
   }
 }

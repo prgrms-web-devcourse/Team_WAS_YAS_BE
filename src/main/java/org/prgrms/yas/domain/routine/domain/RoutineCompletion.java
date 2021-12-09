@@ -46,7 +46,8 @@ public class RoutineCompletion {
 
   public void setRoutine(Routine routine) {
     if (Objects.nonNull(this.routine)) {
-      this.routine.getRoutineCompletions().remove(this);
+      this.routine.getRoutineCompletions()
+                  .remove(this);
     }
     this.routine = routine;
   }
