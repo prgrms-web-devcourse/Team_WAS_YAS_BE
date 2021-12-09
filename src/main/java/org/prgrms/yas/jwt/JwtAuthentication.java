@@ -13,8 +13,14 @@ public class JwtAuthentication {
   private final String username;
 
   public JwtAuthentication(Long id, String token, String username) {
-    checkArgument(isNotEmpty(token), "token must be provided");
-    checkArgument(isNotEmpty(username), "username must be provided");
+    checkArgument(
+        isNotEmpty(token),
+        "token must be provided"
+    );
+    checkArgument(
+        isNotEmpty(username),
+        "username must be provided"
+    );
     this.id = id;
     this.token = token;
     this.username = username;

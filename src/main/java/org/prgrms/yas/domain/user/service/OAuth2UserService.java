@@ -23,40 +23,43 @@ public class OAuth2UserService {
 
   @Transactional(readOnly = true)
   public Optional<User> findByProviderAndProviderId(String provider, String providerId) {
-    return userRepository.findByProviderAndProviderId(provider, providerId);
+    return userRepository.findByProviderAndProviderId(
+        provider,
+        providerId
+    );
   }
 
   @Transactional
   public User signUp(OAuth2User oAuth2User, String provider) {
     String providerId = oAuth2User.getName();
-    return findByProviderAndProviderId(provider, providerId).map(user -> {
-                                                              logger.warn("Already exists: {} for (provider: {}, providerId: {})", user, provider,
-                                                                          providerId);
-                                                              return user;
-                                                            })
-                                                            .orElseGet(() -> {
-                                                              Map<String, Object> attributes = oAuth2User.getAttributes();
-                                                              Map<String, Object> properties = (Map<String, Object>) attributes.get(
-                                                                  "properties");
-                                                              Map<String, Object> accounts = (Map<String, Object>) attributes.get(
-                                                                  "kakao_account");
-                                                              Map<String, Object> accountsDetail = (Map<String, Object>) accounts.get(
-                                                                  "profile");
-                                                              String nickname = (String) properties.get(
-                                                                  "nickname");
-                                                              String profileImageUrl = (String) accountsDetail.get(
-                                                                  "profile_image_url");
-                                                              String email = (String) accounts.get(
-                                                                  "email");
+    return findByProviderAndProviderId(
+        provider,
+        providerId
+    ).map(user -> {
+       logger.warn(
+           "Already exists: {} for (provider: {}, providerId: {})",
+           user,
+           provider,
+           providerId
+       );
+       return user;
+     })
+     .orElseGet(() -> {
+       Map<String, Object> attributes = oAuth2User.getAttributes();
+       Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+       Map<String, Object> accounts = (Map<String, Object>) attributes.get("kakao_account");
+       Map<String, Object> accountsDetail = (Map<String, Object>) accounts.get("profile");
+       String nickname = (String) properties.get("nickname");
+       String profileImageUrl = (String) accountsDetail.get("profile_image_url");
+       String email = (String) accounts.get("email");
 
-                                                              return userRepository.save(
-                                                                  User.builder()
-                                                                      .name(nickname)
-                                                                      .email(email)
-                                                                      .provider(provider)
-                                                                      .providerId(providerId)
-                                                                      .profileImage(profileImageUrl)
-                                                                      .build());
-                                                            });
+       return userRepository.save(User.builder()
+                                      .name(nickname)
+                                      .email(email)
+                                      .provider(provider)
+                                      .providerId(providerId)
+                                      .profileImage(profileImageUrl)
+                                      .build());
+     });
   }
 }

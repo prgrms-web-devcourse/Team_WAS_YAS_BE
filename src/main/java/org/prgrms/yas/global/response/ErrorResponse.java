@@ -34,7 +34,10 @@ public class ErrorResponse {
   }
 
   public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult) {
-    return new ErrorResponse(errorCode, FieldError.of(bindingResult));
+    return new ErrorResponse(
+        errorCode,
+        FieldError.of(bindingResult)
+    );
   }
 
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,11 +57,12 @@ public class ErrorResponse {
       List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
 
       return fieldErrors.stream()
-                        .map(filedError -> new FieldError(filedError.getField(),
-                                                          filedError.getRejectedValue() == null ? ""
-                                                              : filedError.getRejectedValue()
-                                                                          .toString(),
-                                                          filedError.getDefaultMessage()
+                        .map(filedError -> new FieldError(
+                            filedError.getField(),
+                            filedError.getRejectedValue() == null ? ""
+                                : filedError.getRejectedValue()
+                                            .toString(),
+                            filedError.getDefaultMessage()
                         ))
                         .collect(Collectors.toList());
     }

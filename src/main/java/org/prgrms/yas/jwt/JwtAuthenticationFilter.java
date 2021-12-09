@@ -55,17 +55,30 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
           if (isNotEmpty(username) && authorities.size() > 0) {
             JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(
-                new JwtAuthentication(id, token, username), null, authorities);
+                new JwtAuthentication(
+                    id,
+                    token,
+                    username
+                ),
+                null,
+                authorities
+            );
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
             SecurityContextHolder.getContext()
                                  .setAuthentication(authenticationToken);
           }
         } catch (Exception e) {
-          logger.warn("JWT 오류 발생 {}", e.getMessage());
+          logger.warn(
+              "JWT 오류 발생 {}",
+              e.getMessage()
+          );
         }
       }
     }
-    chain.doFilter(req, res);
+    chain.doFilter(
+        req,
+        res
+    );
   }
 
 
@@ -73,7 +86,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     String token = request.getHeader(headerKey);
     if (isNotEmpty(token)) {
       try {
-        return URLDecoder.decode(token, "UTF-8");
+        return URLDecoder.decode(
+            token,
+            "UTF-8"
+        );
       } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
@@ -88,8 +104,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
   private List<GrantedAuthority> getAuthorities(Jwt.Claims claims) {
     String[] roles = claims.roles;
     return roles != null && roles.length == 0 ? emptyList() : Arrays.stream(roles)
-                                                                    .map(
-                                                                        SimpleGrantedAuthority::new)
+                                                                    .map(SimpleGrantedAuthority::new)
                                                                     .collect(Collectors.toList());
   }
 }
