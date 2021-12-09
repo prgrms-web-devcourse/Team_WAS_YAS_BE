@@ -3,9 +3,14 @@ package org.prgrms.yas.domain.routine.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.Week;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineDetailResponse {
   private Long routineId;
   private String name;

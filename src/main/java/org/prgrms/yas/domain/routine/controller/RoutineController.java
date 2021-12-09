@@ -58,9 +58,11 @@ public class RoutineController {
     return ResponseEntity.ok(routineUpdateResponse);
   }
 
-//  @GetMapping
-//  public ResponseEntity<List<RoutineDetailResponse>> get() throws NotFoundException {
-//    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(id); // userID
-//    return ResponseEntity.ok(routineDetailResponses);
-//  }
+  @GetMapping
+  public ResponseEntity<List<RoutineDetailResponse>> get(
+      @AuthenticationPrincipal JwtAuthentication token
+  ) throws NotFoundException {
+    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
+    return ResponseEntity.ok(routineDetailResponses);
+  }
 }

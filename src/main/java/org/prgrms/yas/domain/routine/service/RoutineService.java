@@ -101,8 +101,11 @@ public class RoutineService {
 
   @Transactional
   public List<RoutineDetailResponse> findRoutines(Long userId) throws NotFoundException {
-    User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+    User user = userRepository.findById(userId)
+                              .orElseThrow(NotFoundException::new);
     List<Routine> routines = routineRepository.getByUser(user);
-    return routines.stream().map(Routine::toRoutineDetailResponse).collect(toList());
+    return routines.stream()
+                   .map(Routine::toRoutineDetailResponse)
+                   .collect(toList());
   }
 }
