@@ -120,10 +120,15 @@ public class Routine {
   }
 
   public RoutineDetailResponse toRoutineDetailResponse() {
-    return RoutineDetailResponse.builder().routineId(this.getId()).color(this.getColor())
-                                .durationTime(this.getDurationTime()).startTime(this.startTime)
+    return RoutineDetailResponse.builder()
+                                .routineId(this.getId())
+                                .color(this.getColor())
+                                .durationTime(this.getDurationTime())
+                                .startTime(this.startTime)
                                 .weeks(this.getStringWeeks(this.weeks))
                                 .routineCategory(this.getStringCategory(this.getRoutineCategory()))
-                                .emoji(this.emoji).name(this.name).build();
+                                .emoji(this.emoji)
+                                .name(this.name)
+                                .build();
   }
 }

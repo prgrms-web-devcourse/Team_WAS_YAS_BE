@@ -72,7 +72,8 @@ class RoutineServiceTest {
                                                                     .build();
 
     RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(findId,
-        routineCreateRequest);
+        routineCreateRequest
+    );
     Assertions.assertThat(routineCreateResponse.getName())
               .isEqualTo(routineCreateRequest.getName());
 
@@ -142,20 +143,22 @@ class RoutineServiceTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-    routineService.saveRoutine(findId,routineCreateRequest);
+    routineService.saveRoutine(findId, routineCreateRequest);
     List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(findId);
-    Assertions.assertThat(routineDetailResponses.size()).isEqualTo(1);
+    Assertions.assertThat(routineDetailResponses.size())
+              .isEqualTo(1);
   }
 }

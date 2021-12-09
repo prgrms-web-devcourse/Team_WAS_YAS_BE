@@ -12,6 +12,7 @@ import org.prgrms.yas.domain.routine.domain.Week;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineDetailResponse {
+
   private Long routineId;
   private String name;
   private List<String> routineCategory;
@@ -22,8 +23,10 @@ public class RoutineDetailResponse {
   private String emoji;
 
   @Builder
-  public RoutineDetailResponse(Long routineId, String name, LocalDate startTime, LocalDate durationTime,
-      List<String> weeks, List<String> routineCategory, String emoji, String color) {
+  public RoutineDetailResponse(
+      Long routineId, String name, LocalDate startTime, LocalDate durationTime, List<String> weeks,
+      List<String> routineCategory, String emoji, String color
+  ) {
     this.routineId = routineId;
     this.name = name;
     this.startTime = startTime;
@@ -34,11 +37,11 @@ public class RoutineDetailResponse {
     this.emoji = emoji;
   }
 
-  public List<String> getStringWeeks(List<Week> weeks){
+  public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
     for (Week week : weeks) {
       result.add(week.toString());
     }
-    return  result;
+    return result;
   }
 }

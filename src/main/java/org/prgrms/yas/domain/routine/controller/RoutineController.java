@@ -38,7 +38,8 @@ public class RoutineController {
 
   ) {
     RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(token.getId(),
-        routineCreateRequest);
+        routineCreateRequest
+    );
     return ResponseEntity.ok(routineCreateResponse);
   }
 
@@ -54,7 +55,8 @@ public class RoutineController {
       @PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
   ) throws NotFoundException {
     RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id,
-        routineUpdateRequest);
+        routineUpdateRequest
+    );
     return ResponseEntity.ok(routineUpdateResponse);
   }
 
