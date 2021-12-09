@@ -18,7 +18,7 @@ import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.service.RoutineService;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.domain.UserRepository;
+import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

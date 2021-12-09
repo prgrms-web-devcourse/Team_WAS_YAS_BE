@@ -6,18 +6,13 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.domain.Week;
-import org.prgrms.yas.domain.user.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @NoArgsConstructor
 public class RoutineCreateRequest {
 
-  @Autowired
-  private UserRepository userRepository;
   private String name;
   private List<String> routineCategory;
   private LocalDate startTime;

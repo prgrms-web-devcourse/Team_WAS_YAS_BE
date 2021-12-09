@@ -42,7 +42,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
-  @Column(name = "profile_image", nullable = false, columnDefinition = "TEXT")
+  @Column(name = "profile_image", columnDefinition = "TEXT")
   private String profileImage;
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
