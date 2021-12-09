@@ -157,6 +157,5 @@ class RoutineServiceTest {
     routineService.saveRoutine(findId,routineCreateRequest);
     List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(findId);
     Assertions.assertThat(routineDetailResponses.size()).isEqualTo(1);
-
   }
 }

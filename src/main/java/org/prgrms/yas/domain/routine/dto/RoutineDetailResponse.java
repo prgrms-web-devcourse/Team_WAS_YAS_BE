@@ -36,8 +36,8 @@ public class RoutineDetailResponse {
 
   public List<String> getStringWeeks(List<Week> weeks){
     List<String> result = new ArrayList<>();
-    for (Week x : weeks) {
-      result.add(x.toString());
+    for (Week week : weeks) {
+      result.add(week.toString());
     }
     return  result;
   }
