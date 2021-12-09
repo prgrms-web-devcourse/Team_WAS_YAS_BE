@@ -50,7 +50,6 @@ public class Routine {
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "routine_category", joinColumns = @JoinColumn(name = "id"))
   @Enumerated(EnumType.STRING)
-  //@Column(nullable = false)
   List<RoutineCategory> routineCategory;
 
   @Column(nullable = false)
@@ -58,9 +57,6 @@ public class Routine {
 
   @Column(nullable = false)
   private LocalDate durationTime;
-
-  //  @Column(nullable = false)
-  //  private Week week;
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
