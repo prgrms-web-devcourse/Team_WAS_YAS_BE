@@ -223,4 +223,8 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+/src/main/resources/application-local.yml
+/src/main/resources/application.yml
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,gradle,java
+
