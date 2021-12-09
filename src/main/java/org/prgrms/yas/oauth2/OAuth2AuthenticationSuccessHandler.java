@@ -33,32 +33,44 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
       OAuth2User principal = oauth2Token.getPrincipal();
       String registrationId = oauth2Token.getAuthorizedClientRegistrationId();
 
-      User user = processUserOAuth2UserJoin(principal, registrationId);
+      User user = processUserOAuth2UserJoin(
+          principal,
+          registrationId
+      );
       String loginSuccessJson = generateLoginSuccessJson(user);
       response.setContentType("application/json;charset=UTF-8");
       response.setContentLength(loginSuccessJson.getBytes(StandardCharsets.UTF_8).length);
       response.getWriter()
               .write(loginSuccessJson);
     } else {
-      super.onAuthenticationSuccess(request, response, authentication);
+      super.onAuthenticationSuccess(
+          request,
+          response,
+          authentication
+      );
     }
   }
 
   private User processUserOAuth2UserJoin(OAuth2User oAuth2User, String provider) {
-    return oAuth2UserService.signUp(oAuth2User, provider);
+    return oAuth2UserService.signUp(
+        oAuth2User,
+        provider
+    );
   }
 
   private String generateLoginSuccessJson(User user) {
     String token = generateToken(user);
-    return "{\"token\":\"" + token + "\", \"Email\":\""
-        + user.getEmail() + "\", \"Id\":\""
-        + user.getId() + "\", \"role\":\""
-        + user.getRoles().toString()
-        + "\"}";
+    return "{\"token\":\"" + token + "\", \"Email\":\"" + user.getEmail() + "\", \"Id\":\""
+        + user.getId() + "\", \"role\":\"" + user.getRoles()
+                                                 .toString() + "\"}";
 
   }
 
   private String generateToken(User user) {
-    return jwt.sign(Jwt.Claims.from(user.getId(), user.getEmail(), new String[]{"ROLE_USER"}));
+    return jwt.sign(Jwt.Claims.from(
+        user.getId(),
+        user.getEmail(),
+        new String[]{"ROLE_USER"}
+    ));
   }
 }

@@ -26,7 +26,10 @@ public class UserService {
   public User signIn(String username, String credentials) {
     User user = userRepository.findByEmail(username)
                               .orElseThrow(() -> new UsernameNotFoundException("회원이 없습니다."));
-    user.checkPassword(passwordEncoder, credentials);
+    user.checkPassword(
+        passwordEncoder,
+        credentials
+    );
 
     return user;
   }

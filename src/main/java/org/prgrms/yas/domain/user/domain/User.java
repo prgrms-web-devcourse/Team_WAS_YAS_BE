@@ -49,7 +49,7 @@ public class User {
   private boolean isDeleted;
 
   @Enumerated(EnumType.STRING)
-  private Role roles; // USER, ADMIN
+  private Role roles;
 
   private String provider;
 
@@ -90,7 +90,10 @@ public class User {
   }
 
   public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
-    if (!passwordEncoder.matches(credentials, password)) {
+    if (!passwordEncoder.matches(
+        credentials,
+        password
+    )) {
       throw new IllegalArgumentException("Bad credentials");
     }
   }

@@ -36,9 +36,18 @@ public class Jwt {
     if (expirySeconds > 0) {
       builder.withExpiresAt(new Date(now.getTime() + expirySeconds * 1_000L));
     }
-    builder.withClaim("id", claims.id);
-    builder.withClaim("username", claims.username);
-    builder.withArrayClaim("roles", claims.roles);
+    builder.withClaim(
+        "id",
+        claims.id
+    );
+    builder.withClaim(
+        "username",
+        claims.username
+    );
+    builder.withArrayClaim(
+        "roles",
+        claims.roles
+    );
 
     return builder.sign(algorithm);
   } // 토큰을 만드는 메소드
@@ -85,11 +94,26 @@ public class Jwt {
 
     public Map<String, Object> toMap() {
       Map<String, Object> map = new HashMap<>();
-      map.put("id", id);
-      map.put("username", username);
-      map.put("roles", roles);
-      map.put("iat", iat());
-      map.put("exp", exp());
+      map.put(
+          "id",
+          id
+      );
+      map.put(
+          "username",
+          username
+      );
+      map.put(
+          "roles",
+          roles
+      );
+      map.put(
+          "iat",
+          iat()
+      );
+      map.put(
+          "exp",
+          exp()
+      );
 
       return map;
     }
