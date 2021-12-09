@@ -17,12 +17,4 @@ public enum Week {
   Week(String week) {
     this.week = week;
   }
-
-  //  public List<Week> getWeeks(List<String> weeks){
-  //    List<Week> result = new ArrayList<>();
-  //    for (String x : weeks) {
-  //      result.add(valueOf(x));
-  //    }
-  //    return  result;
-  //  }
 }
