@@ -44,10 +44,15 @@ class RoutineControllerTest {
   @BeforeEach
   void setting() {
 
-    User user = User.builder().name("oni").nickname("oni").email("kcs@naver.com").password("1234")
+    User user = User.builder()
+                    .name("oni")
+                    .nickname("oni")
+                    .email("kcs@naver.com")
+                    .password("1234")
                     .build();
 
-    findId = userRepository.save(user).getId();
+    findId = userRepository.save(user)
+                           .getId();
 
   }
 
@@ -57,19 +62,18 @@ class RoutineControllerTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .build();
-    mockMvc.perform(post("/routines")
-               .content(objectMapper.writeValueAsString(routineCreateRequest))
-               .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(post("/routines").content(objectMapper.writeValueAsString(routineCreateRequest))
+                                     .contentType(MediaType.APPLICATION_JSON))
            .andExpect(status().isOk())
            .andDo(print());
 
@@ -81,30 +85,33 @@ class RoutineControllerTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId, routineCreateRequest)
+                                   .getRoutineId();
 
     List<String> findWeek2 = new ArrayList<>();
     findWeek2.add("MON");
     findWeek2.add("WED");
 
-    RoutineUpdateRequest routineUpdateRequest = RoutineUpdateRequest.builder().weeks(findWeek2)
+    RoutineUpdateRequest routineUpdateRequest = RoutineUpdateRequest.builder()
+                                                                    .weeks(findWeek2)
                                                                     .build();
 
-    mockMvc.perform(put("/routines/{id}",routineId)
-               .content(objectMapper.writeValueAsString(routineUpdateRequest))
-               .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(put("/routines/{id}", routineId).content(
+                                                        objectMapper.writeValueAsString(routineUpdateRequest))
+                                                    .contentType(MediaType.APPLICATION_JSON))
            .andExpect(status().isOk())
            .andDo(print());
   }
@@ -115,22 +122,23 @@ class RoutineControllerTest {
     findWeek.add("MON");
     findWeek.add("TUE");
 
-
     List<String> findCategory = new ArrayList<>();
     findCategory.add("EXERCISE");
 
-    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder().name("윤동하기")
+    RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
+                                                                    .name("윤동하기")
                                                                     .startTime(LocalDate.now())
                                                                     .durationTime(LocalDate.now())
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
-                                                                    .color("black").emoji(">_<")
+                                                                    .color("black")
+                                                                    .emoji(">_<")
                                                                     .build();
 
-    Long routineId = routineService.saveRoutine(findId,routineCreateRequest).getRoutineId();
+    Long routineId = routineService.saveRoutine(findId, routineCreateRequest)
+                                   .getRoutineId();
 
-    mockMvc.perform(delete("/routines/{id}",routineId)
-               .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(delete("/routines/{id}", routineId).contentType(MediaType.APPLICATION_JSON))
            .andExpect(status().isOk())
            .andDo(print());
   }

@@ -35,11 +35,12 @@ import org.prgrms.yas.domain.user.domain.User;
 @SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
 @DynamicInsert
 public class Routine {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false,length = 60)
+  @Column(nullable = false, length = 60)
   private String name;
 
   private String color;
@@ -58,8 +59,8 @@ public class Routine {
   @Column(nullable = false)
   private LocalDate durationTime;
 
-//  @Column(nullable = false)
-//  private Week week;
+  //  @Column(nullable = false)
+  //  private Week week;
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
@@ -87,7 +88,10 @@ public class Routine {
   }
 
   @Builder
-  public Routine(User user,String name, LocalDate startTime, LocalDate durationTime, List<Week> weeks,List<RoutineCategory> routineCategory, String color, String emoji) {
+  public Routine(
+      User user, String name, LocalDate startTime, LocalDate durationTime, List<Week> weeks,
+      List<RoutineCategory> routineCategory, String color, String emoji
+  ) {
     this.user = user;
     this.name = name;
     this.startTime = startTime;
@@ -98,20 +102,20 @@ public class Routine {
     this.emoji = emoji;
   }
 
-  public List<String> getStringWeeks(List<Week> weeks){
+  public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
     for (Week x : weeks) {
       result.add(x.toString());
     }
-    return  result;
+    return result;
   }
 
-  public List<String> getStringCategory(List<RoutineCategory> routineCategory){
+  public List<String> getStringCategory(List<RoutineCategory> routineCategory) {
     List<String> result = new ArrayList<>();
     for (RoutineCategory x : routineCategory) {
       result.add(x.toString());
     }
-    return  result;
+    return result;
   }
 
   public void updateRoutine(List<Week> weeks) {

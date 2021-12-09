@@ -7,5 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RoutineDeleteResponse {
+
   Long routineId;
 }

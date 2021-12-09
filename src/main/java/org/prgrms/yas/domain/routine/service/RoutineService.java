@@ -25,13 +25,18 @@ public class RoutineService {
   @Transactional
   public RoutineCreateResponse saveRoutine(Long userId, RoutineCreateRequest routineCreateRequest) {
     User user = userRepository.getById(userId);
-    Routine routine = Routine.builder().user(user).name(routineCreateRequest.getName())
+    Routine routine = Routine.builder()
+                             .user(user)
+                             .name(routineCreateRequest.getName())
                              .startTime(routineCreateRequest.getStartTime())
-                             .durationTime(routineCreateRequest.getDurationTime()).weeks(
-            routineCreateRequest.getEnumWeeks(routineCreateRequest.getWeeks())).routineCategory(
-            routineCreateRequest.getEnumRoutineCategory(routineCreateRequest.getRoutineCategory()))
+                             .durationTime(routineCreateRequest.getDurationTime())
+                             .weeks(
+                                 routineCreateRequest.getEnumWeeks(routineCreateRequest.getWeeks()))
+                             .routineCategory(routineCreateRequest.getEnumRoutineCategory(
+                                 routineCreateRequest.getRoutineCategory()))
                              .color(routineCreateRequest.getColor())
-                             .emoji(routineCreateRequest.getEmoji()).build();
+                             .emoji(routineCreateRequest.getEmoji())
+                             .build();
 
     routineRepository.save(routine);
     RoutineCreateResponse routineCreateResponse = RoutineCreateResponse.builder()
@@ -56,31 +61,44 @@ public class RoutineService {
 
   @Transactional
   public RoutineDeleteResponse deleteRoutine(Long routineId) throws NotFoundException {
-    Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
+    Routine routine = routineRepository.findById(routineId)
+                                       .orElseThrow(NotFoundException::new);
     routineRepository.deleteById(routineId);
-    return RoutineDeleteResponse.builder().routineId(routineId).build();
+    return RoutineDeleteResponse.builder()
+                                .routineId(routineId)
+                                .build();
 
   }
 
   @Transactional
-  public RoutineUpdateResponse updateRoutine(Long routineId, RoutineUpdateRequest routineUpdateRequest) throws NotFoundException {
-    Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
+  public RoutineUpdateResponse updateRoutine(
+      Long routineId, RoutineUpdateRequest routineUpdateRequest
+  ) throws NotFoundException {
+    Routine routine = routineRepository.findById(routineId)
+                                       .orElseThrow(NotFoundException::new);
     routine.updateRoutine(routineUpdateRequest.getEnumWeeks(routineUpdateRequest.getWeeks()));
-    return RoutineUpdateResponse.builder().name(routine.getName()).routineId(routine.getId())
-                                .startTime(routine.getStartTime()).durationTime(routine.getDurationTime())
-                                .weeks(routine.getStringWeeks(routine.getWeeks())).routineCategory(
-            routine.getStringCategory(routine.getRoutineCategory())).color(routine.getColor())
-                                .emoji(routine.getEmoji()).build();
+    return RoutineUpdateResponse.builder()
+                                .name(routine.getName())
+                                .routineId(routine.getId())
+                                .startTime(routine.getStartTime())
+                                .durationTime(routine.getDurationTime())
+                                .weeks(routine.getStringWeeks(routine.getWeeks()))
+                                .routineCategory(
+                                    routine.getStringCategory(routine.getRoutineCategory()))
+                                .color(routine.getColor())
+                                .emoji(routine.getEmoji())
+                                .build();
   }
 
   public void findId(Long routineId) throws NotFoundException {
-    Routine routine = routineRepository.findById(routineId).orElseThrow(NotFoundException::new);
+    Routine routine = routineRepository.findById(routineId)
+                                       .orElseThrow(NotFoundException::new);
   }
 
 }
-    // 그럼 그냥 토큰 만들지말고 토큰 객체만 만들어서 일단 개발해봐요
+// 그럼 그냥 토큰 만들지말고 토큰 객체만 만들어서 일단 개발해봐요
 
 //    Routine routine = routineCreateRequest.toEntity(); // 요거가 바뀔거니까 어차피 저거 쓰겠네요 넹 그렇게 되겠죠?
-    // 여기서 유저 매핑 해주세요
+// 여기서 유저 매핑 해주세요
 
 

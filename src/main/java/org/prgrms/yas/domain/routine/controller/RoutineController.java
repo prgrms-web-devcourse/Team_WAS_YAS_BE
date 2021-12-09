@@ -29,29 +29,31 @@ public class RoutineController {
 
   private final RoutineService routineService;
 
-//  @PostMapping
-//  public ResponseEntity<RoutineCreateResponse> create(
-//      @Valid @RequestBody RoutineCreateRequest routineCreateRequest,
-//      @AuthenticationPrincipal
-//          Token token // 요런식으로 들어오겠죠, 저 Token은 원래 있는건 아니고 말들어야해요 JWT~~이런식으로 만들고 그거쓰는거예요
-//
-//      // 넹 토큰에 해당하는 객체 이름이랑 구조만 알려달라해서 여기서 그거 사용하는걸로 일단 만들고 있다가 토큰 완성돼서 머지되면 그때 그거로 사용하면 돼요
-//  ) {
-//   RoutineCreateResponse routineCreateResponse = routineService.routineSave(id,routineCreateRequest);
-//    return ResponseEntity.ok(routineCreateResponse);
-//  }
+  //  @PostMapping
+  //  public ResponseEntity<RoutineCreateResponse> create(
+  //      @Valid @RequestBody RoutineCreateRequest routineCreateRequest,
+  //      @AuthenticationPrincipal
+  //          Token token // 요런식으로 들어오겠죠, 저 Token은 원래 있는건 아니고 말들어야해요 JWT~~이런식으로 만들고 그거쓰는거예요
+  //
+  //      // 넹 토큰에 해당하는 객체 이름이랑 구조만 알려달라해서 여기서 그거 사용하는걸로 일단 만들고 있다가 토큰 완성돼서 머지되면 그때 그거로 사용하면 돼요
+  //  ) {
+  //   RoutineCreateResponse routineCreateResponse = routineService.routineSave(id,routineCreateRequest);
+  //    return ResponseEntity.ok(routineCreateResponse);
+  //  }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id )
+  public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id)
       throws NotFoundException {
     RoutineDeleteResponse routineDeleteResponse = routineService.deleteRoutine(id);
     return ResponseEntity.ok(routineDeleteResponse);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<RoutineUpdateResponse> update(@PathVariable("id") Long id,
-      @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest) throws NotFoundException {
-    RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id, routineUpdateRequest);
+  public ResponseEntity<RoutineUpdateResponse> update(
+      @PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
+  ) throws NotFoundException {
+    RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id,
+        routineUpdateRequest);
     return ResponseEntity.ok(routineUpdateResponse);
   }
 }

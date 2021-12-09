@@ -27,8 +27,10 @@ public class RoutineCreateRequest {
   private String color;
 
   @Builder
-  public RoutineCreateRequest(String name, LocalDate startTime, LocalDate durationTime,
-      List<String> weeks, List<String> routineCategory, String color, String emoji) {
+  public RoutineCreateRequest(
+      String name, LocalDate startTime, LocalDate durationTime, List<String> weeks,
+      List<String> routineCategory, String color, String emoji
+  ) {
     this.name = name;
     this.startTime = startTime;
     this.durationTime = durationTime;
@@ -38,19 +40,19 @@ public class RoutineCreateRequest {
     this.emoji = emoji;
   }
 
-  public List<Week> getEnumWeeks(List<String> weeks){
+  public List<Week> getEnumWeeks(List<String> weeks) {
     List<Week> result = new ArrayList<>();
     for (String x : weeks) {
       result.add(Week.valueOf(x));
     }
-    return  result;
+    return result;
   }
 
-  public List<RoutineCategory> getEnumRoutineCategory(List<String> routineCategory){
+  public List<RoutineCategory> getEnumRoutineCategory(List<String> routineCategory) {
     List<RoutineCategory> result = new ArrayList<>();
     for (String x : routineCategory) {
       result.add(RoutineCategory.valueOf(x));
     }
-    return  result;
+    return result;
   }
 }
