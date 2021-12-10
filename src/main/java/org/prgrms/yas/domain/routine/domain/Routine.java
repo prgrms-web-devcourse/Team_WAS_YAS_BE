@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.routine.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import jdk.jfr.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,11 +24,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.user.domain.User;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "routine")

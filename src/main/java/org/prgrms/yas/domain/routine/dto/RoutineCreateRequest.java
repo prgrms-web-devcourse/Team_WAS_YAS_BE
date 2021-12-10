@@ -1,7 +1,6 @@
 package org.prgrms.yas.domain.routine.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.domain.Week;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
