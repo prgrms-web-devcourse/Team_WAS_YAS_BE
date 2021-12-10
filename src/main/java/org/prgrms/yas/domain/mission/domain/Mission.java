@@ -24,6 +24,7 @@ import lombok.AccessLevel;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Mission {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -49,24 +50,25 @@ public class Mission {
   private Routine routine;
 
   @OneToMany(mappedBy = "mission")
-  private List<MissionCompletion> missionCompletions = new ArrayList<>();
+  private List<MissionStatus> missionStatuses = new ArrayList<>();
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
 
-  public void addMissionCompletion(MissionCompletion missionCompletion) {
-    this.missionCompletions.add(missionCompletion);
-    missionCompletion.setMission(this);
+  public void addMissionStatus(MissionStatus missionStatus) {
+    this.missionStatuses.add(missionStatus);
+    missionStatus.setMission(this);
   }
 
-  public Mission addMissionCompletions(List<MissionCompletion> missionCompletions) {
-    missionCompletions.forEach(this::addMissionCompletion);
+  public Mission addMissionStatuses(List<MissionStatus> missionStatuses) {
+    missionStatuses.forEach(this::addMissionStatus);
     return this;
   }
 
   public void setRoutine(Routine routine) {
     if (Objects.nonNull(this.routine)) {
-      this.routine.getMissions().remove(this);
+      this.routine.getMissions()
+                  .remove(this);
     }
     this.routine = routine;
   }

@@ -75,7 +75,7 @@ public class Routine {
   private User user;
 
   @OneToMany(mappedBy = "routine")
-  private List<RoutineCompletion> routineCompletions = new ArrayList<>();
+  private List<RoutineStatus> routineStatuses = new ArrayList<>();
 
   @OneToMany(mappedBy = "routine")
   private List<Mission> missions = new ArrayList<>();
@@ -83,13 +83,13 @@ public class Routine {
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
 
-  public void addRoutineCompletion(RoutineCompletion routineCompletion) {
-    this.routineCompletions.add(routineCompletion);
+  public void addRoutineStatus(RoutineStatus routineCompletion) {
+    this.routineStatuses.add(routineCompletion);
     routineCompletion.setRoutine(this);
   }
 
-  public Routine addRoutineCompletions(List<RoutineCompletion> routineCompletions) {
-    routineCompletions.forEach(this::addRoutineCompletion);
+  public Routine addRoutineStatuses(List<RoutineStatus> routineStatuses) {
+    routineStatuses.forEach(this::addRoutineStatus);
     return this;
   }
 

@@ -1,6 +1,6 @@
 package org.prgrms.yas.domain.mission.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Table(name = "mission_completion")
+@Table(name = "mission_status")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MissionCompletion {
+public class MissionStatus {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -25,7 +27,12 @@ public class MissionCompletion {
   @Column(nullable = false)
   private int orders;
 
+  @ColumnDefault("-1")
   private Long userDurationTime;
+
+  private LocalDateTime startTime;
+  private LocalDateTime endTime;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "mission_id")
@@ -34,7 +41,8 @@ public class MissionCompletion {
 
   public void setMission(Mission mission) {
     if (Objects.nonNull(this.mission)) {
-      this.mission.getMissionCompletions().remove(this);
+      this.mission.getMissionStatuses()
+                  .remove(this);
     }
     this.mission = mission;
   }
