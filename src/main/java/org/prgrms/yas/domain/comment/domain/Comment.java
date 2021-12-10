@@ -24,29 +24,30 @@ import lombok.AccessLevel;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Comment extends BaseEntity {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
-  @Column(nullable = false, columnDefinition ="TEXT")
-  private String content;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "routine_post_id")
-  private RoutinePost routinePost;
-
-  @Column(nullable = false, columnDefinition = "TINYINT default false")
-  private boolean isDeleted;
-
-  public void setRoutinePost(RoutinePost routinePost) {
-    if (Objects.nonNull(this.routinePost)) {
-      this.routinePost.getComments().remove(this);
-    }
-    this.routinePost = routinePost;
-  }
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(nullable = false, columnDefinition = "TEXT")
+	private String content;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "routine_post_id")
+	private RoutinePost routinePost;
+	
+	@Column(nullable = false, columnDefinition = "TINYINT default false")
+	private boolean isDeleted;
+	
+	public void setRoutinePost(RoutinePost routinePost) {
+		if (Objects.nonNull(this.routinePost)) {
+			this.routinePost.getComments()
+			                .remove(this);
+		}
+		this.routinePost = routinePost;
+	}
 }

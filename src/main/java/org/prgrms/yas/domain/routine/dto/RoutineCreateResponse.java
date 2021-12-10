@@ -22,38 +22,38 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineCreateResponse {
-
-  private Long routineId;
-  private String name;
-  private List<String> routineCategory;
-  private LocalDateTime startGoalTime;
-  private Long durationGoalTime;
-  private List<String> weeks;
-  private String color;
-  private String emoji;
-
-  @Builder
-  public RoutineCreateResponse(
-      Long routineId, String name, LocalDateTime startGoalTime, Long durationGoalTime,
-      List<String> weeks, List<String> routineCategory, String emoji, String color
-  ) {
-    this.routineId = routineId;
-    this.name = name;
-    this.startGoalTime = startGoalTime;
-    this.durationGoalTime = durationGoalTime;
-    this.weeks = weeks;
-    this.routineCategory = routineCategory;
-    this.color = color;
-    this.emoji = emoji;
-  }
-
-  public List<String> getStringWeeks(List<Week> weeks) {
-    List<String> result = new ArrayList<>();
-    for (Week week : weeks) {
-      result.add(week.toString());
-    }
-    return result;
-  }
-
-
+	
+	private Long routineId;
+	private String name;
+	private List<String> routineCategory;
+	private LocalDateTime startGoalTime;
+	private Long durationGoalTime;
+	private List<String> weeks;
+	private String color;
+	private String emoji;
+	
+	@Builder
+	public RoutineCreateResponse(
+			Long routineId, String name, LocalDateTime startGoalTime, Long durationGoalTime,
+			List<String> weeks, List<String> routineCategory, String emoji, String color
+	) {
+		this.routineId = routineId;
+		this.name = name;
+		this.startGoalTime = startGoalTime;
+		this.durationGoalTime = durationGoalTime;
+		this.weeks = weeks;
+		this.routineCategory = routineCategory;
+		this.color = color;
+		this.emoji = emoji;
+	}
+	
+	public List<String> getStringWeeks(List<Week> weeks) {
+		List<String> result = new ArrayList<>();
+		for (Week week : weeks) {
+			result.add(week.toString());
+		}
+		return result;
+	}
+	
+	
 }

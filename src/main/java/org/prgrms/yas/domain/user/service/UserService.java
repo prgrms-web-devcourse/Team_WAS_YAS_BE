@@ -12,25 +12,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
-
-  private final PasswordEncoder passwordEncoder;
-
-  private final UserRepository userRepository;
-
-  public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
-    this.passwordEncoder = passwordEncoder;
-    this.userRepository = userRepository;
-  }
-
-  @Transactional(readOnly = true)
-  public User signIn(String username, String credentials) {
-    User user = userRepository.findByEmail(username)
-                              .orElseThrow(() -> new UsernameNotFoundException("회원이 없습니다."));
-    user.checkPassword(
-        passwordEncoder,
-        credentials
-    );
-
-    return user;
-  }
+	
+	private final PasswordEncoder passwordEncoder;
+	
+	private final UserRepository userRepository;
+	
+	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+	}
+	
+	@Transactional(readOnly = true)
+	public User signIn(String username, String credentials) {
+		User user = userRepository.findByEmail(username)
+		                          .orElseThrow(() -> new UsernameNotFoundException("회원이 없습니다."));
+		user.checkPassword(
+				passwordEncoder,
+				credentials
+		);
+		
+		return user;
+	}
 }
