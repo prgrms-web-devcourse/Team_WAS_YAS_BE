@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,8 +69,9 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .build();
@@ -91,8 +93,9 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
@@ -128,8 +131,9 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
@@ -155,8 +159,9 @@ class RoutineControllerTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")

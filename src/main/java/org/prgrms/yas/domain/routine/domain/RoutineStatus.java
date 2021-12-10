@@ -12,43 +12,50 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Table(name = "routine_completion")
+@Table(name = "routine_status")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoutineCompletion {
+public class RoutineStatus {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false)
-  private LocalDateTime localDateTime;
+  private LocalDateTime startTime;
 
-  @Column(nullable = false, columnDefinition = "TINYINT default false")
-  private boolean pass;
+  private LocalDateTime endTime;
 
-  @Column(nullable = false)
-  private String startTime;
-
-  @Column(nullable = false)
-  private String goalTime;
-
-  @Column(nullable = false)
-  private String duration;
+  @ColumnDefault("-1")
+  private Long userDurationTime;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "routine_id")
   private Routine routine;
 
+  @Builder
+  public RoutineStatus(
+      Long id, LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime,
+      Routine routine
+  ) {
+    this.id = id;
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.userDurationTime = userDurationTime;
+    this.routine = routine;
+  }
+
   public void setRoutine(Routine routine) {
     if (Objects.nonNull(this.routine)) {
-      this.routine.getRoutineCompletions()
+      this.routine.getRoutineStatuses()
                   .remove(this);
     }
     this.routine = routine;
   }
+
 }

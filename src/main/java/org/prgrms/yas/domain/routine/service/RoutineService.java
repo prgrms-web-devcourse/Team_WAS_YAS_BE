@@ -31,8 +31,8 @@ public class RoutineService {
     Routine routine = Routine.builder()
                              .user(user)
                              .name(routineCreateRequest.getName())
-                             .startTime(routineCreateRequest.getStartTime())
-                             .durationTime(routineCreateRequest.getDurationTime())
+                             .startGoalTime(routineCreateRequest.getStartGoalTime())
+                             .durationGoalTime(routineCreateRequest.getDurationGoalTime())
                              .weeks(
                                  routineCreateRequest.getEnumWeeks(routineCreateRequest.getWeeks()))
                              .routineCategory(routineCreateRequest.getEnumRoutineCategory(
@@ -42,23 +42,17 @@ public class RoutineService {
                              .build();
 
     routineRepository.save(routine);
-    RoutineCreateResponse routineCreateResponse = RoutineCreateResponse.builder()
-                                                                       .name(routine.getName())
-                                                                       .routineId(routine.getId())
-                                                                       .startTime(
-                                                                           routine.getStartTime())
-                                                                       .durationTime(
-                                                                           routine.getDurationTime())
-                                                                       .weeks(
-                                                                           routine.getStringWeeks(
-                                                                               routine.getWeeks()))
-                                                                       .routineCategory(
-                                                                           routine.getStringCategory(
-                                                                               routine.getRoutineCategory()))
-                                                                       .color(routine.getColor())
-                                                                       .emoji(routine.getEmoji())
-                                                                       .build();
-    return routineCreateResponse;
+    return RoutineCreateResponse.builder()
+                                .name(routine.getName())
+                                .routineId(routine.getId())
+                                .startGoalTime(routine.getStartGoalTime())
+                                .durationGoalTime(routine.getDurationGoalTime())
+                                .weeks(routine.getStringWeeks(routine.getWeeks()))
+                                .routineCategory(
+                                    routine.getStringCategory(routine.getRoutineCategory()))
+                                .color(routine.getColor())
+                                .emoji(routine.getEmoji())
+                                .build();
   }
 
 
@@ -83,8 +77,8 @@ public class RoutineService {
     return RoutineUpdateResponse.builder()
                                 .name(routine.getName())
                                 .routineId(routine.getId())
-                                .startTime(routine.getStartTime())
-                                .durationTime(routine.getDurationTime())
+                                .startGoalTime(routine.getStartGoalTime())
+                                .durationGoalTime(routine.getDurationGoalTime())
                                 .weeks(routine.getStringWeeks(routine.getWeeks()))
                                 .routineCategory(
                                     routine.getStringCategory(routine.getRoutineCategory()))

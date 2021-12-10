@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
@@ -25,8 +26,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.prgrms.yas.domain.comment.domain.Comment;
+import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.user.domain.User;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "routine")
@@ -44,20 +48,22 @@ public class Routine {
   @Column(nullable = false, length = 60)
   private String name;
 
+  @Column(nullable = false, length = 60)
   private String color;
 
+  @Column(nullable = false)
   private String emoji;
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "routine_category", joinColumns = @JoinColumn(name = "id"))
   @Enumerated(EnumType.STRING)
-  List<RoutineCategory> routineCategory;
+  private List<RoutineCategory> routineCategory;
 
   @Column(nullable = false)
-  private LocalDate startTime;
+  private LocalDateTime startGoalTime;
 
   @Column(nullable = false)
-  private LocalDate durationTime;
+  private Long durationGoalTime; // 초가 들어옴
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
@@ -69,35 +75,49 @@ public class Routine {
   private User user;
 
   @OneToMany(mappedBy = "routine")
-  private List<RoutineCompletion> routineCompletions = new ArrayList<>();
+  private List<RoutineStatus> routineStatuses = new ArrayList<>();
+
+  @OneToMany(mappedBy = "routine")
+  private List<Mission> missions = new ArrayList<>();
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
 
-  public void addRoutineCompletion(RoutineCompletion routineCompletion) {
-    this.routineCompletions.add(routineCompletion);
+  public void addRoutineStatus(RoutineStatus routineCompletion) {
+    this.routineStatuses.add(routineCompletion);
     routineCompletion.setRoutine(this);
   }
 
-  public Routine addRoutineCompletions(List<RoutineCompletion> routineCompletions) {
-    routineCompletions.forEach(this::addRoutineCompletion);
+  public Routine addRoutineStatuses(List<RoutineStatus> routineStatuses) {
+    routineStatuses.forEach(this::addRoutineStatus);
+    return this;
+  }
+
+  public void addMission(Mission mission) {
+    this.missions.add(mission);
+    mission.setRoutine(this);
+  }
+
+  public Routine addMissions(List<Mission> missions) {
+    missions.forEach(this::addMission);
     return this;
   }
 
   @Builder
   public Routine(
-      User user, String name, LocalDate startTime, LocalDate durationTime, List<Week> weeks,
+      User user, String name, Long durationGoalTime, LocalDateTime startGoalTime, List<Week> weeks,
       List<RoutineCategory> routineCategory, String color, String emoji
   ) {
     this.user = user;
     this.name = name;
-    this.startTime = startTime;
-    this.durationTime = durationTime;
+    this.durationGoalTime = durationGoalTime;
+    this.startGoalTime = startGoalTime;
     this.weeks = weeks;
     this.routineCategory = routineCategory;
     this.color = color;
     this.emoji = emoji;
   }
+
 
   public List<String> getStringWeeks(List<Week> weeks) {
     List<String> result = new ArrayList<>();
@@ -123,8 +143,8 @@ public class Routine {
     return RoutineDetailResponse.builder()
                                 .routineId(this.getId())
                                 .color(this.getColor())
-                                .durationTime(this.getDurationTime())
-                                .startTime(this.startTime)
+                                .durationGoalTime(this.getDurationGoalTime())
+                                .startGoalTime(this.getStartGoalTime())
                                 .weeks(this.getStringWeeks(this.weeks))
                                 .routineCategory(this.getStringCategory(this.getRoutineCategory()))
                                 .emoji(this.emoji)

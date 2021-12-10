@@ -33,13 +33,12 @@ public class User {
   @Column(nullable = false, length = 20)
   private String name;
 
-  @Column(nullable = false, length = 30)
+  @Column(length = 30)
   private String nickname;
 
   @Column(nullable = false)
   private String email;
 
-  @Column(nullable = false)
   private String password;
 
   @Column(name = "profile_image", columnDefinition = "TEXT")

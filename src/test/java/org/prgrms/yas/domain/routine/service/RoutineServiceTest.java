@@ -3,6 +3,7 @@ package org.prgrms.yas.domain.routine.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -63,8 +64,9 @@ class RoutineServiceTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
@@ -90,8 +92,9 @@ class RoutineServiceTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
@@ -115,8 +118,9 @@ class RoutineServiceTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
@@ -148,8 +152,9 @@ class RoutineServiceTest {
 
     RoutineCreateRequest routineCreateRequest = RoutineCreateRequest.builder()
                                                                     .name("윤동하기")
-                                                                    .startTime(LocalDate.now())
-                                                                    .durationTime(LocalDate.now())
+                                                                    .startGoalTime(
+                                                                        LocalDateTime.now())
+                                                                    .durationGoalTime(12L)
                                                                     .weeks(findWeek)
                                                                     .routineCategory(findCategory)
                                                                     .color("black")
