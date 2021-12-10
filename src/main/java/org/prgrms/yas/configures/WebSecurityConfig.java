@@ -26,8 +26,6 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
 	private final JwtConfig jwtConfig;
 	private final OAuth2UserService oAuth2UserService;
 	
@@ -107,9 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .anyRequest()
 		    .permitAll()
 		    .and()
-		    /**
-		     * formLogin, csrf, headers, http-basic, rememberMe, logout filter 비활성화
-		     */.formLogin()
+		    .formLogin()
 		    .disable()
 		    .csrf()
 		    .disable()
@@ -121,17 +117,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .disable()
 		    .logout()
 		    .disable()
-		    /**
-		     * Session 사용하지 않음
-		     */.sessionManagement()
+		    .sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		    .and()
 		    .oauth2Login()
 		    .successHandler(oAuth2AuthenticationSuccessHandler())
 		    .and()
-		    /**
-		     * 예외처리 핸들러
-		     */.exceptionHandling()
+		    .exceptionHandling()
 		    .accessDeniedHandler(accessDeniedHandler())
 		    .and()
 		    .addFilterAfter(
