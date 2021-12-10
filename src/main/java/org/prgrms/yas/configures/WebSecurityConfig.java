@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public Jwt jwt() {
     return new Jwt(jwtConfig.getIssuer(), jwtConfig.getClientSecret(),
-                   jwtConfig.getExpirySeconds()
+        jwtConfig.getExpirySeconds()
     );
   }
 

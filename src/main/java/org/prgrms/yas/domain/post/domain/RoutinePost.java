@@ -32,9 +32,6 @@ public class RoutinePost extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false)
-  private String content;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "routine_id")
   private Routine routine;
