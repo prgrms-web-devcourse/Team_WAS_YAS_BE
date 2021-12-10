@@ -32,10 +32,6 @@ public class Mission {
   @Column(nullable = false, length = 50)
   private String name;
 
-  private LocalDateTime startTime;
-
-  private LocalDateTime endTime;
-
   @Column(nullable = false)
   private Long durationGoalTime;
 
