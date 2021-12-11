@@ -40,17 +40,18 @@ public class UserController {
 				userSignInRequest.getEmail(),
 				userSignInRequest.getPassword()
 		);
+    
 		Authentication resultToken = authenticationManager.authenticate(authenticationToken);
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
-		UserToken userToken = new UserToken(
-				user.getId(),
-				principal.getToken(),
-				principal.getUsername(),
-				user.getRoles()
-				    .toString()
-		);
-		return userToken;
+    
+		return new UserToken(
+        user.getId(),
+        principal.getToken(),
+        principal.getUsername(),
+        user.getRoles()
+            .toString()
+    );
 	}
 }
