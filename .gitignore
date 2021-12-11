@@ -222,7 +222,7 @@ gradle-app.setting
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
-.emv
+.env
 
 /src/main/resources/application.yml
 /src/main/resources/application-test.yml

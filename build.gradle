@@ -40,6 +40,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client
     implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.5.1'
 
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.7'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
