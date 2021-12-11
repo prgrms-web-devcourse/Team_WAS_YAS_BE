@@ -16,12 +16,14 @@ public class MissionCreateRequest {
 	private Long durationGoalTime;
 	private int orders;
 	private String emoji;
+	private String color;
 	
 	@Builder
-	public MissionCreateRequest(String name, Long durationGoalTime, int orders, String emoji) {
+	public MissionCreateRequest(String name, Long durationGoalTime, int orders, String emoji,String color) {
 		this.name = name;
 		this.durationGoalTime = durationGoalTime;
 		this.orders = orders;
 		this.emoji = emoji;
+		this.color = color;
 	}
 }

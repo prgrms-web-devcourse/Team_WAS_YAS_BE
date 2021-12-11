@@ -32,6 +32,7 @@ public class MissionService {
 		                         .emoji(missionCreateRequest.getEmoji())
 		                         .orders(missionCreateRequest.getOrders())
 		                         .routine(routine)
+		                         .name(missionCreateRequest.getName())
 		                         .build();
 		
 		missionRepository.save(mission);

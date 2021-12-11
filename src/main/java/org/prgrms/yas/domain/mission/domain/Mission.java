@@ -43,6 +43,9 @@ public class Mission {
 	@Column(nullable = false)
 	private String emoji;
 	
+	@Column(nullable = false)
+	private String color;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
