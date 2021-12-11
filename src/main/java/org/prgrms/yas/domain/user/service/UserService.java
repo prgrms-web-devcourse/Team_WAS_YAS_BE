@@ -39,8 +39,17 @@ public class UserService {
 	
 	@Transactional
 	public Long signUp(UserSignUpRequest userSignUpRequest) {
-		userSignUpRequest.setPassword(passwordEncoder.encode(userSignUpRequest.getPassword()));
+		if ((!isDuplicateUser(userSignUpRequest)) && !userSignUpRequest.isDifferentPassword()){
+			userSignUpRequest.setPassword(passwordEncoder.encode(userSignUpRequest.getPassword()));
+		}
 		return userRepository.save(userSignUpRequest.toEntity())
 		                     .getId();
+	}
+	
+	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
+		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
+			throw new RuntimeException("중복 회원입니다.");
+		}
+		return false;
 	}
 }

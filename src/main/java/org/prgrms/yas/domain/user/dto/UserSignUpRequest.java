@@ -42,4 +42,11 @@ public class UserSignUpRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public boolean isDifferentPassword(){
+		if(!this.password.equals(this.checkPassword)){
+			throw new RuntimeException("작성한 비밀번호가 다릅니다.");
+		}
+		return false;
+	}
 }
