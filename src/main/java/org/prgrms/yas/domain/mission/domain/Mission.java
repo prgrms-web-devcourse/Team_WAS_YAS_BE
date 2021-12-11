@@ -16,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import org.prgrms.yas.domain.mission.dto.MissionCreateResponse;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
@@ -85,14 +84,4 @@ public class Mission {
 		}
 		this.routine = routine;
 	}
-	
-	public MissionCreateResponse toMissionCreateResponse() {
-		return MissionCreateResponse.builder()
-		                            .missionId(this.id)
-		                            .durationGoalTime(this.durationGoalTime)
-		                            .emoji(this.emoji)
-		                            .name(this.name)
-		                            .build();
-	}
-	
 }

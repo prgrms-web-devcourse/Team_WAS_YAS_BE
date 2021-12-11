@@ -19,7 +19,9 @@ public class MissionCreateRequest {
 	private String color;
 	
 	@Builder
-	public MissionCreateRequest(String name, Long durationGoalTime, int orders, String emoji,String color) {
+	public MissionCreateRequest(
+			String name, Long durationGoalTime, int orders, String emoji, String color
+	) {
 		this.name = name;
 		this.durationGoalTime = durationGoalTime;
 		this.orders = orders;

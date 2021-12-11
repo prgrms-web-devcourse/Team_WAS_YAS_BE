@@ -3,8 +3,8 @@ package org.prgrms.yas.domain.mission.controller;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
-import org.prgrms.yas.domain.mission.dto.MissionCreateResponse;
 import org.prgrms.yas.domain.mission.service.MissionService;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +21,14 @@ public class MissionController {
 	private final MissionService missionService;
 	
 	@PostMapping
-	public ResponseEntity<MissionCreateResponse> create(
+	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody MissionCreateRequest missionCreateRequest,
 			@PathVariable("id") Long routineId
 	) throws NotFoundException {
-		MissionCreateResponse missionCreateResponse = missionService.saveMission(
+		Long missionId = missionService.saveMission(
 				routineId,
 				missionCreateRequest
 		);
-		return ResponseEntity.ok(missionCreateResponse);
+		return ResponseEntity.ok(ApiResponse.of(missionId));
 	}
 }
