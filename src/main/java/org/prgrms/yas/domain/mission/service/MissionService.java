@@ -23,16 +23,8 @@ public class MissionService {
 	) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		Mission mission = Mission.builder()
-		                         .name(missionCreateRequest.getName())
-		                         .durationGoalTime(missionCreateRequest.getDurationGoalTime())
-		                         .emoji(missionCreateRequest.getEmoji())
-		                         .orders(missionCreateRequest.getOrders())
-		                         .routine(routine)
-		                         .name(missionCreateRequest.getName())
-		                         .build();
 		
-		return missionRepository.save(mission)
+		return missionRepository.save(missionCreateRequest.toEntity(routine))
 		                        .getId();
 		
 	}
