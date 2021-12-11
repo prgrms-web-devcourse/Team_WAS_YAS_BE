@@ -25,7 +25,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
-import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
@@ -135,8 +135,8 @@ public class Routine {
 		this.weeks = weeks;
 	}
 	
-	public RoutineDetailResponse toRoutineDetailResponse() {
-		return RoutineDetailResponse.builder()
+	public RoutineListResponse toRoutineDetailResponse() {
+		return RoutineListResponse.builder()
 		                            .routineId(this.getId())
 		                            .color(this.getColor())
 		                            .durationGoalTime(this.getDurationGoalTime())
