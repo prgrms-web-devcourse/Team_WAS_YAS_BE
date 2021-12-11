@@ -24,29 +24,29 @@ import org.prgrms.yas.domain.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutinePost extends BaseEntity {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "routine_id")
-  private Routine routine;
-
-  @OneToMany(mappedBy = "routinePost")
-  private List<Comment> comments = new ArrayList<>();
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
-
-  public void addComment(Comment comment) {
-    this.comments.add(comment);
-    comment.setRoutinePost(this);
-  }
-
-  public RoutinePost addComment(List<Comment> comments) {
-    comments.forEach(this::addComment);
-    return this;
-  }
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "routine_id")
+	private Routine routine;
+	
+	@OneToMany(mappedBy = "routinePost")
+	private List<Comment> comments = new ArrayList<>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	public void addComment(Comment comment) {
+		this.comments.add(comment);
+		comment.setRoutinePost(this);
+	}
+	
+	public RoutinePost addComment(List<Comment> comments) {
+		comments.forEach(this::addComment);
+		return this;
+	}
 }

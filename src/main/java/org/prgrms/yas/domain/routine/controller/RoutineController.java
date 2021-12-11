@@ -28,43 +28,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/routines")
 @RequiredArgsConstructor
 public class RoutineController {
-
-  private final RoutineService routineService;
-
-  @PostMapping
-  public ResponseEntity<RoutineCreateResponse> create(
-      @Valid @RequestBody RoutineCreateRequest routineCreateRequest,
-      @AuthenticationPrincipal JwtAuthentication token
-
-  ) {
-    RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(token.getId(),
-        routineCreateRequest
-    );
-    return ResponseEntity.ok(routineCreateResponse);
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id)
-      throws NotFoundException {
-    RoutineDeleteResponse routineDeleteResponse = routineService.deleteRoutine(id);
-    return ResponseEntity.ok(routineDeleteResponse);
-  }
-
-  @PutMapping("/{id}")
-  public ResponseEntity<RoutineUpdateResponse> update(
-      @PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
-  ) throws NotFoundException {
-    RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(id,
-        routineUpdateRequest
-    );
-    return ResponseEntity.ok(routineUpdateResponse);
-  }
-
-  @GetMapping
-  public ResponseEntity<List<RoutineDetailResponse>> get(
-      @AuthenticationPrincipal JwtAuthentication token
-  ) throws NotFoundException {
-    List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
-    return ResponseEntity.ok(routineDetailResponses);
-  }
+	
+	private final RoutineService routineService;
+	
+	@PostMapping
+	public ResponseEntity<RoutineCreateResponse> create(
+			@Valid @RequestBody RoutineCreateRequest routineCreateRequest,
+			@AuthenticationPrincipal JwtAuthentication token
+	
+	) {
+		RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(
+				token.getId(),
+				routineCreateRequest
+		);
+		return ResponseEntity.ok(routineCreateResponse);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id)
+			throws NotFoundException {
+		RoutineDeleteResponse routineDeleteResponse = routineService.deleteRoutine(id);
+		return ResponseEntity.ok(routineDeleteResponse);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<RoutineUpdateResponse> update(
+			@PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
+	) throws NotFoundException {
+		RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(
+				id,
+				routineUpdateRequest
+		);
+		return ResponseEntity.ok(routineUpdateResponse);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<RoutineDetailResponse>> get(
+			@AuthenticationPrincipal JwtAuthentication token
+	) throws NotFoundException {
+		List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
+		return ResponseEntity.ok(routineDetailResponses);
+	}
 }

@@ -6,10 +6,8 @@ import org.prgrms.yas.domain.user.dto.UserToken;
 import org.prgrms.yas.jwt.Jwt;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.prgrms.yas.jwt.JwtAuthenticationToken;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,13 +44,12 @@ public class UserController {
     JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
     JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
     User user = (User) jwtAuthenticationToken.getDetails();
-    UserToken userToken = new UserToken(
+   return new UserToken(
         user.getId(),
         principal.getToken(),
         principal.getUsername(),
         user.getRoles()
             .toString()
     );
-    return userToken;
   }
 }
