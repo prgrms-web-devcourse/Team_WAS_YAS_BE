@@ -6,6 +6,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.exception.CheckPasswordException;
+import org.prgrms.yas.domain.user.exception.DuplicateUserException;
+import org.prgrms.yas.global.error.ErrorCode;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Getter
 public class UserSignUpRequest {
@@ -43,9 +47,9 @@ public class UserSignUpRequest {
 		this.password = password;
 	}
 	
-	public boolean isDifferentPassword(){
-		if(!this.password.equals(this.checkPassword)){
-			throw new RuntimeException("작성한 비밀번호가 다릅니다.");
+	public boolean isDifferentPassword() {
+		if (!this.password.equals(this.checkPassword)) {
+			throw new CheckPasswordException(ErrorCode.CONFLICT_VALUE_ERROR);
 		}
 		return false;
 	}
