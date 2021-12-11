@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.mission.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,11 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.prgrms.yas.domain.routine.domain.Routine;
 import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
+import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
 @Table(name = "mission")
@@ -27,7 +26,7 @@ import lombok.AccessLevel;
 public class Mission {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false, length = 50)

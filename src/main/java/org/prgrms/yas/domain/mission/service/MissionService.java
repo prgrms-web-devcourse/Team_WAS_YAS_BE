@@ -8,7 +8,6 @@ import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.global.error.ErrorCode;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,7 @@ public class MissionService {
 	
 	public Long saveMission(
 			Long routineId, MissionCreateRequest missionCreateRequest
-	) throws NotFoundException {
+	) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		Mission mission = Mission.builder()

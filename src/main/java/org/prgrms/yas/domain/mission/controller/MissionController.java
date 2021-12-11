@@ -24,7 +24,7 @@ public class MissionController {
 	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody MissionCreateRequest missionCreateRequest,
 			@PathVariable("id") Long routineId
-	) throws NotFoundException {
+	) {
 		Long missionId = missionService.saveMission(
 				routineId,
 				missionCreateRequest
