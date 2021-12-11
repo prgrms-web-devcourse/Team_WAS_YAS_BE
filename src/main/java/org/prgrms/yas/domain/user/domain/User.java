@@ -44,7 +44,7 @@ public class User {
   @Column(name = "profile_image", columnDefinition = "TEXT")
   private String profileImage;
 
-  @Column(nullable = false, columnDefinition = "TINYINT default false")
+  @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
 
   @Enumerated(EnumType.STRING)

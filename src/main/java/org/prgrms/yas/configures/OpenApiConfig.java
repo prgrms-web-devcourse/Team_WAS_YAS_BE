@@ -12,13 +12,12 @@ public class OpenApiConfig {
 	
 	@Bean
 	public OpenAPI yasOpenAPI() {
-		return new OpenAPI()
-				.info(new Info().title("YAS_WAS")
-				                .description("YAS Application")
-				                .version("v0.0.1")
-				                .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-				.externalDocs(new ExternalDocumentation()
-						.description("YAS Github")
-						.url("https://github.com/prgrms-web-devcourse/Team_WAS_YAS_BE"));
+		return new OpenAPI().info(new Info().title("YAS_WAS")
+		                                    .description("YAS Application")
+		                                    .version("v0.0.1")
+		                                    .license(new License().name("Apache 2.0")
+		                                                          .url("http://springdoc.org")))
+		                    .externalDocs(new ExternalDocumentation().description("YAS Github")
+		                                                             .url("https://github.com/prgrms-web-devcourse/Team_WAS_YAS_BE"));
 	}
 }
