@@ -40,7 +40,7 @@ public class User {
 	
 	private String password;
 	
-	@Column(name = "profile_image", columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String profileImage;
 	
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -94,9 +94,5 @@ public class User {
 		)) {
 			throw new IllegalArgumentException("Bad credentials");
 		}
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 }
