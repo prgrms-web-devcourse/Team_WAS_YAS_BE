@@ -3,6 +3,7 @@ package org.prgrms.yas.domain.routine.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -25,6 +26,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.user.domain.User;
 
@@ -135,16 +138,34 @@ public class Routine {
 		this.weeks = weeks;
 	}
 	
-	public RoutineListResponse toRoutineDetailResponse() {
+	public RoutineListResponse toRoutineListResponse() {
 		return RoutineListResponse.builder()
-		                            .routineId(this.getId())
-		                            .color(this.getColor())
-		                            .durationGoalTime(this.getDurationGoalTime())
-		                            .startGoalTime(this.getStartGoalTime())
-		                            .weeks(this.getStringWeeks(this.weeks))
+		                          .routineId(this.getId())
+		                          .color(this.getColor())
+		                          .durationGoalTime(this.getDurationGoalTime())
+		                          .startGoalTime(this.getStartGoalTime())
+		                          .weeks(this.getStringWeeks(this.weeks))
+		                          .routineCategory(this.getStringCategory(this.getRoutineCategory()))
+		                          .emoji(this.emoji)
+		                          .name(this.name)
+		                          .build();
+	}
+	
+	public List<MissionDetailResponse> getMissionDetailResponse() {
+		List<Mission> missions = this.getMissions();
+		return missions.stream()
+		               .map(Mission::toMissionDetailResponse)
+		               .collect(Collectors.toList());
+		
+	}
+	
+	public RoutineDetailResponse toRoutineDetailResponse() {
+		return RoutineDetailResponse.builder()
+		                            .name(name)
 		                            .routineCategory(this.getStringCategory(this.getRoutineCategory()))
-		                            .emoji(this.emoji)
-		                            .name(this.name)
+		                            .emoji(emoji)
+		                            .color(color)
+		                            .missionDetailResponses(this.getMissionDetailResponse())
 		                            .build();
 	}
 }

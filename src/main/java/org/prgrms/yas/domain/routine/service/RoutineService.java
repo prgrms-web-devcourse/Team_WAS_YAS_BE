@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.service;
 
 import static java.util.stream.Collectors.toList;
+import static org.prgrms.yas.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
 
 import java.util.List;
 import javax.transaction.Transactional;
@@ -9,9 +10,11 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
+import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.repository.UserRepository;
@@ -95,7 +98,15 @@ public class RoutineService {
 		                          .orElseThrow(NotFoundException::new);
 		List<Routine> routines = routineRepository.getByUser(user);
 		return routines.stream()
-		               .map(Routine::toRoutineDetailResponse)
+		               .map(Routine::toRoutineListResponse)
 		               .collect(toList());
+	}
+	
+	@Transactional
+	public RoutineDetailResponse findMissions(Long routineId) {
+		Routine routine = routineRepository.findById(routineId)
+		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
+		
+		return routine.toRoutineDetailResponse();
 	}
 }

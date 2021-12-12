@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
@@ -26,7 +27,7 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 public class Mission {
 	
 	@Id
-
+	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -44,8 +45,8 @@ public class Mission {
 	
 	@Column(nullable = false)
 	private String color;
-
-  @ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
@@ -83,5 +84,16 @@ public class Mission {
 			            .remove(this);
 		}
 		this.routine = routine;
+	}
+	
+	public MissionDetailResponse toMissionDetailResponse() {
+		return MissionDetailResponse.builder()
+		                            .missionId(id)
+		                            .orders(orders)
+		                            .durationGoalTime(durationGoalTime)
+		                            .emoji(emoji)
+		                            .color(color)
+		                            .name(name)
+		                            .build();
 	}
 }
