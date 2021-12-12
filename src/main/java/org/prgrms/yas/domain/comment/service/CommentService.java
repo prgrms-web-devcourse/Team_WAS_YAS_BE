@@ -2,7 +2,10 @@ package org.prgrms.yas.domain.comment.service;
 
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.comment.dto.CommentCreateRequest;
+import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
+import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.comment.repository.CommentRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.repository.PostRepository;
@@ -21,12 +24,26 @@ public class CommentService {
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
 
-  public Long saveComment(final Long userId, final Long postId, final CommentCreateRequest createRequest)
+  public Long saveComment(final Long userId, final Long postId, final CommentCreateRequest commentCreateRequest)
       throws NotFoundUserException, NotFoundRoutineException {
     User user = userRepository.findById(userId)
                               .orElseThrow(()->new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
     RoutinePost routinePost = postRepository.findById(postId)
                                             .orElseThrow(()->new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-    return commentRepository.save(createRequest.toEntity(user, routinePost)).getId();
+    return commentRepository.save(commentCreateRequest.toEntity(user, routinePost)).getId();
+  }
+
+  public Long updateComment(final Long commentId, final CommentUpdateRequest commentUpdateRequest)
+      throws NotFoundCommentException {
+    Comment comment = commentRepository.getById(commentId);
+    comment.updateComment(commentUpdateRequest);
+    return comment.getId();
+  }
+
+  public Long deleteComment(final Long commentId)
+      throws NotFoundCommentException {
+    Comment comment = commentRepository.getById(commentId);
+    comment.deleteComment();
+    return comment.getId();
   }
 }

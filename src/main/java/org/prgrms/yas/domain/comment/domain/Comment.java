@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import org.prgrms.yas.domain.BaseEntity;
+import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.user.domain.User;
@@ -51,6 +52,14 @@ public class Comment extends BaseEntity {
     this.content = content;
     this.user = user;
     this.routinePost = routinePost;
+  }
+
+  public void updateComment(final CommentUpdateRequest commentUpdateRequest) {
+    this.content = commentUpdateRequest.getContent();
+  }
+
+  public void deleteComment() {
+    this.isDeleted = true;
   }
 
   public void setRoutinePost(RoutinePost routinePost) {

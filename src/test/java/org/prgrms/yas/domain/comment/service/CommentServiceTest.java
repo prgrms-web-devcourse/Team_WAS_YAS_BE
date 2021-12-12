@@ -6,16 +6,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.prgrms.yas.domain.comment.dto.CommentCreateRequest;
+import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
+import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.repository.PostRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.domain.Week;
+import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +41,9 @@ class CommentServiceTest {
 
   private Long userId;
   private Long postId;
+  private Long commentId;
+  private CommentCreateRequest commentCreateRequest;
+  private CommentUpdateRequest commentUpdateRequest;
 
   @BeforeEach
   void setting() {
@@ -74,16 +82,30 @@ class CommentServiceTest {
                                          .routine(routine)
                                          .build();
     postId = postRepository.save(routinePost).getId();
+
+    String content = "루틴 퍼갑니당~!";
+    commentCreateRequest = CommentCreateRequest.builder()
+                                        .content(content)
+                                        .build();
+
+    String updateContent = "루틴 퍼갑니당~! 감사합니다ㅎㅎ";
+    commentUpdateRequest = CommentUpdateRequest.builder()
+                                               .content(updateContent)
+                                               .build();
   }
 
   @Test
-  void saveComment() {
-    String content = "루틴 퍼갑니당~!";
-    CommentCreateRequest createRequest = CommentCreateRequest.builder()
-                                             .content(content)
-                                             .build();
-    Long commentId = commentService.saveComment(userId, postId, createRequest);
+  void commentTest() throws NotFoundUserException, NotFoundRoutineException, NotFoundCommentException {
+    commentId = commentService.saveComment(userId, postId, commentCreateRequest);
     Assertions.assertThat(commentId)
               .isEqualTo(1L);
+
+    Long updatedCommentId = commentService.updateComment(commentId, commentUpdateRequest);
+    Assertions.assertThat(updatedCommentId)
+              .isEqualTo(commentId);
+
+    Long deletedCommentId = commentService.deleteComment(commentId);
+    Assertions.assertThat(deletedCommentId)
+              .isEqualTo(commentId);
   }
 }
