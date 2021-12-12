@@ -51,7 +51,9 @@ public class ErrorResponse {
 		private String value;
 		private String reason;
 		
+		
 		private FieldError(final String field, final String value, final String reason) {
+			
 			this.field = field;
 			this.value = value;
 			this.reason = reason;
@@ -62,6 +64,7 @@ public class ErrorResponse {
 			
 			return fieldErrors.stream()
 			                  .map(filedError -> new FieldError(
+					
 					                  "[" + filedError.getField() + "] 필드에",
 					                  filedError.getRejectedValue() == null
 							                  ? ""

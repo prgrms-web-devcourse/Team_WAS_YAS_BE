@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler({Exception.class})
+	
 	public ResponseEntity<ErrorResponse> handleAllException(Exception e) {
 		log.error(
 				"Handle all Exception {}",
@@ -49,7 +50,6 @@ public class GlobalExceptionHandler {
 				errorResponse,
 				HttpStatus.BAD_REQUEST
 		);
-		
 	}
 	
 	@ExceptionHandler({DuplicateUserException.class})

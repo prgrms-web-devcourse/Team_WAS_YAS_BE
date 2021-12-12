@@ -22,7 +22,6 @@ public enum ErrorCode {
 			HttpStatus.CONFLICT.value()
 	);
 	
-	
 	private final String message;
 	private final int status;
 	

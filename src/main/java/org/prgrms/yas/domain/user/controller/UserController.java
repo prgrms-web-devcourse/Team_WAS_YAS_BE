@@ -22,10 +22,9 @@ public class UserController {
 	
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
-	//  private final Jwt jwt;
 	
 	public UserController(
-			AuthenticationManager authenticationManager, UserService userService
+			AuthenticationManager authenticationManager, UserService userService, Jwt jwt
 	) {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
@@ -45,18 +44,18 @@ public class UserController {
 				userSignInRequest.getEmail(),
 				userSignInRequest.getPassword()
 		);
+		
 		Authentication resultToken = authenticationManager.authenticate(authenticationToken);
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
-		UserToken userToken = new UserToken(
+		return new UserToken(
 				user.getId(),
 				principal.getToken(),
 				principal.getUsername(),
 				user.getRoles()
 				    .toString()
 		);
-		return userToken;
 	}
 	
 	@PostMapping("/users")

@@ -5,7 +5,11 @@ import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
+
 import org.prgrms.yas.global.error.ErrorCode;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +30,7 @@ public class UserService {
 	public User signIn(String username, String credentials) {
 		User user = userRepository.findByEmail(username)
 		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
 		user.checkPassword(
 				passwordEncoder,
 				credentials
