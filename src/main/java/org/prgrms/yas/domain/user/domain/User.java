@@ -51,7 +51,6 @@ public class User {
 	
 	private String provider;
 	
-	@Column(name = "provider_id")
 	private String providerId;
 	
 	@Builder

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 	
 	private final AuthenticationManager authenticationManager;
+
 	private final UserService userService;
 	
 	public UserController(
@@ -44,11 +45,12 @@ public class UserController {
 				userSignInRequest.getEmail(),
 				userSignInRequest.getPassword()
 		);
-		
+
 		Authentication resultToken = authenticationManager.authenticate(authenticationToken);
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
+
 		return new UserToken(
 				user.getId(),
 				principal.getToken(),

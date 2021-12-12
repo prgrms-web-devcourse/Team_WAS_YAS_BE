@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 	
+
 	private final LocalDateTime timestamp = LocalDateTime.now();
 	private String message;
 	private int status;
@@ -43,6 +44,7 @@ public class ErrorResponse {
 		);
 	}
 	
+
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class FieldError {
@@ -51,9 +53,7 @@ public class ErrorResponse {
 		private String value;
 		private String reason;
 		
-		
 		private FieldError(final String field, final String value, final String reason) {
-			
 			this.field = field;
 			this.value = value;
 			this.reason = reason;
@@ -63,14 +63,13 @@ public class ErrorResponse {
 			List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
 			
 			return fieldErrors.stream()
-			                  .map(filedError -> new FieldError(
-					
+			                  .map(filedError -> new FieldError(					
 					                  "[" + filedError.getField() + "] 필드에",
 					                  filedError.getRejectedValue() == null
 							                  ? ""
 							                  : "입력된 값은 [" + filedError.getRejectedValue()
 							                                           .toString() + "]",
-					                  filedError.getDefaultMessage()
+      		                  filedError.getDefaultMessage()
 			                  ))
 			                  .collect(Collectors.toList());
 		}

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler({Exception.class})
-	
 	public ResponseEntity<ErrorResponse> handleAllException(Exception e) {
 		log.error(
 				"Handle all Exception {}",
@@ -32,6 +31,7 @@ public class GlobalExceptionHandler {
 				HttpStatus.INTERNAL_SERVER_ERROR
 		);
 	}
+
 	
 	@ExceptionHandler({MethodArgumentNotValidException.class})
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
