@@ -140,14 +140,14 @@ public class Routine {
 	
 	public RoutineListResponse toRoutineListResponse() {
 		return RoutineListResponse.builder()
-		                          .routineId(this.getId())
-		                          .color(this.getColor())
-		                          .durationGoalTime(this.getDurationGoalTime())
-		                          .startGoalTime(this.getStartGoalTime())
-		                          .weeks(this.getStringWeeks(this.weeks))
-		                          .routineCategory(this.getStringCategory(this.getRoutineCategory()))
-		                          .emoji(this.emoji)
-		                          .name(this.name)
+		                          .routineId(id)
+		                          .color(color)
+		                          .durationGoalTime(durationGoalTime)
+		                          .startGoalTime(startGoalTime)
+		                          .weeks(getStringWeeks(weeks))
+		                          .routineCategory(getStringCategory(routineCategory))
+		                          .emoji(emoji)
+		                          .name(name)
 		                          .build();
 	}
 	
@@ -162,10 +162,10 @@ public class Routine {
 	public RoutineDetailResponse toRoutineDetailResponse() {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
-		                            .routineCategory(this.getStringCategory(this.getRoutineCategory()))
+		                            .routineCategory(getStringCategory(routineCategory))
 		                            .emoji(emoji)
 		                            .color(color)
-		                            .missionDetailResponses(this.getMissionDetailResponse())
+		                            .missionDetailResponses(getMissionDetailResponse())
 		                            .build();
 	}
 }

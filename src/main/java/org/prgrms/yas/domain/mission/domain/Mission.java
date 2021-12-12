@@ -27,7 +27,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 public class Mission {
 	
 	@Id
-	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
