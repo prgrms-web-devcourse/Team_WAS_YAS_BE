@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
@@ -88,5 +89,20 @@ public class Mission {
 			            .remove(this);
 		}
 		this.routine = routine;
+	}
+	
+	public void updateOrders(int orders) {
+		this.orders = orders;
+	}
+	
+	public MissionDetailResponse toMissionDetailResponse() {
+		return MissionDetailResponse.builder()
+		                            .missionId(id)
+		                            .orders(orders)
+		                            .durationGoalTime(durationGoalTime)
+		                            .emoji(emoji)
+		                            .color(color)
+		                            .name(name)
+		                            .build();
 	}
 }
