@@ -71,7 +71,6 @@ public class User {
 	
 	public UserResponse toResponse() {
 		return UserResponse.builder()
-		                   .id(id)
 		                   .name(name)
 		                   .email(email)
 		                   .nickname(nickname)

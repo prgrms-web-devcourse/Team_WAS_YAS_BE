@@ -1,7 +1,9 @@
 package org.prgrms.yas.domain.user.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import javax.validation.Valid;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignInRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserToken;
@@ -13,6 +15,8 @@ import org.prgrms.yas.jwt.JwtAuthenticationToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 	
 	private final AuthenticationManager authenticationManager;
-
+	
 	private final UserService userService;
 	
 	public UserController(
@@ -45,12 +49,12 @@ public class UserController {
 				userSignInRequest.getEmail(),
 				userSignInRequest.getPassword()
 		);
-
+		
 		Authentication resultToken = authenticationManager.authenticate(authenticationToken);
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
-
+		
 		return new UserToken(
 				user.getId(),
 				principal.getToken(),
@@ -65,5 +69,13 @@ public class UserController {
 			@Valid @RequestBody UserSignUpRequest userSignUpRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.signUp(userSignUpRequest)));
+	}
+	
+	@Operation(summary = "회원조회 컨트롤러")
+	@GetMapping("/users")
+	public ResponseEntity<ApiResponse<UserResponse>> find(
+			@AuthenticationPrincipal JwtAuthentication token
+	) {
+		return ResponseEntity.ok(ApiResponse.of(userService.findUser(token.getId())));
 	}
 }
