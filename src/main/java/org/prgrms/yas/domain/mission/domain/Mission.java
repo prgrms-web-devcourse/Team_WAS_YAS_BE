@@ -17,16 +17,21 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
 @Table(name = "mission")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
+@DynamicInsert
 public class Mission {
 	
 	@Id
-
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -44,8 +49,8 @@ public class Mission {
 	
 	@Column(nullable = false)
 	private String color;
-
-  @ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
