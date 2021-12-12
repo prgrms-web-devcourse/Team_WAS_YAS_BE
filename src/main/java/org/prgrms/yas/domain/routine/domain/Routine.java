@@ -76,7 +76,7 @@ public class Routine {
 	@OneToMany(mappedBy = "routine")
 	private List<RoutineStatus> routineStatuses = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "routine")
+	@OneToMany(mappedBy = "routine", orphanRemoval = true)
 	private List<Mission> missions = new ArrayList<>();
 	
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
