@@ -7,9 +7,7 @@ import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionUpdateRequest;
 import org.prgrms.yas.domain.mission.service.MissionService;
-import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
 import org.prgrms.yas.global.response.ApiResponse;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,8 +47,10 @@ public class MissionController {
 			@Valid @RequestBody MissionUpdateRequest missionUpdateRequest,
 			@PathVariable("id") Long routineId
 	) {
-		List<MissionDetailResponse> responses = missionService.updateMission(routineId,
-				missionUpdateRequest);
+		List<MissionDetailResponse> responses = missionService.updateMission(
+				routineId,
+				missionUpdateRequest
+		);
 		return ResponseEntity.ok(ApiResponse.of(responses));
 	}
 }
