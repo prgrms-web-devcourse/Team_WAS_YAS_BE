@@ -3,9 +3,11 @@ package org.prgrms.yas.domain.user.service;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
+import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
+import org.prgrms.yas.global.aws.S3Uploader;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,9 @@ public class UserService {
 	
 	private final UserRepository userRepository;
 	
-	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+	public UserService(
+			PasswordEncoder passwordEncoder, UserRepository userRepository
+	) {
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 	}
@@ -47,9 +51,17 @@ public class UserService {
 		                     .getId();
 	}
 	
+
 	@Transactional(readOnly = true)
 	public UserResponse findUser(Long id) {
 		return findActiveUser(id).toResponse();
+  
+	@Transactional
+	public Long update(Long id, UserUpdateRequest userUpdateRequest) {
+		User user = findActiveUser(id);
+		user.updateUserInfo(userUpdateRequest);
+		
+		return user.getId();
 	}
 	
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
