@@ -7,7 +7,6 @@ import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
-import org.prgrms.yas.global.aws.S3Uploader;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,8 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public UserResponse findUser(Long id) {
 		return findActiveUser(id).toResponse();
-  
+	}
+	
 	@Transactional
 	public Long update(Long id, UserUpdateRequest userUpdateRequest) {
 		User user = findActiveUser(id);
