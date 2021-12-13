@@ -12,16 +12,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "mission_status")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MissionStatus {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false)
@@ -38,6 +41,17 @@ public class MissionStatus {
 	@JoinColumn(name = "mission_id")
 	private Mission mission;
 	
+	@Builder
+	public MissionStatus(
+			int orders, Long userDurationTime, LocalDateTime startTime, LocalDateTime endTime,
+			Mission mission
+	) {
+		this.orders = orders;
+		this.userDurationTime = userDurationTime;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.mission = mission;
+	}
 	
 	public void setMission(Mission mission) {
 		if (Objects.nonNull(this.mission)) {
@@ -45,5 +59,13 @@ public class MissionStatus {
 			            .remove(this);
 		}
 		this.mission = mission;
+	}
+	
+	public void updateMissionStatus(
+			int orders, Long userDurationTime, LocalDateTime endTime
+	) {
+		this.orders = orders;
+		this.userDurationTime = userDurationTime;
+		this.endTime = endTime;
 	}
 }

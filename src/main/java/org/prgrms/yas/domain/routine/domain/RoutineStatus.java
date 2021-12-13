@@ -39,10 +39,8 @@ public class RoutineStatus {
 	
 	@Builder
 	public RoutineStatus(
-			Long id, LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime,
-			Routine routine
+			LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime, Routine routine
 	) {
-		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.userDurationTime = userDurationTime;
