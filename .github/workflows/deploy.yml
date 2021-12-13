@@ -39,7 +39,7 @@ jobs:
       run:  cp ./build/libs/*.jar ./deploy/
       
     - name: Make zip file
-      run: zip -r ./$springboot-build.zip .
+      run: zip -r ./$yas.zip .
       shell:  bash
       
     - name: Configure AWS credentials
@@ -50,7 +50,7 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
       
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./$springboot-build.zip s3://$S3_BUCKET_NAME/$springboot-build.zip
+      run: aws s3 cp --region ap-northeast-2 ./$yas-build.zip s3://$S3_BUCKET_NAME/$yas-build.zip
       
     - name: Code Deploy
-      run: aws deploy create-deployment --application-name yas-intro --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name yas-deploy-group --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$springboot-build.zip
+      run: aws deploy create-deployment --application-name yas-intro --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name yas-deploy-group --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$yas.zip
