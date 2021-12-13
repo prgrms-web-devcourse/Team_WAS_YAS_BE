@@ -1,8 +1,14 @@
 package org.prgrms.yas.domain.mission.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.mission.dto.MissionOrder;
+import org.prgrms.yas.domain.mission.dto.MissionUpdateRequest;
 import org.prgrms.yas.domain.mission.exception.NotFoundMissionException;
 import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
@@ -32,5 +38,22 @@ public class MissionService {
 	public Long deleteMission(Long missionId) {
 		missionRepository.deleteById(missionId);
 		return missionId;
+	}
+	
+	@Transactional
+	public List<MissionDetailResponse> updateMission(
+			Long routineId, MissionUpdateRequest missionUpdateRequest
+	) {
+		List<Mission> missions = missionRepository.findByRoutineId(routineId)
+		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
+		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
+			missionRepository.getById(missionOrder.getId())
+			                 .updateOrders(missionOrder.getOrders());
+		}
+		
+		return missions.stream()
+		               .map(Mission::toMissionDetailResponse)
+		               .collect(Collectors.toList());
 	}
 }

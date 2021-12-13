@@ -20,8 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
@@ -31,6 +33,7 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
 @DynamicInsert
+@DynamicUpdate
 public class Mission {
 	
 	@Id
@@ -91,6 +94,10 @@ public class Mission {
 			            .remove(this);
 		}
 		this.routine = routine;
+	}
+
+	public void updateOrders(int orders) {
+		this.orders = orders;
 	}
 	
 	public MissionDetailResponse toMissionDetailResponse() {

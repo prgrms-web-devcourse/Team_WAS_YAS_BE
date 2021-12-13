@@ -35,3 +35,4 @@ public class MissionDetailResponse implements Comparable<MissionDetailResponse> 
 		return this.orders - o.orders;
 	}
 }
+
