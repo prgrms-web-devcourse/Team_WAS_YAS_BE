@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.user.service;
 
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
@@ -50,6 +51,11 @@ public class UserService {
 		                     .getId();
 	}
 	
+
+	@Transactional(readOnly = true)
+	public UserResponse findUser(Long id) {
+		return findActiveUser(id).toResponse();
+  
 	@Transactional
 	public Long update(Long id, UserUpdateRequest userUpdateRequest) {
 		User user = findActiveUser(id);
@@ -66,7 +72,8 @@ public class UserService {
 		return false;
 	}
 	
-	private User findActiveUser(Long id) {
+	@Transactional(readOnly = true)
+	public User findActiveUser(Long id) {
 		return userRepository.findById(id)
 		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 	}
