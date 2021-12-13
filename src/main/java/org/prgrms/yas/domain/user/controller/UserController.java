@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import java.io.IOException;
 import javax.validation.Valid;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.dto.UserResponse;
@@ -81,6 +82,7 @@ public class UserController {
 			@AuthenticationPrincipal JwtAuthentication token
 	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.findUser(token.getId())));
+	}
 	
 	@Operation(summary = "회원수정 컨트롤러")
 	@PutMapping("/users")
