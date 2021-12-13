@@ -48,7 +48,7 @@ jwt:
 cloud:
   aws:
     credentials:
-      instanceProfile: true
+      instance-profile: true
     s3:
       bucket: ${S3_BUCKET}
     region:
