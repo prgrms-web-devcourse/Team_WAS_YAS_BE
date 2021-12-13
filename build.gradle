@@ -29,6 +29,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.7'
+
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
