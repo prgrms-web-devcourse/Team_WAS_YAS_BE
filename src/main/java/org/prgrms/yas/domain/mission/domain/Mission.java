@@ -3,6 +3,7 @@ package org.prgrms.yas.domain.mission.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -50,7 +52,8 @@ public class Mission {
 	@Column(nullable = false)
 	private String color;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
@@ -88,5 +91,16 @@ public class Mission {
 			            .remove(this);
 		}
 		this.routine = routine;
+	}
+	
+	public MissionDetailResponse toMissionDetailResponse() {
+		return MissionDetailResponse.builder()
+		                            .missionId(id)
+		                            .orders(orders)
+		                            .durationGoalTime(durationGoalTime)
+		                            .emoji(emoji)
+		                            .color(color)
+		                            .name(name)
+		                            .build();
 	}
 }
