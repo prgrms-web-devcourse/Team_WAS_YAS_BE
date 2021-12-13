@@ -7,9 +7,11 @@ import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -63,10 +65,18 @@ public class RoutineController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<RoutineDetailResponse>> get(
+	public ResponseEntity<List<RoutineListResponse>> get(
 			@AuthenticationPrincipal JwtAuthentication token
 	) throws NotFoundException {
-		List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
+		List<RoutineListResponse> routineDetailResponses = routineService.findRoutines(token.getId());
 		return ResponseEntity.ok(routineDetailResponses);
+	}
+	
+	@GetMapping("/{id}/missions")
+	public ResponseEntity<ApiResponse<RoutineDetailResponse>> getMissions(
+			@PathVariable("id") Long routineId
+	) {
+		RoutineDetailResponse routineDetailResponse = routineService.findMissions(routineId);
+		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
 	}
 }

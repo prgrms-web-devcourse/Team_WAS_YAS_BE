@@ -14,7 +14,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.prgrms.yas.domain.user.dto.UserResponse;
+import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 public class User {
 	
 	@Id
@@ -71,7 +74,6 @@ public class User {
 	
 	public UserResponse toResponse() {
 		return UserResponse.builder()
-		                   .id(id)
 		                   .name(name)
 		                   .email(email)
 		                   .nickname(nickname)
@@ -93,5 +95,10 @@ public class User {
 		)) {
 			throw new IllegalArgumentException("Bad credentials");
 		}
+	}
+	
+	public void updateUserInfo(UserUpdateRequest userUpdateRequest){
+		this.nickname = userUpdateRequest.getNickname();
+		this.profileImage = userUpdateRequest.getProfileImage();
 	}
 }
