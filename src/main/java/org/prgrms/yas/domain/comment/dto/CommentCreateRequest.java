@@ -11,6 +11,7 @@ import org.prgrms.yas.domain.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentCreateRequest {
+
   private String content;
 
   @Builder
@@ -18,11 +19,11 @@ public class CommentCreateRequest {
     this.content = content;
   }
 
-  public Comment toEntity(User user, RoutinePost routinePost){
-      return Comment.builder()
-                    .content(this.content)
-                    .user(user)
-                    .routinePost(routinePost)
-                    .build();
+  public Comment toEntity(User user, RoutinePost routinePost) {
+    return Comment.builder()
+                  .content(this.content)
+                  .user(user)
+                  .routinePost(routinePost)
+                  .build();
   }
 }

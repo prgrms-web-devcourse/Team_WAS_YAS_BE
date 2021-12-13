@@ -11,6 +11,7 @@ import org.prgrms.yas.domain.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdateRequest {
+
   private String content;
 
   @Builder

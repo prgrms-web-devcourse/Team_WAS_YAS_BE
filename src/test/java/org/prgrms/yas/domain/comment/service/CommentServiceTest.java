@@ -97,8 +97,6 @@ class CommentServiceTest {
   @Test
   void commentTest() throws NotFoundUserException, NotFoundRoutineException, NotFoundCommentException {
     commentId = commentService.saveComment(userId, postId, commentCreateRequest);
-    Assertions.assertThat(commentId)
-              .isEqualTo(1L);
 
     Long updatedCommentId = commentService.updateComment(commentId, commentUpdateRequest);
     Assertions.assertThat(updatedCommentId)

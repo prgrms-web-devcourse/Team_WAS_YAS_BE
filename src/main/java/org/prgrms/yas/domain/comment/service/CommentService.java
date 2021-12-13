@@ -20,29 +20,35 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+
   private final UserRepository userRepository;
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
 
-  public Long saveComment(final Long userId, final Long postId, final CommentCreateRequest commentCreateRequest)
-      throws NotFoundUserException, NotFoundRoutineException {
+  public Long saveComment(
+      final Long userId, final Long postId, final CommentCreateRequest commentCreateRequest
+  ) {
     User user = userRepository.findById(userId)
-                              .orElseThrow(()->new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+                              .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
     RoutinePost routinePost = postRepository.findById(postId)
-                                            .orElseThrow(()->new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-    return commentRepository.save(commentCreateRequest.toEntity(user, routinePost)).getId();
+                                            .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+    return commentRepository.save(commentCreateRequest.toEntity(
+                                user,
+                                routinePost
+                            ))
+                            .getId();
   }
 
-  public Long updateComment(final Long commentId, final CommentUpdateRequest commentUpdateRequest)
-      throws NotFoundCommentException {
-    Comment comment = commentRepository.getById(commentId);
+  public Long updateComment(final Long commentId, final CommentUpdateRequest commentUpdateRequest) {
+    Comment comment = commentRepository.findById(commentId)
+                                       .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
     comment.updateComment(commentUpdateRequest);
     return comment.getId();
   }
 
-  public Long deleteComment(final Long commentId)
-      throws NotFoundCommentException {
-    Comment comment = commentRepository.getById(commentId);
+  public Long deleteComment(final Long commentId) {
+    Comment comment = commentRepository.findById(commentId)
+                                       .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
     comment.deleteComment();
     return comment.getId();
   }

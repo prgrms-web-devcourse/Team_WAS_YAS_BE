@@ -8,6 +8,7 @@ import org.prgrms.yas.domain.comment.domain.Comment;
 
 @Getter
 public class CommentDetailResponse {
+
   private Long id;
   private String nickname;
   private LocalDateTime createdAt;
@@ -16,7 +17,8 @@ public class CommentDetailResponse {
   @Builder
   public CommentDetailResponse(Comment comment) {
     this.id = comment.getId();
-    this.nickname = comment.getUser().getNickname();
+    this.nickname = comment.getUser()
+                           .getNickname();
     this.createdAt = comment.getCreatedAt();
     this.content = comment.getContent();
   }

@@ -37,11 +37,11 @@ public class Comment extends BaseEntity {
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "routine_post_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+  @JoinColumn(name = "routine_post_id")
   private RoutinePost routinePost;
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -64,7 +64,8 @@ public class Comment extends BaseEntity {
 
   public void setRoutinePost(RoutinePost routinePost) {
     if (Objects.nonNull(this.routinePost)) {
-      this.routinePost.getComments().remove(this);
+      this.routinePost.getComments()
+                      .remove(this);
     }
     this.routinePost = routinePost;
   }
