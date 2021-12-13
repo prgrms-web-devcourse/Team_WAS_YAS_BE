@@ -36,7 +36,7 @@ jobs:
 
     # 압축파일 형태로 전달
     - name: Make zip file
-      run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
+      run: zip -r -qq -j ./build.zip ./deploy
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -47,4 +47,4 @@ jobs:
         
     # S3 Bucket으로 copy
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./$springboot-intro-build.zip s3://$yas-bucket/
+      run: aws s3 cp --region ap-northeast-2 ./$build.zip s3://$yas-bucket/
