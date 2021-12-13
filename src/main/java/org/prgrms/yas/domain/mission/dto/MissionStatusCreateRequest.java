@@ -12,9 +12,7 @@ import org.prgrms.yas.domain.mission.domain.MissionStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class MissionStatusCreateRequest {
 	
 	private int orders;
