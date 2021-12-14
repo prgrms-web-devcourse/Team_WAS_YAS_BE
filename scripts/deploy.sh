@@ -31,4 +31,4 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
-nohup java -jar -Dspring.config.location=classpath:/application.yml -Dspring.profiles.active=local $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+nohup java -jar -Dspring.config.location=classpath:/application-local.yml -Dspring.profiles.active=local $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
