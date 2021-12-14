@@ -53,6 +53,7 @@ cloud:
     credentials:
       accessKey:  ${AWS_ACCESS_KEY_ID}
       secretKey:  ${AWS_SECRET_ACCESS_KEY}
+      instance-profile: true
     s3:
       bucket: ${S3_BUCKET}
     region:
