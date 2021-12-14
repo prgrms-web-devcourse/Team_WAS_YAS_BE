@@ -9,7 +9,7 @@ on:
 env:
   S3_BUCKET_NAME: yas-bucket
   PROJECT_NAME: yas
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
