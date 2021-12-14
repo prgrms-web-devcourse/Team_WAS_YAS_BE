@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -102,5 +103,13 @@ public class UserController {
 				token.getId(),
 				userUpdateRequest
 		)));
+	}
+	
+	@Operation(summary = "회원삭제 컨트롤러")
+	@DeleteMapping("/users")
+	public ResponseEntity<ApiResponse<Long>> delete(
+			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
+	){
+		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId())));
 	}
 }
