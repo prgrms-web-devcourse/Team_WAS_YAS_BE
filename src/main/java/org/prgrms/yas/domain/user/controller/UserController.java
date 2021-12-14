@@ -30,20 +30,19 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 public class UserController {
 	
-	private static final String DIRECTORY = "static";
+//	private static final String DIRECTORY = "static";
 	
 	private final AuthenticationManager authenticationManager;
 	
 	private final UserService userService;
 	
-	private final S3Uploader s3Uploader;
+//	private final S3Uploader s3Uploader;
 	
 	public UserController(
-			AuthenticationManager authenticationManager, UserService userService, S3Uploader s3Uploader
+			AuthenticationManager authenticationManager, UserService userService
 	) {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
-		this.s3Uploader = s3Uploader;
 	}
 	
 	@Operation(summary = "커스텀 로그인 JWT 토큰 발행 컨트롤러")
@@ -93,16 +92,17 @@ public class UserController {
 			@RequestPart(value = "file", required = false) MultipartFile file
 	) throws IOException {
 		
-		if(!file.isEmpty()){
-			userUpdateRequest.setProfileImage(s3Uploader.upload(
-					file,
-					DIRECTORY
-			));
-		}
+//		if(!file.isEmpty()){
+//			userUpdateRequest.setProfileImage(s3Uploader.upload(
+//					file,
+//					DIRECTORY
+//			));
+//		}
 		
 		return ResponseEntity.ok(ApiResponse.of(userService.update(
 				token.getId(),
-				userUpdateRequest
+				userUpdateRequest,
+				file
 		)));
 	}
 }
