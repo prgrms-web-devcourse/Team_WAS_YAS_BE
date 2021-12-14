@@ -1,10 +1,16 @@
 package org.prgrms.yas.domain.mission.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.domain.MissionStatus;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateRequest;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
 import org.prgrms.yas.domain.mission.exception.NotFoundMissionException;
@@ -32,8 +38,6 @@ public class MissionStatusService {
 	) {
 		Mission mission = missionRepository.findById(missionId)
 		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		log.info("결과 missionStatusCreateRequest 뭐니 ?? ::{}",
-				missionStatusCreateRequest.getStartTime());
 		
 		//첫번째 미션 시작할때 루틴진행 테이블에도 시작 데이터 저장
 		if (missionStatusCreateRequest.getOrders() == 1) {
@@ -77,4 +81,31 @@ public class MissionStatusService {
 		return missionStatusRepository.save(missionStatus)
 		                              .getId();
 	}
+	
+	@Transactional
+	public List<MissionDetailResponse> getMissionStatuses(Long missionId) {
+		Mission mission = missionRepository.findById(missionId)
+		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		Routine routine = mission.getRoutine();
+		List<MissionDetailResponse> result = new ArrayList<>();
+		
+		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
+		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getStartTime()
+		                                                                                       .toLocalDate()
+		                                                                                       .isEqual(LocalDate.now()));
+		
+		for (Mission missions : mission.getRoutine()
+		                               .getMissions()) {
+			List<MissionStatus> missionStatuses = missionStatusRepository.getByMission(missions)
+			                                                             .stream()
+			                                                             .filter(reservationPredicateCheckOut)
+			                                                             .collect(Collectors.toList());
+			
+			for (MissionStatus missionStatus : missionStatuses) {
+				result.add(missions.toMissionDetailResponse(missionStatus));
+			}
+		}
+		return result;
+	}
+	
 }

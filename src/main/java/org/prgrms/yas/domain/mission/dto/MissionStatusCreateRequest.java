@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.mission.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;

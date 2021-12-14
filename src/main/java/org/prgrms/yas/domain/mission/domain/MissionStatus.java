@@ -2,6 +2,7 @@ package org.prgrms.yas.domain.mission.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.prgrms.yas.domain.mission.dto.MissionStatusDetailResponse;
 
 @Entity
 @Table(name = "mission_status")
@@ -67,5 +69,13 @@ public class MissionStatus {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.endTime = endTime;
+	}
+	
+	public Optional<MissionStatusDetailResponse> toMissionStatusDetailResponse() {
+		return Optional.ofNullable(MissionStatusDetailResponse.builder()
+		                                                      .endTime(endTime)
+		                                                      .orders(orders)
+		                                                      .startTime(startTime)
+		                                                      .build());
 	}
 }
