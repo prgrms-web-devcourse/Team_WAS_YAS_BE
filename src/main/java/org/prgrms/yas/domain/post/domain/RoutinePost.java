@@ -37,7 +37,7 @@ public class RoutinePost extends BaseEntity {
   private boolean isDeleted;
   
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "routine_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+  @JoinColumn(name = "routine_id")
   private Routine routine;
 
   @OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
