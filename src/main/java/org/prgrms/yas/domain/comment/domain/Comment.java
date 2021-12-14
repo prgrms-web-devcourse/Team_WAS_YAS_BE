@@ -18,7 +18,6 @@ import lombok.Getter;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
-import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.user.domain.User;
 import lombok.NoArgsConstructor;
 import lombok.AccessLevel;

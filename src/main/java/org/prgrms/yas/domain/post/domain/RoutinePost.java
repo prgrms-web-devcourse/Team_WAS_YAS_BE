@@ -2,10 +2,12 @@ package org.prgrms.yas.domain.post.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.routine.domain.Routine;
-import org.prgrms.yas.domain.routine.domain.RoutineCompletion;
-import org.prgrms.yas.domain.user.domain.User;
 
 @Table(name = "routine_post")
 @Entity
@@ -29,23 +30,28 @@ import org.prgrms.yas.domain.user.domain.User;
 public class RoutinePost extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(nullable = false)
-  private String content;
-
+  
+  @Column(nullable = false, columnDefinition = "TINYINT default false")
+  private boolean isDeleted;
+  
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "routine_id")
+  @JoinColumn(name = "routine_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   private Routine routine;
 
-  @OneToMany(mappedBy = "routinePost")
+  @OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
   private List<Comment> comments = new ArrayList<>();
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
-
+  @Builder
+  public RoutinePost(Routine routine) {
+    this.routine = routine;
+  }
+  
+  public void deletePost() {
+    this.isDeleted = true;
+  }
+  
   public void addComment(Comment comment) {
     this.comments.add(comment);
     comment.setRoutinePost(this);
