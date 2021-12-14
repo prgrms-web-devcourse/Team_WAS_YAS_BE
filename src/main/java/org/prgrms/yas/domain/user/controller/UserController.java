@@ -30,13 +30,9 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 public class UserController {
 	
-//	private static final String DIRECTORY = "static";
-	
 	private final AuthenticationManager authenticationManager;
 	
 	private final UserService userService;
-	
-//	private final S3Uploader s3Uploader;
 	
 	public UserController(
 			AuthenticationManager authenticationManager, UserService userService
@@ -91,13 +87,6 @@ public class UserController {
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
 			@RequestPart(value = "file", required = false) MultipartFile file
 	) throws IOException {
-		
-//		if(!file.isEmpty()){
-//			userUpdateRequest.setProfileImage(s3Uploader.upload(
-//					file,
-//					DIRECTORY
-//			));
-//		}
 		
 		return ResponseEntity.ok(ApiResponse.of(userService.update(
 				token.getId(),
