@@ -27,7 +27,7 @@ public class CommentController {
 	
 	private final CommentService commentService;
 	
-	@Operation(summary = "댓글 등록 컨트롤러")
+	@Operation(summary = "댓글 등록 컨트롤러, token")
 	@PostMapping("/posts/{id}/comments")
 	public ResponseEntity<ApiResponse<Long>> create(
 			final @AuthenticationPrincipal JwtAuthentication token, final @PathVariable("id") Long postId,
