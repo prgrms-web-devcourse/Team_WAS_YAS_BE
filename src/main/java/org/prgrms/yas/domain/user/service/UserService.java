@@ -81,6 +81,12 @@ public class UserService {
 		return user.getId();
 	}
 	
+	@Transactional
+	public Long delete(Long id){
+		userRepository.deleteById(findActiveUser(id).getId());
+		return id;
+	}
+	
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_VALUE_ERROR);
