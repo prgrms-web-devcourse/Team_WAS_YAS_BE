@@ -16,14 +16,18 @@ public class MissionStatusUpdateRequest {
 	private Long userDurationTime;
 	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
 	private LocalDateTime endTime;
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	private LocalDateTime startTime;
 	
 	@Builder
 	public MissionStatusUpdateRequest(
-			Long missionStatusId, int orders, Long userDurationTime, LocalDateTime endTime
+			Long missionStatusId, int orders, Long userDurationTime, LocalDateTime endTime,
+			LocalDateTime startTime
 	) {
 		this.missionStatusId = missionStatusId;
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.endTime = endTime;
+		this.startTime = startTime;
 	}
 }

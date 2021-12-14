@@ -63,12 +63,19 @@ public class MissionStatus {
 		this.mission = mission;
 	}
 	
-	public void updateMissionStatus(
+	public void updateEndTime(
 			int orders, Long userDurationTime, LocalDateTime endTime
 	) {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.endTime = endTime;
+	}
+	
+	public void updateStartTime(
+			int orders, LocalDateTime startTime
+	) {
+		this.orders = orders;
+		this.startTime = startTime;
 	}
 	
 	public Optional<MissionStatusDetailResponse> toMissionStatusDetailResponse() {

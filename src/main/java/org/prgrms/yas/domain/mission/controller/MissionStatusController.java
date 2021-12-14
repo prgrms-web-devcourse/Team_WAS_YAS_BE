@@ -4,45 +4,40 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
-import org.prgrms.yas.domain.mission.dto.MissionStatusCreateRequest;
+import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
 import org.prgrms.yas.domain.mission.service.MissionStatusService;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/mission/{id}/mission-status")
+@RequestMapping(value = "/routines/{id}/mission-status")
 @RequiredArgsConstructor
 public class MissionStatusController {
 	
 	private final MissionStatusService missionStatusService;
 	
 	@PostMapping
-	public ResponseEntity<ApiResponse<Long>> create(
-			@Valid @RequestBody MissionStatusCreateRequest missionStatusCreateRequest,
-			@PathVariable("id") Long missionId
+	public ResponseEntity<ApiResponse<MissionStatusCreateResponse>> create(
+			@PathVariable("id") Long routineId
 	) {
-		Long missionStatusId = missionStatusService.saveMissionStatus(
-				missionId,
-				missionStatusCreateRequest
-		);
-		return ResponseEntity.ok(ApiResponse.of(missionStatusId));
+		return ResponseEntity.ok(ApiResponse.of(missionStatusService.saveMissionStatus(routineId)));
 	}
 	
-	@PatchMapping
+	@PutMapping
 	public ResponseEntity<ApiResponse<Long>> update(
 			@Valid @RequestBody MissionStatusUpdateRequest missionStatusUpdateRequest,
-			@PathVariable("id") Long missionId
+			@PathVariable("id") Long routineId
 	) {
 		Long missionStatusId = missionStatusService.updateMissionStatus(
-				missionId,
+				routineId,
 				missionStatusUpdateRequest
 		);
 		return ResponseEntity.ok(ApiResponse.of(missionStatusId));
