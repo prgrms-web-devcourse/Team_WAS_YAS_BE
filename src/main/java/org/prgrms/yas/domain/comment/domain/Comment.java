@@ -24,7 +24,7 @@ import org.prgrms.yas.domain.user.domain.User;
 public class Comment extends BaseEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")

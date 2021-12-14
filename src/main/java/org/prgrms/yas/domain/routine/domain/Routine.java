@@ -41,7 +41,7 @@ import org.prgrms.yas.domain.user.domain.User;
 public class Routine {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false, length = 60)

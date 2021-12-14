@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 public class UserController {
@@ -79,7 +80,7 @@ public class UserController {
 	@Operation(summary = "회원조회 컨트롤러")
 	@GetMapping("/users")
 	public ResponseEntity<ApiResponse<UserResponse>> find(
-			@AuthenticationPrincipal JwtAuthentication token
+			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
 	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.findUser(token.getId())));
 	}
@@ -87,7 +88,7 @@ public class UserController {
 	@Operation(summary = "회원수정 컨트롤러")
 	@PutMapping("/users")
 	public ResponseEntity<ApiResponse<Long>> update(
-			@AuthenticationPrincipal JwtAuthentication token,
+			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
 			@RequestPart(required = false) MultipartFile file
 	) throws IOException {
