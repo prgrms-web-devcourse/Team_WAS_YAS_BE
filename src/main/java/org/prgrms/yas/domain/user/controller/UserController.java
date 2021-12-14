@@ -90,13 +90,15 @@ public class UserController {
 	public ResponseEntity<ApiResponse<Long>> update(
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
-			@RequestPart(required = false) MultipartFile file
+			@RequestPart(value = "file", required = false) MultipartFile file
 	) throws IOException {
 		
-		userUpdateRequest.setProfileImage(s3Uploader.upload(
-				file,
-				DIRECTORY
-		));
+		if(!file.isEmpty()){
+			userUpdateRequest.setProfileImage(s3Uploader.upload(
+					file,
+					DIRECTORY
+			));
+		}
 		
 		return ResponseEntity.ok(ApiResponse.of(userService.update(
 				token.getId(),
