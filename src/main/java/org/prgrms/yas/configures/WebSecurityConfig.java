@@ -93,6 +93,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+		   .mvcMatchers("/swagger-ui.html/**",
+				   "/configuration/**",
+				   "/swagger-resources/**",
+				   "/v2/api-docs",
+				   "/webjars/**",
+				   "/webjars/springfox-swagger-ui/*.{js,css}"
+		   );
+	}
+	
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		    .antMatchers(HttpMethod.POST,"/users")
