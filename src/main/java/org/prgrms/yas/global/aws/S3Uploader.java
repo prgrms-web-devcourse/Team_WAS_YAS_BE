@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.prgrms.yas.domain.user.exception.IllegalFileException;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +21,7 @@ public class S3Uploader {
 	
 	private final AmazonS3Client amazonS3Client;
 	
-	@Value("${cloud.aws.s3.bucket}")
+	@Value(("${S3_BUCKET}") )
 	private String bucket;
 	
 	public String upload(MultipartFile multipartFile, String dirName) throws IOException {
