@@ -26,7 +26,7 @@ import org.prgrms.yas.domain.user.domain.User;
 public class RoutinePost extends BaseEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
