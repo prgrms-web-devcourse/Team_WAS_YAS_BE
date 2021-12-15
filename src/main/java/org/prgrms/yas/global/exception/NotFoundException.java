@@ -8,3 +8,5 @@ public class NotFoundException extends BusinessException {
 		super(errorCode);
 	}
 }
+
+// 1. dto 네이밍
