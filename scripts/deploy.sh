@@ -3,6 +3,7 @@
 REPOSITORY=/home/ec2-user/app
 PROJECT_NAME=yas
 
+source /etc/profile.d/codedeploy.sh
 echo "> Build 파일 복사"
 
 cp $REPOSITORY/zip/build/libs/*.jar $REPOSITORY/
