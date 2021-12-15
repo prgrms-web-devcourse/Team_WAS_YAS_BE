@@ -9,13 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserResponse {
 	
+	private Long userId;
 	private String name;
 	private String email;
 	private String nickname;
 	private String profileImage;
 	
 	@Builder
-	public UserResponse(String name, String email, String nickname, String profileImage) {
+	public UserResponse(
+			Long userId, String name, String email, String nickname, String profileImage
+	) {
+		this.userId = userId;
 		this.name = name;
 		this.email = email;
 		this.nickname = nickname;

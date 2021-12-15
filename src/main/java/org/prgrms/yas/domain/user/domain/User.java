@@ -76,6 +76,7 @@ public class User {
 	
 	public UserResponse toResponse() {
 		return UserResponse.builder()
+		                   .userId(id)
 		                   .name(name)
 		                   .email(email)
 		                   .nickname(nickname)
@@ -99,7 +100,7 @@ public class User {
 		}
 	}
 	
-	public void updateUserInfo(UserUpdateRequest userUpdateRequest){
+	public void updateUserInfo(UserUpdateRequest userUpdateRequest) {
 		this.nickname = userUpdateRequest.getNickname();
 		this.profileImage = userUpdateRequest.getProfileImage();
 	}
