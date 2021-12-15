@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -93,20 +94,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+		   .mvcMatchers("/swagger-ui.html/**",
+				   "/configuration/**",
+				   "/swagger-resources/**",
+				   "/v2/api-docs",
+				   "/webjars/**",
+				   "/webjars/springfox-swagger-ui/*.{js,css}"
+		   );
+	}
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		    .antMatchers(HttpMethod.POST,"/users")
+		    .antMatchers(HttpMethod.POST,
+				    "/users")
 		    .permitAll()
-				.antMatchers("/users")
-				.hasAnyRole(
-						"USER",
-						"ADMIN"
-				)
-				.anyRequest()
-				.permitAll()
+		    .antMatchers("/users")
+		    .hasAnyRole(
+				    "USER",
+				    "ADMIN"
+		    )
+		    .anyRequest()
+		    .permitAll()
 		    .and()
 		    .formLogin()
 		    .disable()
+				.cors().disable()
 		    .csrf()
 		    .disable()
 		    .headers()
