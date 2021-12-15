@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.mission.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -12,12 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.prgrms.yas.domain.mission.dto.MissionStatusDetailResponse;
 
 @Entity
 @Table(name = "mission_status")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MissionStatus {
 	
 	@Id
@@ -33,11 +38,24 @@ public class MissionStatus {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
+	private LocalDate date;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mission_id")
 	private Mission mission;
 	
+	@Builder
+	public MissionStatus(
+			int orders, Long userDurationTime, LocalDateTime startTime, LocalDateTime endTime,
+			Mission mission, LocalDate date
+	) {
+		this.orders = orders;
+		this.userDurationTime = userDurationTime;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.mission = mission;
+		this.date = date;
+	}
 	
 	public void setMission(Mission mission) {
 		if (Objects.nonNull(this.mission)) {
@@ -45,5 +63,32 @@ public class MissionStatus {
 			            .remove(this);
 		}
 		this.mission = mission;
+	}
+	
+	public void updateEndTime(
+			int orders, Long userDurationTime, LocalDateTime endTime
+	) {
+		this.orders = orders;
+		this.userDurationTime = userDurationTime;
+		this.endTime = endTime;
+	}
+	
+	public void updateStartTime(
+			int orders, LocalDateTime startTime
+	) {
+		this.orders = orders;
+		this.startTime = startTime;
+	}
+	
+	public void updateEndTimeIsNull() {
+		this.endTime = null;
+	}
+	
+	public MissionStatusDetailResponse toMissionStatusDetailResponse() {
+		return MissionStatusDetailResponse.builder()
+		                                  .endTime(endTime)
+		                                  .orders(orders)
+		                                  .startTime(startTime)
+		                                  .build();
 	}
 }

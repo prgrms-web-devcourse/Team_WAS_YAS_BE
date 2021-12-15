@@ -24,6 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Entity
@@ -108,6 +109,19 @@ public class Mission {
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .name(name)
+		                            .build();
+	}
+	
+	
+	public MissionDetailStatusResponse toMissionDetailStatusResponse(MissionStatus missionStatus) {
+		return MissionDetailStatusResponse.builder()
+		                            .missionStatusDetailResponse(missionStatus.toMissionStatusDetailResponse())
+		                            .name(name)
+		                            .durationGoalTime(durationGoalTime)
+		                            .missionId(id)
+		                            .color(color)
+		                            .emoji(emoji)
+		                            .orders(orders)
 		                            .build();
 	}
 }
