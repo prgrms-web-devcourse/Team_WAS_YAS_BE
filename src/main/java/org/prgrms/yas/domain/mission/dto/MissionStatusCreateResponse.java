@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 public class MissionStatusCreateResponse {
 	
 	List<MissionMissionStatusId> missionMissionStatusIds;
+	Long routineStatusId;
 	
 	@Builder
 	public MissionStatusCreateResponse(
-			List<MissionMissionStatusId> missionMissionStatusIds
+			List<MissionMissionStatusId> missionMissionStatusIds, Long routineStatusId
 	) {
 		this.missionMissionStatusIds = missionMissionStatusIds;
+		this.routineStatusId = routineStatusId;
 	}
 }

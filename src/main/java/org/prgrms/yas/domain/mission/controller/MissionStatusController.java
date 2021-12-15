@@ -45,9 +45,9 @@ public class MissionStatusController {
 	
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<MissionDetailResponse>>> getMissionStatuses(
-			@PathVariable("id") Long missionId
+			@PathVariable("id") Long routineId
 	) {
-		List<MissionDetailResponse> missionDetailResponses = missionStatusService.getMissionStatuses(missionId);
+		List<MissionDetailResponse> missionDetailResponses = missionStatusService.getMissionStatuses(routineId);
 		return ResponseEntity.ok(ApiResponse.of(missionDetailResponses));
 	}
 }

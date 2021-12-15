@@ -1,8 +1,8 @@
 package org.prgrms.yas.domain.mission.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,6 +38,7 @@ public class MissionStatus {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
+	private LocalDate date;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mission_id")
@@ -46,13 +47,14 @@ public class MissionStatus {
 	@Builder
 	public MissionStatus(
 			int orders, Long userDurationTime, LocalDateTime startTime, LocalDateTime endTime,
-			Mission mission
+			Mission mission, LocalDate date
 	) {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.mission = mission;
+		this.date = date;
 	}
 	
 	public void setMission(Mission mission) {
@@ -78,11 +80,15 @@ public class MissionStatus {
 		this.startTime = startTime;
 	}
 	
-	public Optional<MissionStatusDetailResponse> toMissionStatusDetailResponse() {
-		return Optional.ofNullable(MissionStatusDetailResponse.builder()
-		                                                      .endTime(endTime)
-		                                                      .orders(orders)
-		                                                      .startTime(startTime)
-		                                                      .build());
+	public void updateEndTimeIsNull() {
+		this.endTime = null;
+	}
+	
+	public MissionStatusDetailResponse toMissionStatusDetailResponse() {
+		return MissionStatusDetailResponse.builder()
+		                                  .endTime(endTime)
+		                                  .orders(orders)
+		                                  .startTime(startTime)
+		                                  .build();
 	}
 }

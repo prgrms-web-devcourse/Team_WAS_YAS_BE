@@ -16,13 +16,13 @@ public class MissionDetailResponse {
 	private int orders;
 	private String emoji;
 	private String color;
-	private Optional<MissionStatusDetailResponse> missionStatusDetailResponse;
+	private MissionStatusDetailResponse missionStatusDetailResponse;
 	
 	
 	@Builder
 	public MissionDetailResponse(
 			Long missionId, String name, Long durationGoalTime, int orders, String emoji, String color,
-			Optional<MissionStatusDetailResponse> missionStatusDetailResponse
+			MissionStatusDetailResponse missionStatusDetailResponse
 	) {
 		this.missionId = missionId;
 		this.name = name;

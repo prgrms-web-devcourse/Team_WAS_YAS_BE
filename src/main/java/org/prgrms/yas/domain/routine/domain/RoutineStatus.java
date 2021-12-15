@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.routine.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -30,6 +31,8 @@ public class RoutineStatus {
 	
 	private LocalDateTime endTime;
 	
+	private LocalDate date;
+	
 	@ColumnDefault("-1")
 	private Long userDurationTime;
 	
@@ -39,12 +42,14 @@ public class RoutineStatus {
 	
 	@Builder
 	public RoutineStatus(
-			LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime, Routine routine
+			LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime, Routine routine,
+			LocalDate date
 	) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.userDurationTime = userDurationTime;
 		this.routine = routine;
+		this.date = date;
 	}
 	
 	public void setRoutine(Routine routine) {
@@ -55,4 +60,19 @@ public class RoutineStatus {
 		this.routine = routine;
 	}
 	
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+	
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
+	
+	public void setEndTimeIsNull() {
+		this.endTime = null;
+	}
+	
+	public void setUserDurationTime(Long userDurationTime) {
+		this.userDurationTime = userDurationTime;
+	}
 }

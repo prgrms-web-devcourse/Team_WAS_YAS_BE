@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MissionStatusUpdateRequest {
 	
+	private Long routineStatusId;
 	private Long missionStatusId;
 	private int orders;
 	private Long userDurationTime;
@@ -22,12 +23,13 @@ public class MissionStatusUpdateRequest {
 	@Builder
 	public MissionStatusUpdateRequest(
 			Long missionStatusId, int orders, Long userDurationTime, LocalDateTime endTime,
-			LocalDateTime startTime
+			LocalDateTime startTime, Long routineStatusId
 	) {
 		this.missionStatusId = missionStatusId;
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.endTime = endTime;
 		this.startTime = startTime;
+		this.routineStatusId = routineStatusId;
 	}
 }
