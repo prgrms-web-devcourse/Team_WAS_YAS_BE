@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @Configuration
@@ -93,6 +97,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		);
 	}
 	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		
+		configuration.addAllowedOrigin("http://localhost:3000");
+		configuration.addAllowedOrigin("http://localhost:8080");
+		configuration.addAllowedHeader("*");
+		configuration.addAllowedMethod("*");
+		configuration.setAllowCredentials(true);
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+		   .mvcMatchers("/swagger-ui.html/**",
+				   "/configuration/**",
+				   "/swagger-resources/**",
+				   "/v2/api-docs",
+				   "/webjars/**",
+				   "/webjars/springfox-swagger-ui/*.{js,css}"
+		   );
+	}
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
@@ -108,16 +139,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		    .antMatchers(HttpMethod.POST,"/users")
+		http
+				.httpBasic()
+				.disable()
+				.cors()
+				.and()
+				.authorizeRequests()
+				.antMatchers("/users/")
 		    .permitAll()
-				.antMatchers("/users")
-				.hasAnyRole(
-						"USER",
-						"ADMIN"
-				)
-				.anyRequest()
-				.permitAll()
 		    .and()
 		    .formLogin()
 		    .disable()
@@ -126,8 +155,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .cors()
 		    .disable()
 		    .headers()
-		    .disable()
-		    .httpBasic()
 		    .disable()
 		    .rememberMe()
 		    .disable()
