@@ -10,7 +10,6 @@ import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserToken;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.service.UserService;
-import org.prgrms.yas.global.aws.S3Uploader;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.prgrms.yas.jwt.JwtAuthenticationToken;
@@ -31,20 +30,15 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 public class UserController {
 	
-	private static final String DIRECTORY = "static";
-	
 	private final AuthenticationManager authenticationManager;
 	
 	private final UserService userService;
 	
-	private final S3Uploader s3Uploader;
-	
 	public UserController(
-			AuthenticationManager authenticationManager, UserService userService, S3Uploader s3Uploader
+			AuthenticationManager authenticationManager, UserService userService
 	) {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
-		this.s3Uploader = s3Uploader;
 	}
 	
 	@Operation(summary = "커스텀 로그인 JWT 토큰 발행 컨트롤러")
@@ -91,17 +85,13 @@ public class UserController {
 	public ResponseEntity<ApiResponse<Long>> update(
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
-			@RequestPart(required = false) MultipartFile file
+			@RequestPart(value = "file", required = false) MultipartFile file
 	) throws IOException {
-		
-		userUpdateRequest.setProfileImage(s3Uploader.upload(
-				file,
-				DIRECTORY
-		));
 		
 		return ResponseEntity.ok(ApiResponse.of(userService.update(
 				token.getId(),
-				userUpdateRequest
+				userUpdateRequest,
+				file
 		)));
 	}
 	
