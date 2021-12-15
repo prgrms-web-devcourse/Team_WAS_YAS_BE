@@ -81,7 +81,7 @@ public class UserController {
 	}
 	
 	@Operation(summary = "회원수정 컨트롤러")
-	@PutMapping("/users")
+	@PutMapping(value = "/users",consumes = {"multipart/form-data"})
 	public ResponseEntity<ApiResponse<Long>> update(
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
