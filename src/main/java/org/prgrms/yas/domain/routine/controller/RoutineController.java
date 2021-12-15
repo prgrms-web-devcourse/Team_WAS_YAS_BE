@@ -4,12 +4,12 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
-import org.prgrms.yas.domain.routine.dto.RoutineCreateResponse;
-import org.prgrms.yas.domain.routine.dto.RoutineDeleteResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -32,41 +32,48 @@ public class RoutineController {
 	private final RoutineService routineService;
 	
 	@PostMapping
-	public ResponseEntity<RoutineCreateResponse> create(
+	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody RoutineCreateRequest routineCreateRequest,
 			@AuthenticationPrincipal JwtAuthentication token
 	
 	) {
-		RoutineCreateResponse routineCreateResponse = routineService.saveRoutine(
+		Long routineId = routineService.saveRoutine(
 				token.getId(),
 				routineCreateRequest
 		);
-		return ResponseEntity.ok(routineCreateResponse);
+		return ResponseEntity.ok(ApiResponse.of(routineId));
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<RoutineDeleteResponse> delete(@PathVariable("id") Long id)
-			throws NotFoundException {
-		RoutineDeleteResponse routineDeleteResponse = routineService.deleteRoutine(id);
-		return ResponseEntity.ok(routineDeleteResponse);
+	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long id) {
+		Long deletedRoutineId = routineService.deleteRoutine(id);
+		return ResponseEntity.ok(ApiResponse.of(deletedRoutineId));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<RoutineUpdateResponse> update(
+	public ResponseEntity<ApiResponse<RoutineUpdateResponse>> update(
 			@PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
-	) throws NotFoundException {
+	) {
 		RoutineUpdateResponse routineUpdateResponse = routineService.updateRoutine(
 				id,
 				routineUpdateRequest
 		);
-		return ResponseEntity.ok(routineUpdateResponse);
+		return ResponseEntity.ok(ApiResponse.of(routineUpdateResponse));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<RoutineDetailResponse>> get(
+	public ResponseEntity<List<RoutineListResponse>> get(
 			@AuthenticationPrincipal JwtAuthentication token
-	) throws NotFoundException {
-		List<RoutineDetailResponse> routineDetailResponses = routineService.findRoutines(token.getId());
+	) {
+		List<RoutineListResponse> routineDetailResponses = routineService.findRoutines(token.getId());
 		return ResponseEntity.ok(routineDetailResponses);
+	}
+	
+	@GetMapping("/{id}/missions")
+	public ResponseEntity<ApiResponse<RoutineDetailResponse>> getMissions(
+			@PathVariable("id") Long routineId
+	) {
+		RoutineDetailResponse routineDetailResponse = routineService.findMissions(routineId);
+		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
 	}
 }

@@ -11,7 +11,7 @@ import org.prgrms.yas.domain.routine.domain.Week;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoutineCreateResponse {
+public class RoutineListResponse {
 	
 	private Long routineId;
 	private String name;
@@ -23,7 +23,7 @@ public class RoutineCreateResponse {
 	private String emoji;
 	
 	@Builder
-	public RoutineCreateResponse(
+	public RoutineListResponse(
 			Long routineId, String name, LocalDateTime startGoalTime, Long durationGoalTime,
 			List<String> weeks, List<String> routineCategory, String emoji, String color
 	) {
@@ -44,6 +44,4 @@ public class RoutineCreateResponse {
 		}
 		return result;
 	}
-	
-	
 }

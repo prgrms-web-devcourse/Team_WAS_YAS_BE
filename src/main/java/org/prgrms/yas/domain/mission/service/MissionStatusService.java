@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.domain.MissionStatus;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionMissionStatusId;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
@@ -126,10 +127,10 @@ public class MissionStatusService {
 	}
 	
 	@Transactional
-	public List<MissionDetailResponse> getMissionStatuses(Long routineId) {
+	public List<MissionDetailStatusResponse> getMissionStatuses(Long routineId) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		List<MissionDetailResponse> result = new ArrayList<>();
+		List<MissionDetailStatusResponse> result = new ArrayList<>();
 		
 		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
 		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDate()
@@ -142,7 +143,7 @@ public class MissionStatusService {
 			                                                             .collect(Collectors.toList());
 			
 			for (MissionStatus missionStatus : missionStatuses) {
-				result.add(missions.toMissionDetailResponse(missionStatus));
+				result.add(missions.toMissionDetailStatusResponse(missionStatus));
 			}
 		}
 		return result;

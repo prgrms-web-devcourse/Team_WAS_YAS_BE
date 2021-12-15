@@ -1,16 +1,13 @@
 package org.prgrms.yas.global.error;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.prgrms.yas.domain.user.exception.CheckPasswordException;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
+import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
 import org.prgrms.yas.global.exception.NotFoundException;
 import org.prgrms.yas.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -66,8 +63,8 @@ public class GlobalExceptionHandler {
 		);
 	}
 	
-	@ExceptionHandler({CheckPasswordException.class})
-	public ResponseEntity<ErrorResponse> handleCheckPasswordException(CheckPasswordException e) {
+	@ExceptionHandler({NotSamePasswordException.class})
+	public ResponseEntity<ErrorResponse> handleNotSamePasswordException(NotSamePasswordException e) {
 		log.error(
 				"Handle Check Password Exception {}",
 				e.toString()

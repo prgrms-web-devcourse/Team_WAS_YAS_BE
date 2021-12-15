@@ -4,6 +4,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
 import org.prgrms.yas.domain.mission.service.MissionStatusService;
@@ -44,10 +45,10 @@ public class MissionStatusController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ApiResponse<List<MissionDetailResponse>>> getMissionStatuses(
+	public ResponseEntity<ApiResponse<List<MissionDetailStatusResponse>>> getMissionStatuses(
 			@PathVariable("id") Long routineId
 	) {
-		List<MissionDetailResponse> missionDetailResponses = missionStatusService.getMissionStatuses(routineId);
-		return ResponseEntity.ok(ApiResponse.of(missionDetailResponses));
+		List<MissionDetailStatusResponse> missionDetailStatusResponses = missionStatusService.getMissionStatuses(routineId);
+		return ResponseEntity.ok(ApiResponse.of(missionDetailStatusResponses));
 	}
 }
