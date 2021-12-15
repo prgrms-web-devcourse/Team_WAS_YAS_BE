@@ -17,7 +17,7 @@ public class RoutineCreateRequest {
 	
 	private String name;
 	private List<String> routineCategory;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 	private LocalDateTime startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;
