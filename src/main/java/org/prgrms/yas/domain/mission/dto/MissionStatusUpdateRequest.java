@@ -15,9 +15,9 @@ public class MissionStatusUpdateRequest {
 	private Long missionStatusId;
 	private int orders;
 	private Long userDurationTime;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 	private LocalDateTime endTime;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 	private LocalDateTime startTime;
 	
 	@Builder
