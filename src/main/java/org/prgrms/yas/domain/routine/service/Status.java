@@ -44,7 +44,6 @@ public enum Status {
 				               .collect(toList());
 			}
 	);
-	
 	private String value;
 	
 	public String value() {

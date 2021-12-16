@@ -29,6 +29,7 @@ public class RoutineService {
 	
 	private final RoutineRepository routineRepository;
 	private final UserRepository userRepository;
+	private static final double IS_NOT_WEEK = 0;
 	
 	@Transactional
 	public Long saveRoutine(Long userId, RoutineCreateRequest routineCreateRequest) {
@@ -112,7 +113,7 @@ public class RoutineService {
 		Calendar calendar = Calendar.getInstance();
 		
 		//오늘 요일에 맞는 루틴 가져오기
-		Predicate<Week> isWeek = a -> (a.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
+		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
 		List<Routine> weekRoutine = routines.stream()
 		                                    .filter(routine -> {
 					
@@ -121,7 +122,7 @@ public class RoutineService {
 					                                                      .filter(isWeek)
 					                                                      .count();
 					
-					                                    return cnt != 0;
+					                                    return cnt != IS_NOT_WEEK;
 				                                    }
 		
 		                                    )
