@@ -16,12 +16,7 @@ public enum Status {
 			routines -> {
 				return routines.stream()
 				               .filter(routine -> {
-					               Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDate()
-					                                                                                .isEqual(LocalDate.now()));
-					               long num = routine.getRoutineStatuses()
-					                                 .stream()
-					                                 .filter(isDate)
-					                                 .count();
+					               long num = isTodayRoutine(routine);
 					               return num != 0;
 				               })
 				               .collect(toList());
@@ -33,17 +28,23 @@ public enum Status {
 			routines -> {
 				return routines.stream()
 				               .filter(routine -> {
-					               Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDate()
-					                                                                                .isEqual(LocalDate.now()));
-					               long num = routine.getRoutineStatuses()
-					                                 .stream()
-					                                 .filter(isDate)
-					                                 .count();
+					               long num = isTodayRoutine(routine);
 					               return num == 0;
 				               })
 				               .collect(toList());
 			}
 	);
+	
+	public static Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDate()
+	                                                                               .isEqual(LocalDate.now()));
+	
+	public static Long isTodayRoutine(Routine routine) {
+		return routine.getRoutineStatuses()
+		              .stream()
+		              .filter(isDate)
+		              .count();
+	}
+	
 	private String value;
 	
 	public String value() {

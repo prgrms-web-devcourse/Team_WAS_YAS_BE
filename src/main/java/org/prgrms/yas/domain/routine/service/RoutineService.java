@@ -112,7 +112,6 @@ public class RoutineService {
 		List<Routine> routines = routineRepository.getByUser(user);
 		Calendar calendar = Calendar.getInstance();
 		
-		//오늘 요일에 맞는 루틴 가져오기
 		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
 		List<Routine> weekRoutine = routines.stream()
 		                                    .filter(routine -> {
