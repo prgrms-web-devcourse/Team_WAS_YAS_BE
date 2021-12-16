@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MissionOrder {
 	
-	private Long id;
+	private Long missionId;
 	private int orders;
 	
 	@Builder
-	public MissionOrder(Long id, int orders) {
-		this.id = id;
+	public MissionOrder(Long missionId, int orders) {
+		this.missionId = missionId;
 		this.orders = orders;
 	}
 }
