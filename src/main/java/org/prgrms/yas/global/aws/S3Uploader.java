@@ -21,7 +21,7 @@ public class S3Uploader {
 	
 	private final AmazonS3Client amazonS3Client;
 	
-	@Value(("${S3_BUCKET}") )
+	@Value(("${cloud.aws.s3.bucket}") )
 	private String bucket;
 	
 	public String upload(MultipartFile multipartFile, String dirName) throws IOException {
