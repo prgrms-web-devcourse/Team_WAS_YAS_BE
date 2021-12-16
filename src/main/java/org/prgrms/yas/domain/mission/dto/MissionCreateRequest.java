@@ -38,6 +38,7 @@ public class MissionCreateRequest {
 		              .orders(orders)
 		              .routine(routine)
 		              .name(name)
+		              .color(color)
 		              .build();
 	}
 }
