@@ -226,7 +226,7 @@ gradle-app.setting
 
 /src/main/resources/application-test.yml
 
-
+/src/main/resources/application-local.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,gradle,java
 
