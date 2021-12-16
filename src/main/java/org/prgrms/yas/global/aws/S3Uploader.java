@@ -2,15 +2,12 @@ package org.prgrms.yas.global.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import java.io.File;
-import java.io.FileOutputStream;
+import com.amazonaws.util.IOUtils;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
-import org.prgrms.yas.domain.user.exception.IllegalFileException;
-import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
