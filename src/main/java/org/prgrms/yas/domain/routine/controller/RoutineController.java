@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
@@ -63,13 +62,6 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineUpdateResponse));
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<RoutineListResponse>> get(
-			@AuthenticationPrincipal JwtAuthentication token
-	) {
-		List<RoutineListResponse> routineDetailResponses = routineService.findRoutines(token.getId());
-		return ResponseEntity.ok(routineDetailResponses);
-	}
 	
 	@GetMapping("/{id}/missions")
 	public ResponseEntity<ApiResponse<RoutineDetailResponse>> getMissions(
@@ -79,12 +71,14 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
 	}
 	
-	@GetMapping("/search")
-	public ResponseEntity<ApiResponse<List<RoutineAllResponse>>> getRoutines(
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> getRoutines(
 			@AuthenticationPrincipal JwtAuthentication token, @RequestParam Optional<String> status
 	) {
-		return ResponseEntity.ok(ApiResponse.of(status.map(biddingStatus -> routineService.findFinishRoutines(token.getId(),
-				                                              biddingStatus))
-		                                              .orElse(routineService.findRoutinesByUsers(token.getId()))));
+		return ResponseEntity.ok(ApiResponse.of(status.map(biddingStatus -> routineService.findFinishRoutines(
+				                                              token.getId(),
+				                                              biddingStatus
+		                                              ))
+		                                              .orElse(routineService.findRoutines(token.getId()))));
 	}
 }

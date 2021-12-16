@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.Week;
-import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
@@ -85,6 +84,15 @@ public class RoutineService {
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 	}
 	
+	
+	@Transactional
+	public RoutineDetailResponse findMissions(Long routineId) {
+		Routine routine = routineRepository.findById(routineId)
+		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
+		
+		return routine.toRoutineDetailResponse();
+	}
+	
 	@Transactional
 	public List<RoutineListResponse> findRoutines(Long userId) {
 		User user = userRepository.findById(userId)
@@ -96,25 +104,7 @@ public class RoutineService {
 	}
 	
 	@Transactional
-	public RoutineDetailResponse findMissions(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
-		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
-		
-		return routine.toRoutineDetailResponse();
-	}
-	
-	public List<RoutineAllResponse> findRoutinesByUsers(Long userId) {
-		User user = userRepository.findById(userId)
-		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		
-		List<Routine> routines = routineRepository.getByUser(user);
-		return routines.stream()
-		               .map(Routine::toRoutineAllResponse)
-		               .collect(toList());
-	}
-	
-	@Transactional
-	public List<RoutineAllResponse> findFinishRoutines(Long userId, String status) {
+	public List<RoutineListResponse> findFinishRoutines(Long userId, String status) {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		
@@ -141,7 +131,7 @@ public class RoutineService {
 		List<Routine> findRoutines = statusEnum.apply(weekRoutine);
 		
 		return findRoutines.stream()
-		                   .map(Routine::toRoutineAllResponse)
+		                   .map(Routine::toRoutineListResponse)
 		                   .collect(Collectors.toList());
 	}
 }

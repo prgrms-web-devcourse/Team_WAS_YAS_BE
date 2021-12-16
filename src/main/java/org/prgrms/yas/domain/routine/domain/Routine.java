@@ -28,7 +28,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
-import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.user.domain.User;
@@ -169,16 +168,5 @@ public class Routine {
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())
 		                            .build();
-	}
-	
-	public RoutineAllResponse toRoutineAllResponse() {
-		return RoutineAllResponse.builder()
-		                         .id(id)
-		                         .color(color)
-		                         .name(name)
-		                         .emoji(emoji)
-		                         .durationGoalTime(durationGoalTime)
-		                         .startGoalTime(startGoalTime)
-		                         .build();
 	}
 }
