@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.routine.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class RoutineController {
 	
 	private final RoutineService routineService;
 	
+	@Operation(summary = "루틴 생성 컨트롤러")
 	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody RoutineCreateRequest routineCreateRequest,
@@ -45,12 +47,14 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineId));
 	}
 	
+	@Operation(summary = "루틴 삭제 컨트롤러")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long id) {
 		Long deletedRoutineId = routineService.deleteRoutine(id);
 		return ResponseEntity.ok(ApiResponse.of(deletedRoutineId));
 	}
 	
+	@Operation(summary = "루틴 수정 컨트롤러")
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<RoutineUpdateResponse>> update(
 			@PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
@@ -62,7 +66,7 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineUpdateResponse));
 	}
 	
-	
+	@Operation(summary = "루틴 상세 조회 컨트롤러")
 	@GetMapping("/{id}/missions")
 	public ResponseEntity<ApiResponse<RoutineDetailResponse>> getMissions(
 			@PathVariable("id") Long routineId
@@ -71,6 +75,7 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
 	}
 	
+	@Operation(summary = "루틴 전체/완료/미완료 조회 컨트롤러")
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> getRoutines(
 			@AuthenticationPrincipal JwtAuthentication token, @RequestParam Optional<String> status

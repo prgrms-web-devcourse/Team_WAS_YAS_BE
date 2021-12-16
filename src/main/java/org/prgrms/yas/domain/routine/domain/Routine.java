@@ -164,6 +164,7 @@ public class Routine {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
+		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())
