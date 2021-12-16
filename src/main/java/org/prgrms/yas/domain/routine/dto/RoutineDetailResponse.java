@@ -15,11 +15,12 @@ public class RoutineDetailResponse {
 	private String emoji;
 	private String color;
 	private List<String> routineCategory;
+	private List<String> weeks;
 	private List<MissionDetailResponse> missionDetailResponses;
 	
 	@Builder
 	public RoutineDetailResponse(
-			String name, String emoji, String color, List<String> routineCategory,
+			String name, String emoji, String color, List<String> routineCategory, List<String> weeks,
 			List<MissionDetailResponse> missionDetailResponses
 	) {
 		this.name = name;
@@ -27,5 +28,6 @@ public class RoutineDetailResponse {
 		this.color = color;
 		this.routineCategory = routineCategory;
 		this.missionDetailResponses = missionDetailResponses;
+		this.weeks = weeks;
 	}
 }
