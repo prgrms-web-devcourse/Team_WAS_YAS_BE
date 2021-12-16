@@ -22,7 +22,7 @@ import org.prgrms.yas.domain.user.domain.User;
 @Entity
 @Table(name = "post_likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
+@SQLDelete(sql = "UPDATE post_likes SET is_deleted = true WHERE id =?")
 public class PostLikes {
 	
 	@Id
