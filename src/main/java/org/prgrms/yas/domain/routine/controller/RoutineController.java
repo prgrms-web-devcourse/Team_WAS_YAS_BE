@@ -1,8 +1,10 @@
 package org.prgrms.yas.domain.routine.controller;
 
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
@@ -11,7 +13,6 @@ import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -75,5 +77,14 @@ public class RoutineController {
 	) {
 		RoutineDetailResponse routineDetailResponse = routineService.findMissions(routineId);
 		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
+	}
+	
+	@GetMapping("/aa")
+	public ResponseEntity<ApiResponse<List<RoutineAllResponse>>> getRoutines(
+			@AuthenticationPrincipal JwtAuthentication token, @RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(ApiResponse.of(status.map(biddingStatus -> routineService.findFinishRoutines(token.getId(),
+				                                              biddingStatus))
+		                                              .orElse(routineService.findRoutinesByUsers(token.getId()))));
 	}
 }

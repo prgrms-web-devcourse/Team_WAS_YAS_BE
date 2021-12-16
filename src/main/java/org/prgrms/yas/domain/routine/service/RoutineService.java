@@ -3,10 +3,15 @@ package org.prgrms.yas.domain.routine.service;
 import static java.util.stream.Collectors.toList;
 import static org.prgrms.yas.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.Routine;
+import org.prgrms.yas.domain.routine.domain.Week;
+import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
@@ -96,5 +101,47 @@ public class RoutineService {
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		
 		return routine.toRoutineDetailResponse();
+	}
+	
+	public List<RoutineAllResponse> findRoutinesByUsers(Long userId) {
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
+		
+		List<Routine> routines = routineRepository.getByUser(user);
+		return routines.stream()
+		               .map(Routine::toRoutineAllResponse)
+		               .collect(toList());
+	}
+	
+	@Transactional
+	public List<RoutineAllResponse> findFinishRoutines(Long userId, String status) {
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
+		
+		List<Routine> routines = routineRepository.getByUser(user);
+		Calendar calendar = Calendar.getInstance();
+		
+		//오늘 요일에 맞는 루틴 가져오기
+		Predicate<Week> isWeek = a -> (a.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
+		List<Routine> weekRoutine = routines.stream()
+		                                    .filter(routine -> {
+					
+					                                    long cnt = routine.getWeeks()
+					                                                      .stream()
+					                                                      .filter(isWeek)
+					                                                      .count();
+					
+					                                    return cnt != 0;
+				                                    }
+		
+		                                    )
+		                                    .collect(toList());
+		
+		Status statusEnum = Status.from(status);
+		List<Routine> findRoutines = statusEnum.apply(weekRoutine);
+		
+		return findRoutines.stream()
+		                   .map(Routine::toRoutineAllResponse)
+		                   .collect(Collectors.toList());
 	}
 }

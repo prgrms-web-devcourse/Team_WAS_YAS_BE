@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -27,6 +28,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineAllResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.user.domain.User;
@@ -69,7 +71,7 @@ public class Routine {
 	@Enumerated(EnumType.STRING)
 	private List<Week> weeks = new ArrayList<>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -167,5 +169,16 @@ public class Routine {
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())
 		                            .build();
+	}
+	
+	public RoutineAllResponse toRoutineAllResponse() {
+		return RoutineAllResponse.builder()
+		                         .id(id)
+		                         .color(color)
+		                         .name(name)
+		                         .emoji(emoji)
+		                         .durationGoalTime(durationGoalTime)
+		                         .startGoalTime(startGoalTime)
+		                         .build();
 	}
 }
