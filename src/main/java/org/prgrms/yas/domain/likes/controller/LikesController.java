@@ -29,10 +29,10 @@ public class LikesController {
 	}
 	
 	@DeleteMapping("/posts/{id}/likes")
-	public ResponseEntity<ApiResponse<Long>> delteLikes(
+	public ResponseEntity<ApiResponse<Long>> deleteLikes(
 			@AuthenticationPrincipal JwtAuthentication token,
 			@PathVariable Long id
 	){
-		likesService.deletePostLikes(token.getId(),id);
+		return ResponseEntity.ok(ApiResponse.of(likesService.deletePostLikes(token.getId(),id)));
 	}
 }
