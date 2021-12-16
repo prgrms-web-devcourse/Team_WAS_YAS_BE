@@ -79,7 +79,7 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
 	}
 	
-	@GetMapping("/aa")
+	@GetMapping("/search")
 	public ResponseEntity<ApiResponse<List<RoutineAllResponse>>> getRoutines(
 			@AuthenticationPrincipal JwtAuthentication token, @RequestParam Optional<String> status
 	) {
