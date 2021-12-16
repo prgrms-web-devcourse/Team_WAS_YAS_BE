@@ -38,10 +38,10 @@ public class LikesService {
 	
 	@Transactional
 	public Long deletePostLikes(Long userId, Long postId) {
-		User user = userRepository.findById(userId)
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
-		RoutinePost routinePost = postRepository.findById(postId)
+		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		return postLikesRepository.deleteByUserAndRoutinePost(user,

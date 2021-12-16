@@ -13,6 +13,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.user.domain.User;
 
@@ -20,6 +22,7 @@ import org.prgrms.yas.domain.user.domain.User;
 @Entity
 @Table(name = "post_likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
 public class PostLikes {
 	
 	@Id
