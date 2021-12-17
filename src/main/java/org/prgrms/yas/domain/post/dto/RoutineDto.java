@@ -1,7 +1,5 @@
 package org.prgrms.yas.domain.post.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,9 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.likes.dto.LikesDto;
 import org.prgrms.yas.domain.routine.domain.Routine;
-import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
