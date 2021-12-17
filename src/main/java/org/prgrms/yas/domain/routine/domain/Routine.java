@@ -25,7 +25,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
@@ -36,7 +35,6 @@ import org.prgrms.yas.domain.user.domain.User;
 @Table(name = "routine")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
 @DynamicInsert
 public class Routine {
