@@ -35,7 +35,6 @@ import org.prgrms.yas.domain.user.domain.User;
 @Table(name = "routine")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
 @DynamicInsert
 public class Routine {

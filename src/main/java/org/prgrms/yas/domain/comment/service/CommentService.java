@@ -8,6 +8,7 @@ import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.comment.repository.CommentRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
+import org.prgrms.yas.domain.post.exception.WrongUserException;
 import org.prgrms.yas.domain.post.repository.PostRepository;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.user.domain.User;
@@ -40,21 +41,36 @@ public class CommentService {
 	}
 	
 	public Long updateComment(
-			final Long commentId, final CommentUpdateRequest commentUpdateRequest
+			final Long userId, final Long commentId, final CommentUpdateRequest commentUpdateRequest
 	) {
-		
-		Comment comment = commentRepository.findByIdAndIsDeletedFalse(commentId)
+		Comment comment = commentRepository.findById(commentId)
 		                                   .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		
-		comment.updateComment(commentUpdateRequest);
+		if (!userValid(userId,
+				comment.getUser()
+				       .getId()
+		)) {
+			comment.updateComment(commentUpdateRequest);
+		}
 		return comment.getId();
 	}
 	
-	public Long deleteComment(final Long commentId) {
+	public Long deleteComment(final Long userId, final Long commentId) {
 		Comment comment = commentRepository.findById(commentId)
 		                                   .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		
-		comment.deleteComment();
+		if (!userValid(userId,
+				comment.getUser()
+				       .getId()
+		)) {
+			commentRepository.deleteById(commentId);
+		}
 		return comment.getId();
 	}
+	
+	public boolean userValid(final Long userId, final Long compareUserId) {
+		if (!userId.equals(compareUserId)) {
+			throw new WrongUserException(ErrorCode.INVALID_INPUT_ERROR);
+		}
+		return false;
+	}
+	
 }

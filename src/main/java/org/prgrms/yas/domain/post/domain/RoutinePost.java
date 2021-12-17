@@ -14,11 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.routine.domain.Routine;
@@ -27,6 +30,8 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE routine_post SET is_deleted = true WHERE id =?")
 public class RoutinePost extends BaseEntity {
 
   @Id
@@ -36,20 +41,16 @@ public class RoutinePost extends BaseEntity {
   @Column(nullable = false, columnDefinition = "TINYINT default false")
   private boolean isDeleted;
   
-  @ManyToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "routine_id")
   private Routine routine;
 
-  @OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "routinePost", orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
-
+  
   @Builder
   public RoutinePost(Routine routine) {
     this.routine = routine;
-  }
-  
-  public void deletePost() {
-    this.isDeleted = true;
   }
   
   public void addComment(Comment comment) {

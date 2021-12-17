@@ -26,7 +26,7 @@ public class PostDetailResponse {
     this.user = new UserDto(routinePost.getRoutine().getUser());
     this.routine = new RoutineDto(routinePost.getRoutine());
     this.comments = routinePost.getComments()
-                               .stream().filter(c->c.isDeleted()==false).map(CommentDto::new)
-                               .collect(Collectors.toList());
+                                   .stream().map(CommentDto::new)
+                                   .collect(Collectors.toList());
   }
 }
