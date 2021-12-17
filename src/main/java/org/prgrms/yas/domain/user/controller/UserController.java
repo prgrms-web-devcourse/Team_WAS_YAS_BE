@@ -43,7 +43,9 @@ public class UserController {
 	
 	@Operation(summary = "커스텀 로그인 JWT 토큰 발행 컨트롤러")
 	@PostMapping("/users/login")
-	public UserToken signIn(@RequestBody UserSignInRequest userSignInRequest) {
+	public ResponseEntity<ApiResponse<UserToken>> signIn(
+			@RequestBody UserSignInRequest userSignInRequest
+	) {
 		
 		JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(
 				userSignInRequest.getEmail(),
@@ -55,13 +57,13 @@ public class UserController {
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
 		
-		return new UserToken(
+		return ResponseEntity.ok(ApiResponse.of(new UserToken(
 				user.getId(),
 				principal.getToken(),
 				principal.getUsername(),
 				user.getRoles()
 				    .toString()
-		);
+		)));
 	}
 	
 	@Operation(summary = "회원가입 컨트롤러")
@@ -81,7 +83,7 @@ public class UserController {
 	}
 	
 	@Operation(summary = "회원수정 컨트롤러")
-	@PutMapping("/users")
+	@PutMapping(value = "/users",consumes = {"multipart/form-data"})
 	public ResponseEntity<ApiResponse<Long>> update(
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			@Valid @RequestPart UserUpdateRequest userUpdateRequest,
@@ -99,7 +101,7 @@ public class UserController {
 	@DeleteMapping("/users")
 	public ResponseEntity<ApiResponse<Long>> delete(
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
-	){
+	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId())));
 	}
 }

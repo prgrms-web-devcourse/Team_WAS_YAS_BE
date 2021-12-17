@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -69,7 +70,7 @@ public class Routine {
 	@Enumerated(EnumType.STRING)
 	private List<Week> weeks = new ArrayList<>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -163,6 +164,7 @@ public class Routine {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
+		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())

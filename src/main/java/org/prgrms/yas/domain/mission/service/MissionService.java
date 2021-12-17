@@ -48,7 +48,7 @@ public class MissionService {
 		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
-			missionRepository.getById(missionOrder.getId())
+			missionRepository.getById(missionOrder.getMissionId())
 			                 .updateOrders(missionOrder.getOrders());
 		}
 		

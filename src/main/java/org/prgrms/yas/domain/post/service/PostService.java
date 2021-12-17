@@ -1,14 +1,16 @@
 package org.prgrms.yas.domain.post.service;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.prgrms.yas.domain.comment.domain.Comment;
-import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
 import org.prgrms.yas.domain.post.exception.NotFoundRoutinePostException;
 import org.prgrms.yas.domain.post.repository.PostRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
+import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.global.error.ErrorCode;
@@ -41,5 +43,12 @@ public class PostService {
     RoutinePost routinePost = postRepository.findById(postId)
                                             .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
     return new PostDetailResponse(routinePost);
+  }
+  
+  public List<RoutineListResponse> findAll(Long id){
+    List<Routine> notPostAll = routineRepository.findRoutinesNotPosted(id);
+    return notPostAll.stream()
+            .map(Routine::toRoutineListResponse)
+            .collect(toList());
   }
 }
