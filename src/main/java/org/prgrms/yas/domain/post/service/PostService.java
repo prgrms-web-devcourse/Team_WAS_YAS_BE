@@ -20,7 +20,6 @@ import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
-import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 

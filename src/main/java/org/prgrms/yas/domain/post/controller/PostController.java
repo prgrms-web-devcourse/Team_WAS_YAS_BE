@@ -43,7 +43,6 @@ public class PostController {
 		return ResponseEntity.ok(postService.findOne(postId));
 	}
 	
-	
 	@Operation(summary = "루틴 조회(게시글 등록되지 않은 루틴)")
 	@GetMapping("routines/posts")
 	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> findAll(

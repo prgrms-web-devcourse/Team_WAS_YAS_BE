@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.likes.repository;
 
+import java.util.List;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.likes.domain.CommentLikes;
 import org.prgrms.yas.domain.user.domain.User;
@@ -14,4 +15,6 @@ public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long
 	void saveCommentLikes(Long userId, Long commentId);
 	
 	Long deleteByUserAndComment(User user, Comment comment);
+	
+	List<CommentLikes> findByComment(Long commentId);
 }

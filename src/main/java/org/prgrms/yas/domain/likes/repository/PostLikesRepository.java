@@ -1,6 +1,8 @@
 package org.prgrms.yas.domain.likes.repository;
 
+import java.util.List;
 import org.prgrms.yas.domain.likes.domain.PostLikes;
+import org.prgrms.yas.domain.likes.dto.LikesResponse;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,7 @@ public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	void savePostLikes(Long userId, Long routinePostId);
 	
 	Long deleteByUserAndRoutinePost(User user, RoutinePost routinePost);
+	
+	@Query("SELECT postLikes from PostLikes postLikes where postLikes.routinePost.id = :postId")
+	List<LikesResponse> getByPost(Long postId);
 }

@@ -26,10 +26,8 @@ public class LikesController {
 	public ResponseEntity<Void> saveCommentLikes(
 			@AuthenticationPrincipal JwtAuthentication token, @PathVariable Long id
 	) {
-		likesService.saveCommentLikes(
-				token.getId(),
-				id
-		);
+		likesService.saveCommentLikes(token.getId(),
+				id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -49,23 +47,17 @@ public class LikesController {
 	public ResponseEntity<Void> savePostLikes(
 			@AuthenticationPrincipal JwtAuthentication token, @PathVariable Long id
 	) {
-		likesService.savePostLikes(
-				token.getId(),
-				id
-		);
+		likesService.savePostLikes(token.getId(),
+				id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
 	
 	@Operation(summary = "게시물 좋아요 삭제 컨트롤러")
 	@DeleteMapping("/posts/{id}/likes")
 	public ResponseEntity<ApiResponse<Long>> deletePostLikes(
 			@AuthenticationPrincipal JwtAuthentication token, @PathVariable Long id
 	) {
-		return ResponseEntity.ok(ApiResponse.of(likesService.deletePostLikes(
-				token.getId(),
-				id
-		)));
+		return ResponseEntity.ok(ApiResponse.of(likesService.deletePostLikes(token.getId(),
+				id)));
 	}
 }
-
