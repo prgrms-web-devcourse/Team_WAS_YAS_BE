@@ -1,4 +1,4 @@
-package org.prgrms.yas.domain.likes.repsitory;
+package org.prgrms.yas.domain.likes.repository;
 
 import org.prgrms.yas.domain.likes.domain.PostLikes;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
@@ -15,4 +15,5 @@ public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	void savePostLikes(Long userId, Long routinePostId);
 	
 	Long deleteByUserAndRoutinePost(User user, RoutinePost routinePost);
+
 }
