@@ -62,7 +62,7 @@ public class PostController {
 	}
 	
 	@Operation(summary = "게시글 전체 조회(좋아요 순)")
-	@GetMapping("/posts/likes")
+	@GetMapping("/posts/popular")
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllPopularPosts(
 			@RequestParam Optional<String> category
 	) {
@@ -76,8 +76,10 @@ public class PostController {
 			@RequestParam Optional<String> category, @AuthenticationPrincipal JwtAuthentication token
 	) {
 		return ResponseEntity.ok(ApiResponse.of(category.map(biddingCategory -> {
-			                                                return postService.findAllMyPostWithCategory(token.getId(),
-					                                                biddingCategory);
+			                                                return postService.findAllMyPostWithCategory(
+					                                                token.getId(),
+					                                                biddingCategory
+			                                                );
 		                                                })
 		                                                .orElse(postService.findAllMyPost(token.getId()))));
 	}
