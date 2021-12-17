@@ -1,4 +1,4 @@
-package org.prgrms.yas.global.response;
+package org.prgrms.yas.domain.post.global.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,9 +7,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.yas.global.error.ErrorCode;
+import org.prgrms.yas.domain.post.global.error.ErrorCode;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

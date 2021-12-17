@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.domain.MissionStatus;
-import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionMissionStatusId;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
@@ -22,7 +21,7 @@ import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineStatusException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.routine.repository.RoutineStatusRepository;
-import org.prgrms.yas.global.error.ErrorCode;
+import org.prgrms.yas.domain.post.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 
 @Service

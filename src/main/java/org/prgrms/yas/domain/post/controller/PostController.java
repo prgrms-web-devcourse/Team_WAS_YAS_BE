@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
 import org.prgrms.yas.domain.post.service.PostService;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
-import org.prgrms.yas.global.response.ApiResponse;
+import org.prgrms.yas.domain.post.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,8 +36,8 @@ public class PostController {
 	
 	@Operation(summary = "게시글 단건 조회")
 	@GetMapping("/posts/{id}")
-	public ResponseEntity<PostDetailResponse> findOne(final @PathVariable("id") Long postId) {
-		return ResponseEntity.ok(postService.findOne(postId));
+	public ResponseEntity<ApiResponse<PostDetailResponse>> findOne(final @PathVariable("id") Long postId) {
+		return ResponseEntity.ok(ApiResponse.of(postService.findOne(postId)));
 	}
 	
 	@Operation(summary = "루틴 조회(게시글 등록되지 않은 루틴)")

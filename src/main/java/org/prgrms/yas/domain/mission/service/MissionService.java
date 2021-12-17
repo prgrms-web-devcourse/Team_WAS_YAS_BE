@@ -14,7 +14,7 @@ import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
-import org.prgrms.yas.global.error.ErrorCode;
+import org.prgrms.yas.domain.post.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,7 +36,7 @@ public class MissionService {
 	}
 	
 	public Long deleteMission(Long missionId) {
-		missionRepository.deleteById(missionId);
+		missionRepository.deleteByIdAndIsDeletedFalse(missionId);
 		return missionId;
 	}
 	
@@ -44,11 +44,11 @@ public class MissionService {
 	public List<MissionDetailResponse> updateMission(
 			Long routineId, MissionUpdateRequest missionUpdateRequest
 	) {
-		List<Mission> missions = missionRepository.findByRoutineId(routineId)
+		List<Mission> missions = missionRepository.findByRoutineIdAndIsDeletedFalse(routineId)
 		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
-			missionRepository.getById(missionOrder.getMissionId())
+			missionRepository.getByIdAndIsDeletedFalse(missionOrder.getMissionId())
 			                 .updateOrders(missionOrder.getOrders());
 		}
 		

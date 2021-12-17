@@ -11,7 +11,7 @@ import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
-import org.prgrms.yas.global.response.ApiResponse;
+import org.prgrms.yas.domain.post.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

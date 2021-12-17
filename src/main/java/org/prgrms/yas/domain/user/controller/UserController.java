@@ -10,7 +10,7 @@ import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserToken;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.service.UserService;
-import org.prgrms.yas.global.response.ApiResponse;
+import org.prgrms.yas.domain.post.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.prgrms.yas.jwt.JwtAuthenticationToken;
 import org.springframework.http.ResponseEntity;

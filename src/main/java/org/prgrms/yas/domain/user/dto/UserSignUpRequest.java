@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
-import org.prgrms.yas.global.error.ErrorCode;
+import org.prgrms.yas.domain.post.global.error.ErrorCode;
 
 @Getter
 public class UserSignUpRequest {

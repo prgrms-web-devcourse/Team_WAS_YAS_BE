@@ -1,4 +1,4 @@
-package org.prgrms.yas.global.aws;
+package org.prgrms.yas.domain.post.global.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

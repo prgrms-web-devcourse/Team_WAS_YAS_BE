@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.routine.service;
 
 import static java.util.stream.Collectors.toList;
-import static org.prgrms.yas.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
+import static org.prgrms.yas.domain.post.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
 
 import java.util.Calendar;
 import java.util.List;

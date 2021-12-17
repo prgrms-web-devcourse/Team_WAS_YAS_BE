@@ -2,7 +2,7 @@ package org.prgrms.yas.domain.likes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.prgrms.yas.domain.likes.service.LikesService;
-import org.prgrms.yas.global.response.ApiResponse;
+import org.prgrms.yas.domain.post.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
