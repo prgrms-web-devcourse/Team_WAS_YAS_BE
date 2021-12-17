@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.likes.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.user.domain.User;
 
