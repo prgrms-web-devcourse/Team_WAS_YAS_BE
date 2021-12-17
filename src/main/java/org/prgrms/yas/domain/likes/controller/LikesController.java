@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.likes.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.prgrms.yas.domain.likes.service.LikesService;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
@@ -19,6 +20,7 @@ public class LikesController {
 		this.likesService = likesService;
 	}
 	
+	@Operation(summary = "댓글 좋아요 생성 컨트롤러")
 	@PostMapping("/posts/comments/{id}/likes")
 	public ResponseEntity<Void> saveCommentLikes(
 			@AuthenticationPrincipal JwtAuthentication token,
@@ -28,6 +30,7 @@ public class LikesController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	@Operation(summary = "댓글 좋아요 삭제 컨트롤러")
 	@DeleteMapping("/posts/comments/{id}/likes")
 	public ResponseEntity<ApiResponse<Long>> deleteCommentLikes(
 			@AuthenticationPrincipal JwtAuthentication token,
