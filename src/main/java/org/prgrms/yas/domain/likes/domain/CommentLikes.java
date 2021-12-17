@@ -20,7 +20,6 @@ import org.prgrms.yas.domain.user.domain.User;
 @Entity
 @Table(name = "comment_likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE comment_likes SET is_deleted = true WHERE id =?")
 public class CommentLikes {
 	
 	@Id
@@ -34,7 +33,4 @@ public class CommentLikes {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "comment_id")
 	private Comment comment;
-	
-	@Column(nullable = false, columnDefinition = "TINYINT default false")
-	private boolean isDeleted;
 }
