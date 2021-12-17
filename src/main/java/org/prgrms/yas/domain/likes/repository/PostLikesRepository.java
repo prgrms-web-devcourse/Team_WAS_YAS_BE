@@ -1,9 +1,7 @@
 package org.prgrms.yas.domain.likes.repository;
 
-import java.util.List;
 import org.prgrms.yas.domain.likes.domain.PostLikes;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
-import org.prgrms.yas.domain.likes.dto.LikesResponse;
 import org.prgrms.yas.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
