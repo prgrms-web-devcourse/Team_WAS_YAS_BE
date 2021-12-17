@@ -17,8 +17,4 @@ public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	void savePostLikes(Long userId, Long routinePostId);
 	
 	Long deleteByUserAndRoutinePost(User user, RoutinePost routinePost);
-	
-	@Query("SELECT postLikes from PostLikes postLikes where postLikes.routinePost.id = :postId")
-	List<LikesResponse> getByPost(Long postId);
-	//유저아이디와 루틴포스트 아이디로 PostLikes 찾기
 }
