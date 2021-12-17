@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.likes.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,8 +12,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.user.domain.User;
 
@@ -35,9 +32,6 @@ public class PostLikes {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_post_id")
 	private RoutinePost routinePost;
-	
-	@Column(nullable = false, columnDefinition = "TINYINT default false")
-	private boolean isDeleted;
 	
 	@Builder
 	public PostLikes(User user, RoutinePost routinePost) {

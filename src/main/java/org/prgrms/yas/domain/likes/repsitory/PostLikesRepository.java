@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	
 	@Modifying
-	@Query(value = "insert ignore into post_likes (user_id, routine_post_id,is_deleted) "
-			+ "values(?1,?2,'0') ", nativeQuery = true)
+	@Query(value = "insert ignore into post_likes (user_id, routine_post_id) "
+			+ "values(?1,?2) ", nativeQuery = true)
 	void savePostLikes(Long userId, Long routinePostId);
 	
 	Long deleteByUserAndRoutinePost(User user, RoutinePost routinePost);
