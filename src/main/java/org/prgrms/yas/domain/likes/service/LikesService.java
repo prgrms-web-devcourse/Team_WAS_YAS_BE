@@ -4,8 +4,7 @@ import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.comment.repository.CommentRepository;
 import org.prgrms.yas.domain.likes.repository.CommentLikesRepository;
-import org.prgrms.yas.domain.likes.domain.PostLikes;
-import org.prgrms.yas.domain.likes.repsitory.PostLikesRepository;
+import org.prgrms.yas.domain.likes.repository.PostLikesRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.exception.NotFoundRoutinePostException;
 import org.prgrms.yas.domain.post.repository.PostRepository;
@@ -29,7 +28,7 @@ public class LikesService {
 			CommentLikesRepository commentLikesRepository,
 			PostLikesRepository postLikesRepository,
 			UserRepository userRepository,
-			CommentRepository commentRepository
+			CommentRepository commentRepository,
 			PostRepository postRepository
 	) {
 		this.postLikesRepository = postLikesRepository;
