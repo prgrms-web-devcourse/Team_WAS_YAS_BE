@@ -1,8 +1,10 @@
 package org.prgrms.yas.domain.post.repository;
 
+
+import java.util.Optional;
+import org.prgrms.yas.domain.comment.domain.Comment;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import net.bytebuddy.TypeCache.Sort;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.routine.domain.Routine;
@@ -12,6 +14,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface PostRepository extends JpaRepository<RoutinePost, Long> {
+
+	boolean existsByRoutineId(Long routineId);
 	
 	Optional<RoutinePost> findByIdAndIsDeletedFalse(Long id);
 	

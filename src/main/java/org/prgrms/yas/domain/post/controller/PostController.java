@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,15 +28,20 @@ public class PostController {
 	
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
-	public ResponseEntity<ApiResponse<Long>> create(final @PathVariable("id") Long routineId) {
-		return ResponseEntity.ok(ApiResponse.of(postService.savePost(routineId)));
+	public ResponseEntity<ApiResponse<Long>> create(
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @PathVariable("id") Long routineId
+	) {
+		return ResponseEntity.ok(ApiResponse.of(postService.savePost(token.getId(), routineId)));
 	}
 	
 	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/posts/{id}")
-	public ResponseEntity<ApiResponse<Long>> delete(final @PathVariable("id") Long postId) {
-		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(postId)));
-	}
+	public ResponseEntity<ApiResponse<Long>> delete(
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @PathVariable("id") Long postId) {
+		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(token.getId(), postId)));
+}
 	
 	@Operation(summary = "게시글 단건 조회")
 	@GetMapping("/posts/{id}")
@@ -82,6 +88,4 @@ public class PostController {
 		                                                })
 		                                                .orElse(postService.findAllMyPost(token.getId()))));
 	}
-	
-	
 }
