@@ -28,7 +28,7 @@ public class MissionService {
 	public Long saveMission(
 			Long routineId, MissionCreateRequest missionCreateRequest
 	) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		routine.addDurationGoalTime(missionCreateRequest.getDurationGoalTime());
 		return missionRepository.save(missionCreateRequest.toEntity(routine))
@@ -38,9 +38,9 @@ public class MissionService {
 	
 	@Transactional
 	public Long deleteMission(Long routineId, Long missionId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		Mission mission = missionRepository.findById(missionId)
+		Mission mission = missionRepository.findByIdAndIsDeletedFalse(missionId)
 		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		routine.minusDurationGoalTime(mission.getDurationGoalTime());

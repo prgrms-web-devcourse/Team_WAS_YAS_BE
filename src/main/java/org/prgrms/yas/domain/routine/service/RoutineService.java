@@ -9,9 +9,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.Week;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
@@ -29,6 +32,7 @@ public class RoutineService {
 	
 	private final RoutineRepository routineRepository;
 	private final UserRepository userRepository;
+	private final MissionRepository missionRepository;
 	private static final double IS_NOT_WEEK = 0;
 	
 	@Transactional
@@ -55,7 +59,7 @@ public class RoutineService {
 	public Long deleteRoutine(Long routineId) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
-		routineRepository.deleteById(routineId);
+		routine.deleteRoutine();
 		return routineId;
 		
 	}
@@ -81,14 +85,14 @@ public class RoutineService {
 	
 	@Transactional
 	public void findId(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 	}
 	
 	
 	@Transactional
 	public RoutineDetailResponse findMissions(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		
 		return routine.toRoutineDetailResponse();
@@ -98,7 +102,7 @@ public class RoutineService {
 	public List<RoutineListResponse> findRoutines(Long userId) {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		List<Routine> routines = routineRepository.getByUser(user);
+		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		return routines.stream()
 		               .map(Routine::toRoutineListResponse)
 		               .collect(toList());
@@ -109,7 +113,7 @@ public class RoutineService {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		
-		List<Routine> routines = routineRepository.getByUser(user);
+		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		Calendar calendar = Calendar.getInstance();
 		
 		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
@@ -133,5 +137,29 @@ public class RoutineService {
 		return findRoutines.stream()
 		                   .map(Routine::toRoutineListResponse)
 		                   .collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public Long saveRoutineFromPost(
+			Long userId, RoutineDetailCreateRequest routineDetailCreateRequest
+	) {
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
+		Routine routine = Routine.builder()
+		                         .user(user)
+		                         .name(routineDetailCreateRequest.getName())
+		                         .startGoalTime(routineDetailCreateRequest.getStartGoalTime())
+		                         .durationGoalTime(routineDetailCreateRequest.getDurationGoalTime())
+		                         .weeks(routineDetailCreateRequest.getEnumWeeks(routineDetailCreateRequest.getWeeks()))
+		                         .routineCategory(routineDetailCreateRequest.getEnumRoutineCategory(routineDetailCreateRequest.getRoutineCategory()))
+		                         .color(routineDetailCreateRequest.getColor())
+		                         .emoji(routineDetailCreateRequest.getEmoji())
+		                         .build();
+		
+		for (MissionCreateRequest missionCreateRequest : routineDetailCreateRequest.getMissionCreateRequest()) {
+			missionRepository.save(missionCreateRequest.toEntity(routine));
+		}
+		return routineRepository.save(routine)
+		                        .getId();
 	}
 }
