@@ -30,17 +30,14 @@ public class PostController {
 	
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
-	public ResponseEntity<ApiResponse<Long>> create(		
-	) {
+	public ResponseEntity<ApiResponse<Long>> create(
 			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
-			final @PathVariable("id") Long routineId,
-    @RequestBody PostCreateRequest postCreateRequest
+			final @PathVariable("id") Long routineId, @RequestBody PostCreateRequest postCreateRequest
 	) {
-     return ResponseEntity.ok(ApiResponse.of(postService.savePost(routineId,
-				postCreateRequest)));
 		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
 				token.getId(),
-				routineId
+				routineId,
+				postCreateRequest
 		)));
 	}
 	
