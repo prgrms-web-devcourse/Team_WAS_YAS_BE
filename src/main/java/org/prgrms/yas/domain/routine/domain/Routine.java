@@ -157,15 +157,14 @@ public class Routine {
 		                          .build();
 	}
 	
-	public List<MissionDetailResponse> getMissionDetailResponse() {
-		List<Mission> missions = this.getMissions();
+	public List<MissionDetailResponse> getMissionDetailResponse(List<Mission> missions) {
 		return missions.stream()
 		               .map(Mission::toMissionDetailResponse)
 		               .collect(Collectors.toList());
 		
 	}
 	
-	public RoutineDetailResponse toRoutineDetailResponse() {
+	public RoutineDetailResponse toRoutineDetailResponse(List<Mission> missions) {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
@@ -174,7 +173,7 @@ public class Routine {
 		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
-		                            .missionDetailResponses(getMissionDetailResponse())
+		                            .missionDetailResponses(getMissionDetailResponse(missions))
 		                            .build();
 	}
 	
