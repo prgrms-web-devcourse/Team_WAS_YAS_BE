@@ -3,6 +3,8 @@ package org.prgrms.yas.domain.mission.repository;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.routine.domain.Routine;
+import org.prgrms.yas.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
@@ -14,4 +16,7 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 	Mission getByIdAndIsDeletedFalse(Long missionId);
 	
 	Optional<Mission> findByIdAndIsDeletedFalse(Long missionId);
+	
+	List<Mission> getByRoutineAndIsDeletedFalse(Routine routine);
+	
 }

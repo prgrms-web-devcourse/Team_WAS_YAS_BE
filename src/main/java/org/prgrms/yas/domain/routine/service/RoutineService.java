@@ -9,7 +9,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.Week;
@@ -95,7 +97,8 @@ public class RoutineService {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		
-		return routine.toRoutineDetailResponse();
+		List<Mission> missions = missionRepository.getByRoutineAndIsDeletedFalse(routine);
+		return routine.toRoutineDetailResponse(missions);
 	}
 	
 	@Transactional
