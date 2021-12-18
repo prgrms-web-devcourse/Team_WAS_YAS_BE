@@ -21,6 +21,7 @@ public class PostListResponse {
 	private PostRoutineDto routine;
 	private List<LikesResponse> likesResponse;
 	
+	
 	@Builder
 	public PostListResponse(RoutinePost routinePost, List<LikesResponse> likesResponse) {
 		this.postId = routinePost.getId();

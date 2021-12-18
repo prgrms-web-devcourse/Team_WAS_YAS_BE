@@ -21,4 +21,5 @@ public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	
 	@Query("SELECT postLikes from PostLikes postLikes where postLikes.routinePost.id = :postId")
 	List<LikesResponse> getByPost(@Param(value = "postId") Long postId);
+
 }

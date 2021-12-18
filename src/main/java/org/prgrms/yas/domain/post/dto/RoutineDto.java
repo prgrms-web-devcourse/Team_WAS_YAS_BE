@@ -27,10 +27,7 @@ public class RoutineDto {
 		this.name = routine.getName();
 		this.emoji = routine.getEmoji();
 		this.durationGoalTime = routine.getDurationGoalTime();
-		this.category = routine.getRoutineCategory()
-		                       .stream()
-		                       .map(CategoryDto::categoryToString)
-		                       .collect(Collectors.toList());
+		this.category = routine.getStringCategory(routine.getRoutineCategory());
 		this.missions = routine.getMissions()
 		                       .stream()
 		                       .map(MissionDto::new)

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,17 +30,30 @@ public class PostController {
 	
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
-	public ResponseEntity<ApiResponse<Long>> create(
-			final @PathVariable("id") Long routineId, @RequestBody PostCreateRequest postCreateRequest
+	public ResponseEntity<ApiResponse<Long>> create(		
 	) {
-		return ResponseEntity.ok(ApiResponse.of(postService.savePost(routineId,
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @PathVariable("id") Long routineId,
+    @RequestBody PostCreateRequest postCreateRequest
+	) {
+     return ResponseEntity.ok(ApiResponse.of(postService.savePost(routineId,
 				postCreateRequest)));
+		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
+				token.getId(),
+				routineId
+		)));
 	}
 	
 	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/posts/{id}")
-	public ResponseEntity<ApiResponse<Long>> delete(final @PathVariable("id") Long postId) {
-		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(postId)));
+	public ResponseEntity<ApiResponse<Long>> delete(
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @PathVariable("id") Long postId
+	) {
+		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(
+				token.getId(),
+				postId
+		)));
 	}
 	
 	@Operation(summary = "게시글 단건 조회")
@@ -81,14 +95,10 @@ public class PostController {
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllMyPost(
 			@RequestParam Optional<String> category, @AuthenticationPrincipal JwtAuthentication token
 	) {
-		return ResponseEntity.ok(ApiResponse.of(category.map(biddingCategory -> {
-			                                                return postService.findAllMyPostWithCategory(
-					                                                token.getId(),
-					                                                biddingCategory
-			                                                );
-		                                                })
+		return ResponseEntity.ok(ApiResponse.of(category.map(biddingCategory -> postService.findAllMyPostWithCategory(
+				                                                token.getId(),
+				                                                biddingCategory
+		                                                ))
 		                                                .orElse(postService.findAllMyPost(token.getId()))));
 	}
-	
-	
 }

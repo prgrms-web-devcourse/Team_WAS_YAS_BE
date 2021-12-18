@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.routine.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,18 +15,24 @@ public class RoutineDetailResponse {
 	private String name;
 	private String emoji;
 	private String color;
+	private LocalDateTime startGoalTime;
+	private Long durationGoalTime;
 	private List<String> routineCategory;
 	private List<String> weeks;
 	private List<MissionDetailResponse> missionDetailResponses;
 	
 	@Builder
 	public RoutineDetailResponse(
-			String name, String emoji, String color, List<String> routineCategory, List<String> weeks,
+			String name, String emoji, String color, LocalDateTime startGoalTime, Long durationGoalTime,
+			List<String> routineCategory, List<String> weeks,
 			List<MissionDetailResponse> missionDetailResponses
 	) {
+		
 		this.name = name;
 		this.emoji = emoji;
 		this.color = color;
+		this.durationGoalTime = durationGoalTime;
+		this.startGoalTime = startGoalTime;
 		this.routineCategory = routineCategory;
 		this.missionDetailResponses = missionDetailResponses;
 		this.weeks = weeks;
