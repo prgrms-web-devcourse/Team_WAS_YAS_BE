@@ -36,7 +36,7 @@ public class MissionService {
 	}
 	
 	public Long deleteMission(Long missionId) {
-		missionRepository.deleteById(missionId);
+		missionRepository.deleteByIdAndIsDeletedFalse(missionId);
 		return missionId;
 	}
 	
@@ -44,11 +44,11 @@ public class MissionService {
 	public List<MissionDetailResponse> updateMission(
 			Long routineId, MissionUpdateRequest missionUpdateRequest
 	) {
-		List<Mission> missions = missionRepository.findByRoutineId(routineId)
+		List<Mission> missions = missionRepository.findByRoutineIdAndIsDeletedFalse(routineId)
 		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
-			missionRepository.getById(missionOrder.getMissionId())
+			missionRepository.getByIdAndIsDeletedFalse(missionOrder.getMissionId())
 			                 .updateOrders(missionOrder.getOrders());
 		}
 		

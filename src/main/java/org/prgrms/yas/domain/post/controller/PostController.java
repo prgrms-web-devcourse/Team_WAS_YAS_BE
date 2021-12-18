@@ -39,8 +39,8 @@ public class PostController {
 	
 	@Operation(summary = "게시글 단건 조회")
 	@GetMapping("/posts/{id}")
-	public ResponseEntity<PostDetailResponse> findOne(final @PathVariable("id") Long postId) {
-		return ResponseEntity.ok(postService.findOne(postId));
+	public ResponseEntity<ApiResponse<PostDetailResponse>> findOne(final @PathVariable("id") Long postId) {
+		return ResponseEntity.ok(ApiResponse.of(postService.findOne(postId)));
 	}
 	
 	@Operation(summary = "루틴 조회(게시글 등록되지 않은 루틴)")

@@ -31,7 +31,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Table(name = "mission")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
 @DynamicInsert
 @DynamicUpdate
@@ -55,7 +54,6 @@ public class Mission {
 	
 	@Column(nullable = false)
 	private String color;
-	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
