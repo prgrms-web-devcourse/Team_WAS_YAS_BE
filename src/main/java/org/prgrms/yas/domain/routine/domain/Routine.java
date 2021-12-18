@@ -23,6 +23,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.mission.domain.Mission;
@@ -61,6 +62,7 @@ public class Routine {
 	private LocalDateTime startGoalTime;
 	
 	@Column(nullable = false)
+	@ColumnDefault("0")
 	private Long durationGoalTime; // 초가 들어옴
 	
 	@ElementCollection(fetch = FetchType.LAZY)
@@ -162,10 +164,20 @@ public class Routine {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
+		                            .startGoalTime(startGoalTime)
+		                            .durationGoalTime(durationGoalTime)
 		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())
 		                            .build();
+	}
+	
+	public void addDurationGoalTime(Long durationGoalTime) {
+		this.durationGoalTime += durationGoalTime;
+	}
+	
+	public void minusDurationGoalTime(Long durationGoalTime) {
+		this.durationGoalTime -= durationGoalTime;
 	}
 }

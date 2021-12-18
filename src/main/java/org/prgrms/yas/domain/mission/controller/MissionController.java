@@ -39,9 +39,12 @@ public class MissionController {
 	}
 	
 	@Operation(summary = "미션 삭제 컨트롤러")
-	@DeleteMapping("missions/{id}")
-	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long missionId) {
-		Long deleteMissionId = missionService.deleteMission(missionId);
+	@DeleteMapping("/{routineId}/missions/{id}")
+	public ResponseEntity<ApiResponse<Long>> delete(
+			@PathVariable("routineId") Long routineId, @PathVariable("id") Long missionId
+	) {
+		Long deleteMissionId = missionService.deleteMission(routineId,
+				missionId);
 		return ResponseEntity.ok(ApiResponse.of(deleteMissionId));
 	}
 	
