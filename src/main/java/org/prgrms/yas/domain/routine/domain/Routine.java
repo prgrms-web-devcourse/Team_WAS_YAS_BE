@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
@@ -36,7 +37,7 @@ import org.prgrms.yas.domain.user.domain.User;
 @Table(name = "routine")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
+@DynamicUpdate
 @DynamicInsert
 public class Routine {
 	
@@ -82,6 +83,10 @@ public class Routine {
 	
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
 	private boolean isDeleted;
+	
+	public void deleteRoutine() {
+		this.isDeleted = true;
+	}
 	
 	public void addRoutineStatus(RoutineStatus routineCompletion) {
 		this.routineStatuses.add(routineCompletion);

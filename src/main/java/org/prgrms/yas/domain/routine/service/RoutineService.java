@@ -59,7 +59,7 @@ public class RoutineService {
 	public Long deleteRoutine(Long routineId) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
-		routineRepository.deleteById(routineId);
+		routine.deleteRoutine();
 		return routineId;
 		
 	}
