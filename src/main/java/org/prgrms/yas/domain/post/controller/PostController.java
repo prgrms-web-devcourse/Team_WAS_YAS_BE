@@ -32,20 +32,29 @@ public class PostController {
 			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long routineId
 	) {
-		return ResponseEntity.ok(ApiResponse.of(postService.savePost(token.getId(), routineId)));
+		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
+				token.getId(),
+				routineId
+		)));
 	}
 	
 	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/posts/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(
 			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
-			final @PathVariable("id") Long postId) {
-		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(token.getId(), postId)));
-}
+			final @PathVariable("id") Long postId
+	) {
+		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(
+				token.getId(),
+				postId
+		)));
+	}
 	
 	@Operation(summary = "게시글 단건 조회")
 	@GetMapping("/posts/{id}")
-	public ResponseEntity<ApiResponse<PostDetailResponse>> findOne(final @PathVariable("id") Long postId) {
+	public ResponseEntity<ApiResponse<PostDetailResponse>> findOne(
+			final @PathVariable("id") Long postId
+	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.findOne(postId)));
 	}
 	
@@ -80,12 +89,10 @@ public class PostController {
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllMyPost(
 			@RequestParam Optional<String> category, @AuthenticationPrincipal JwtAuthentication token
 	) {
-		return ResponseEntity.ok(ApiResponse.of(category.map(biddingCategory -> {
-			                                                return postService.findAllMyPostWithCategory(
-					                                                token.getId(),
-					                                                biddingCategory
-			                                                );
-		                                                })
+		return ResponseEntity.ok(ApiResponse.of(category.map(biddingCategory -> postService.findAllMyPostWithCategory(
+				                                                token.getId(),
+				                                                biddingCategory
+		                                                ))
 		                                                .orElse(postService.findAllMyPost(token.getId()))));
 	}
 }

@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,7 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
 import org.prgrms.yas.domain.likes.domain.PostLikes;
@@ -48,7 +46,6 @@ public class RoutinePost extends BaseEntity {
   
  	@OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
 	private List<PostLikes> postLikes = new ArrayList<>();
-
   
   @Builder
   public RoutinePost(Routine routine) {
@@ -63,15 +60,6 @@ public class RoutinePost extends BaseEntity {
   public RoutinePost addComment(List<Comment> comments) {
 		comments.forEach(this::addComment);
 		return this;
-	}
-
-  public RoutinePost addComment(List<Comment> comments) {
-    comments.forEach(this::addComment);
-    return this;
-  }
-		
-	public void deletePost() {
-		this.isDeleted = true;
 	}
 		
 	public void addPostLike(PostLikes postLike) {
