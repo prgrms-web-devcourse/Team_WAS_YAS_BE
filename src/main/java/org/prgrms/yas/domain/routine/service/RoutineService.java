@@ -59,7 +59,7 @@ public class RoutineService {
 	public Long deleteRoutine(Long routineId) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
-		routineRepository.deleteById(routineId);
+		routine.deleteRoutine();
 		return routineId;
 		
 	}
@@ -85,14 +85,14 @@ public class RoutineService {
 	
 	@Transactional
 	public void findId(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 	}
 	
 	
 	@Transactional
 	public RoutineDetailResponse findMissions(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		
 		return routine.toRoutineDetailResponse();
@@ -102,7 +102,7 @@ public class RoutineService {
 	public List<RoutineListResponse> findRoutines(Long userId) {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		List<Routine> routines = routineRepository.getByUser(user);
+		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		return routines.stream()
 		               .map(Routine::toRoutineListResponse)
 		               .collect(toList());
@@ -113,7 +113,7 @@ public class RoutineService {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		
-		List<Routine> routines = routineRepository.getByUser(user);
+		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		Calendar calendar = Calendar.getInstance();
 		
 		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));

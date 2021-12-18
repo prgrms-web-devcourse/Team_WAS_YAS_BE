@@ -12,4 +12,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 	void deleteByIdAndIsDeletedFalse(Long missionId);
 	
 	Mission getByIdAndIsDeletedFalse(Long missionId);
+	
+	Optional<Mission> findByIdAndIsDeletedFalse(Long missionId);
 }
