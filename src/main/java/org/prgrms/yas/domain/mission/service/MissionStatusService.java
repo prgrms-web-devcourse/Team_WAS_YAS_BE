@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.domain.MissionStatus;
-import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionMissionStatusId;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;

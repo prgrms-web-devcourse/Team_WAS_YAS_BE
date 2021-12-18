@@ -1,9 +1,9 @@
 package org.prgrms.yas.domain.mission.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
@@ -25,6 +25,7 @@ public class MissionStatusController {
 	
 	private final MissionStatusService missionStatusService;
 	
+	@Operation(summary = "미션상태 등록 컨트롤러")
 	@PostMapping
 	public ResponseEntity<ApiResponse<MissionStatusCreateResponse>> create(
 			@PathVariable("id") Long routineId
@@ -32,6 +33,7 @@ public class MissionStatusController {
 		return ResponseEntity.ok(ApiResponse.of(missionStatusService.saveMissionStatus(routineId)));
 	}
 	
+	@Operation(summary = "미션상태 수정 컨트롤러")
 	@PutMapping
 	public ResponseEntity<ApiResponse<Long>> update(
 			@Valid @RequestBody MissionStatusUpdateRequest missionStatusUpdateRequest,
@@ -44,6 +46,7 @@ public class MissionStatusController {
 		return ResponseEntity.ok(ApiResponse.of(missionStatusId));
 	}
 	
+	@Operation(summary = "미션상태 조회 컨트롤러")
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<MissionDetailStatusResponse>>> getMissionStatuses(
 			@PathVariable("id") Long routineId

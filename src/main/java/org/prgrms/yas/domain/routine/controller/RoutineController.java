@@ -1,6 +1,8 @@
 package org.prgrms.yas.domain.routine.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
@@ -11,7 +13,6 @@ import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.routine.service.RoutineService;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -31,6 +33,7 @@ public class RoutineController {
 	
 	private final RoutineService routineService;
 	
+	@Operation(summary = "루틴 생성 컨트롤러")
 	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody RoutineCreateRequest routineCreateRequest,
@@ -44,12 +47,14 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineId));
 	}
 	
+	@Operation(summary = "루틴 삭제 컨트롤러")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long id) {
 		Long deletedRoutineId = routineService.deleteRoutine(id);
 		return ResponseEntity.ok(ApiResponse.of(deletedRoutineId));
 	}
 	
+	@Operation(summary = "루틴 수정 컨트롤러")
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<RoutineUpdateResponse>> update(
 			@PathVariable("id") Long id, @Valid @RequestBody RoutineUpdateRequest routineUpdateRequest
@@ -61,19 +66,24 @@ public class RoutineController {
 		return ResponseEntity.ok(ApiResponse.of(routineUpdateResponse));
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<RoutineListResponse>> get(
-			@AuthenticationPrincipal JwtAuthentication token
-	) {
-		List<RoutineListResponse> routineDetailResponses = routineService.findRoutines(token.getId());
-		return ResponseEntity.ok(routineDetailResponses);
-	}
-	
+	@Operation(summary = "루틴 상세 조회 컨트롤러")
 	@GetMapping("/{id}/missions")
 	public ResponseEntity<ApiResponse<RoutineDetailResponse>> getMissions(
 			@PathVariable("id") Long routineId
 	) {
 		RoutineDetailResponse routineDetailResponse = routineService.findMissions(routineId);
 		return ResponseEntity.ok(ApiResponse.of(routineDetailResponse));
+	}
+	
+	@Operation(summary = "루틴 전체/완료/미완료 조회 컨트롤러")
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> getRoutines(
+			@AuthenticationPrincipal JwtAuthentication token, @RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(ApiResponse.of(status.map(biddingStatus -> routineService.findFinishRoutines(
+				                                              token.getId(),
+				                                              biddingStatus
+		                                              ))
+		                                              .orElse(routineService.findRoutines(token.getId()))));
 	}
 }

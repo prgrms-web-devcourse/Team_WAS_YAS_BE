@@ -31,7 +31,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Table(name = "mission")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
 @DynamicInsert
 @DynamicUpdate
@@ -56,8 +55,7 @@ public class Mission {
 	@Column(nullable = false)
 	private String color;
 	
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
@@ -69,13 +67,14 @@ public class Mission {
 	
 	@Builder
 	public Mission(
-			String name, Long durationGoalTime, int orders, String emoji, Routine routine
+			String name, Long durationGoalTime, int orders, String emoji, Routine routine, String color
 	) {
 		this.name = name;
 		this.durationGoalTime = durationGoalTime;
 		this.orders = orders;
 		this.emoji = emoji;
 		this.routine = routine;
+		this.color = color;
 		
 	}
 	
@@ -96,7 +95,7 @@ public class Mission {
 		}
 		this.routine = routine;
 	}
-
+	
 	public void updateOrders(int orders) {
 		this.orders = orders;
 	}
@@ -115,13 +114,13 @@ public class Mission {
 	
 	public MissionDetailStatusResponse toMissionDetailStatusResponse(MissionStatus missionStatus) {
 		return MissionDetailStatusResponse.builder()
-		                            .missionStatusDetailResponse(missionStatus.toMissionStatusDetailResponse())
-		                            .name(name)
-		                            .durationGoalTime(durationGoalTime)
-		                            .missionId(id)
-		                            .color(color)
-		                            .emoji(emoji)
-		                            .orders(orders)
-		                            .build();
+		                                  .missionStatusDetailResponse(missionStatus.toMissionStatusDetailResponse())
+		                                  .name(name)
+		                                  .durationGoalTime(durationGoalTime)
+		                                  .missionId(id)
+		                                  .color(color)
+		                                  .emoji(emoji)
+		                                  .orders(orders)
+		                                  .build();
 	}
 }

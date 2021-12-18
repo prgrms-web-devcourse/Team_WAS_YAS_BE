@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -22,9 +23,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
@@ -61,6 +62,7 @@ public class Routine {
 	private LocalDateTime startGoalTime;
 	
 	@Column(nullable = false)
+	@ColumnDefault("0")
 	private Long durationGoalTime; // 초가 들어옴
 	
 	@ElementCollection(fetch = FetchType.LAZY)
@@ -68,7 +70,7 @@ public class Routine {
 	@Enumerated(EnumType.STRING)
 	private List<Week> weeks = new ArrayList<>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -162,9 +164,20 @@ public class Routine {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
+		                            .startGoalTime(startGoalTime)
+		                            .durationGoalTime(durationGoalTime)
+		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse())
 		                            .build();
+	}
+	
+	public void addDurationGoalTime(Long durationGoalTime) {
+		this.durationGoalTime += durationGoalTime;
+	}
+	
+	public void minusDurationGoalTime(Long durationGoalTime) {
+		this.durationGoalTime -= durationGoalTime;
 	}
 }

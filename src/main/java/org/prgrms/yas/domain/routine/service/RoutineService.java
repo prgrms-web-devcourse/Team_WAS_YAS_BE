@@ -3,10 +3,14 @@ package org.prgrms.yas.domain.routine.service;
 import static java.util.stream.Collectors.toList;
 import static org.prgrms.yas.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.domain.Routine;
+import org.prgrms.yas.domain.routine.domain.Week;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
@@ -25,6 +29,7 @@ public class RoutineService {
 	
 	private final RoutineRepository routineRepository;
 	private final UserRepository userRepository;
+	private static final double IS_NOT_WEEK = 0;
 	
 	@Transactional
 	public Long saveRoutine(Long userId, RoutineCreateRequest routineCreateRequest) {
@@ -80,6 +85,15 @@ public class RoutineService {
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 	}
 	
+	
+	@Transactional
+	public RoutineDetailResponse findMissions(Long routineId) {
+		Routine routine = routineRepository.findById(routineId)
+		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
+		
+		return routine.toRoutineDetailResponse();
+	}
+	
 	@Transactional
 	public List<RoutineListResponse> findRoutines(Long userId) {
 		User user = userRepository.findById(userId)
@@ -91,10 +105,33 @@ public class RoutineService {
 	}
 	
 	@Transactional
-	public RoutineDetailResponse findMissions(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
-		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
+	public List<RoutineListResponse> findFinishRoutines(Long userId, String status) {
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		
-		return routine.toRoutineDetailResponse();
+		List<Routine> routines = routineRepository.getByUser(user);
+		Calendar calendar = Calendar.getInstance();
+		
+		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
+		List<Routine> weekRoutine = routines.stream()
+		                                    .filter(routine -> {
+					
+					                                    long cnt = routine.getWeeks()
+					                                                      .stream()
+					                                                      .filter(isWeek)
+					                                                      .count();
+					
+					                                    return cnt != IS_NOT_WEEK;
+				                                    }
+		
+		                                    )
+		                                    .collect(toList());
+		
+		Status statusEnum = Status.from(status);
+		List<Routine> findRoutines = statusEnum.apply(weekRoutine);
+		
+		return findRoutines.stream()
+		                   .map(Routine::toRoutineListResponse)
+		                   .collect(Collectors.toList());
 	}
 }

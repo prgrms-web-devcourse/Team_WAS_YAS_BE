@@ -7,6 +7,7 @@ import org.prgrms.yas.domain.comment.dto.CommentCreateRequest;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.comment.repository.CommentRepository;
+import org.prgrms.yas.domain.likes.repository.CommentLikesRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.exception.WrongUserException;
 import org.prgrms.yas.domain.post.repository.PostRepository;
@@ -25,6 +26,7 @@ public class CommentService {
 	private final UserRepository userRepository;
 	private final PostRepository postRepository;
 	private final CommentRepository commentRepository;
+	private final CommentLikesRepository commentLikesRepository;
 	
 	public Long saveComment(
 			final Long userId, final Long postId, final CommentCreateRequest commentCreateRequest

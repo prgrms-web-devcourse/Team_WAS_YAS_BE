@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.mission.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class MissionController {
 	
 	private final MissionService missionService;
 	
+	@Operation(summary = "미션 생성 컨트롤러")
 	@PostMapping("/{id}/missions")
 	public ResponseEntity<ApiResponse<Long>> create(
 			@Valid @RequestBody MissionCreateRequest missionCreateRequest,
@@ -36,12 +38,17 @@ public class MissionController {
 		return ResponseEntity.ok(ApiResponse.of(missionId));
 	}
 	
-	@DeleteMapping("missions/{id}")
-	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long missionId) {
-		Long deleteMissionId = missionService.deleteMission(missionId);
+	@Operation(summary = "미션 삭제 컨트롤러")
+	@DeleteMapping("/{routineId}/missions/{id}")
+	public ResponseEntity<ApiResponse<Long>> delete(
+			@PathVariable("routineId") Long routineId, @PathVariable("id") Long missionId
+	) {
+		Long deleteMissionId = missionService.deleteMission(routineId,
+				missionId);
 		return ResponseEntity.ok(ApiResponse.of(deleteMissionId));
 	}
 	
+	@Operation(summary = "루틴 수정 컨트롤러")
 	@PutMapping("/{id}/missions")
 	public ResponseEntity<ApiResponse<List<MissionDetailResponse>>> update(
 			@Valid @RequestBody MissionUpdateRequest missionUpdateRequest,

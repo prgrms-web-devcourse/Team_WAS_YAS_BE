@@ -1,36 +1,33 @@
 package org.prgrms.yas.domain.post.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.yas.domain.likes.dto.LikesDto;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoutineDto {
+public class PostRoutineDto {
 	
 	private Long routineId;
 	private String name;
 	private String emoji;
 	private Long durationGoalTime;
 	private List<String> category;
-	private List<MissionDto> missions = new ArrayList<>();
 	
 	@Builder
-	public RoutineDto(final Routine routine) {
+	public PostRoutineDto(final Routine routine) {
 		this.routineId = routine.getId();
 		this.name = routine.getName();
 		this.emoji = routine.getEmoji();
 		this.durationGoalTime = routine.getDurationGoalTime();
-		this.category = routine.getStringCategory(routine.getRoutineCategory());
-		this.missions = routine.getMissions()
+		this.category = routine.getRoutineCategory()
 		                       .stream()
-		                       .map(MissionDto::new)
+		                       .map(CategoryDto::categoryToString)
 		                       .collect(Collectors.toList());
 	}
+	
 }

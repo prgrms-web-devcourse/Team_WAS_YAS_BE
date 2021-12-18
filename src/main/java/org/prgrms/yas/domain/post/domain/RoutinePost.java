@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,13 +22,13 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.domain.Comment;
+import org.prgrms.yas.domain.likes.domain.PostLikes;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Table(name = "routine_post")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "is_deleted = false")
 @SQLDelete(sql = "UPDATE routine_post SET is_deleted = true WHERE id =?")
 public class RoutinePost extends BaseEntity {
 
@@ -48,6 +46,10 @@ public class RoutinePost extends BaseEntity {
   @OneToMany(mappedBy = "routinePost", orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
   
+ 	@OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
+	private List<PostLikes> postLikes = new ArrayList<>();
+
+  
   @Builder
   public RoutinePost(Routine routine) {
     this.routine = routine;
@@ -57,9 +59,28 @@ public class RoutinePost extends BaseEntity {
     this.comments.add(comment);
     comment.setRoutinePost(this);
   }
+  
+  public RoutinePost addComment(List<Comment> comments) {
+		comments.forEach(this::addComment);
+		return this;
+	}
 
   public RoutinePost addComment(List<Comment> comments) {
     comments.forEach(this::addComment);
     return this;
   }
+		
+	public void deletePost() {
+		this.isDeleted = true;
+	}
+		
+	public void addPostLike(PostLikes postLike) {
+		this.postLikes.add(postLike);
+		postLike.setRoutinePost(this);
+	}
+	
+	public RoutinePost addPostLikes(List<PostLikes> postLikes) {
+		postLikes.forEach(this::addPostLike);
+		return this;
+	}
 }
