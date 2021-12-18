@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.likes.dto.LikesResponse;
 import org.prgrms.yas.domain.likes.repository.PostLikesRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
+import org.prgrms.yas.domain.post.dto.PostCreateRequest;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
 import org.prgrms.yas.domain.post.dto.PostListResponse;
 import org.prgrms.yas.domain.post.exception.NotFoundRoutinePostException;
@@ -32,12 +33,14 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final PostLikesRepository postLikesRepository;
 	
-	public Long savePost(final Long routineId) {
+	public Long savePost(final Long routineId, PostCreateRequest postCreateRequest) {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		RoutinePost routinePost = RoutinePost.builder()
 		                                     .routine(routine)
+		                                     .content(postCreateRequest.getContent())
 		                                     .build();
+		
 		return postRepository.save(routinePost)
 		                     .getId();
 	}
@@ -66,7 +69,6 @@ public class PostService {
 		List<RoutinePost> routinePosts = postRepository.findByTitle();
 		return getPostListResponses(routinePosts);
 	}
-	
 	
 	public List<PostListResponse> findAllPostWithCategory(String category) {
 		List<RoutinePost> routinePosts = postRepository.findByTitle();

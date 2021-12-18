@@ -35,6 +35,9 @@ public class RoutinePost extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
 	private boolean isDeleted;
 	
+	@Column(columnDefinition = "TEXT")
+	private String content;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
@@ -46,8 +49,9 @@ public class RoutinePost extends BaseEntity {
 	private List<PostLikes> postLikes = new ArrayList<>();
 	
 	@Builder
-	public RoutinePost(Routine routine) {
+	public RoutinePost(Routine routine, String content) {
 		this.routine = routine;
+		this.content = content;
 	}
 	
 	public void deletePost() {
