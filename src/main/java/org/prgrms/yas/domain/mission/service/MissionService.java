@@ -45,7 +45,10 @@ public class MissionService {
 		
 		routine.minusDurationGoalTime(mission.getDurationGoalTime());
 		missionRepository.deleteById(missionId);
-
+		
+		return missionId;
+	}
+	
 	@Transactional
 	public List<MissionDetailResponse> updateMission(
 			Long routineId, MissionUpdateRequest missionUpdateRequest

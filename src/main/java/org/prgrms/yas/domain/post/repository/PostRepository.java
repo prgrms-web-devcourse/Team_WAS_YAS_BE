@@ -12,6 +12,7 @@ import org.prgrms.yas.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface PostRepository extends JpaRepository<RoutinePost, Long> {
 
@@ -26,6 +27,6 @@ public interface PostRepository extends JpaRepository<RoutinePost, Long> {
 	List<RoutinePost> findAllByPostLikes();
 	
 	@Query("SELECT b FROM RoutinePost b join fetch b.routine a where a.user.id = :userId")
-	List<RoutinePost> getByUser(Long userId);
+	List<RoutinePost> getByUser(@Param(value = "userId") Long userId);
 	
 }
