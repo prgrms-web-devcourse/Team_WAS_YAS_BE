@@ -7,9 +7,14 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum RoutineCategory {
-	EXERCISE("exercise"),
-	HEALTH("health"),
-	FOOD("food");
+	EXERCISE("EXERCISE"),
+	HEALTH("HEALTH"),
+	FOOD("FOOD"),
+	GAME("GAME"),
+	HOBBY("HOBBY"),
+	STUDY("STUDY"),
+	TOTAL("TOTAL"),
+	SHOPPING("SHOPPING");
 	
 	private String routineCategory;
 	
