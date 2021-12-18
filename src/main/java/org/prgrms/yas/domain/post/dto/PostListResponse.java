@@ -16,9 +16,11 @@ public class PostListResponse {
 	private Long postId;
 	private String createdAt;
 	private String updatedAt;
+	private String content;
 	private UserDto user;
 	private PostRoutineDto routine;
 	private List<LikesResponse> likesResponse;
+	
 	
 	@Builder
 	public PostListResponse(RoutinePost routinePost, List<LikesResponse> likesResponse) {
@@ -27,6 +29,7 @@ public class PostListResponse {
 		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		this.updatedAt = routinePost.getUpdatedAt()
 		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.content = routinePost.getContent();
 		this.user = new UserDto(routinePost.getRoutine()
 		                                   .getUser());
 		this.routine = new PostRoutineDto(routinePost.getRoutine());

@@ -1,5 +1,7 @@
 package org.prgrms.yas.domain.routine.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class RoutineListResponse {
 	private Long routineId;
 	private String name;
 	private List<String> routineCategory;
+	@JsonFormat(shape = Shape.STRING,pattern = "yyyy-MM-dd'T'HH:mm:ss",timezone = "Asia/Seoul")
 	private LocalDateTime startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;

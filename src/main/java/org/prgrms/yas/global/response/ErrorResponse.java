@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

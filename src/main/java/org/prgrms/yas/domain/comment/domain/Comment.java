@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.likes.domain.CommentLikes;
@@ -31,6 +33,8 @@ import lombok.AccessLevel;
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id =?")
 public class Comment extends BaseEntity {
 
   @Id
@@ -64,11 +68,7 @@ public class Comment extends BaseEntity {
   public void updateComment(final CommentUpdateRequest commentUpdateRequest) {
     this.content = commentUpdateRequest.getContent();
   }
-
-  public void deleteComment() {
-    this.isDeleted = true;
-  }
-
+  
   public void setRoutinePost(RoutinePost routinePost) {
     if (Objects.nonNull(this.routinePost)) {
       this.routinePost.getComments()

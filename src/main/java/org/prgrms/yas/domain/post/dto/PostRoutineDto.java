@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.post.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -16,7 +17,10 @@ public class PostRoutineDto {
 	private String name;
 	private String emoji;
 	private Long durationGoalTime;
+	private String color;
 	private List<String> category;
+	private List<String> week;
+	private LocalDateTime startGoalTime;
 	
 	@Builder
 	public PostRoutineDto(final Routine routine) {
@@ -28,6 +32,12 @@ public class PostRoutineDto {
 		                       .stream()
 		                       .map(CategoryDto::categoryToString)
 		                       .collect(Collectors.toList());
+		this.color = routine.getColor();
+		this.week = routine.getWeeks()
+		                   .stream()
+		                   .map(WeekDto::weekToString)
+		                   .collect(Collectors.toList());
+		this.startGoalTime = routine.getStartGoalTime();
 	}
 	
 }

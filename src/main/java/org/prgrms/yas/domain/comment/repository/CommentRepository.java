@@ -7,7 +7,9 @@ import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+
 	Optional<Comment> findByIdAndIsDeletedFalse(Long id);
 	
 	List<Comment> findAllByRoutinePost(RoutinePost routinePost);
+  
 }

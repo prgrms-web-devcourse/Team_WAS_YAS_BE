@@ -4,10 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.comment.dto.CommentCreateRequest;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
-import org.prgrms.yas.domain.comment.exception.NotFoundCommentException;
 import org.prgrms.yas.domain.comment.service.CommentService;
-import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
-import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -44,10 +39,11 @@ public class CommentController {
 	@Operation(summary = "댓글 수정 컨트롤러")
 	@PatchMapping("/comments/{id}")
 	public ResponseEntity<ApiResponse<Long>> update(
-			final @PathVariable("id") Long commentId,
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token, final @PathVariable("id") Long commentId,
 			final @RequestBody CommentUpdateRequest commentUpdateRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(commentService.updateComment(
+				token.getId(),
 				commentId,
 				commentUpdateRequest
 		)));
@@ -56,8 +52,9 @@ public class CommentController {
 	@Operation(summary = "댓글 삭제 컨트롤러")
 	@DeleteMapping("/comments/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long commentId
 	) {
-		return ResponseEntity.ok(ApiResponse.of(commentService.deleteComment(commentId)));
+		return ResponseEntity.ok(ApiResponse.of(commentService.deleteComment(token.getId(), commentId)));
 	}
 }
