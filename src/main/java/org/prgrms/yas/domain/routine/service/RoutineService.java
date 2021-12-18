@@ -9,9 +9,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.Week;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
@@ -29,6 +32,7 @@ public class RoutineService {
 	
 	private final RoutineRepository routineRepository;
 	private final UserRepository userRepository;
+	private final MissionRepository missionRepository;
 	private static final double IS_NOT_WEEK = 0;
 	
 	@Transactional
@@ -133,5 +137,29 @@ public class RoutineService {
 		return findRoutines.stream()
 		                   .map(Routine::toRoutineListResponse)
 		                   .collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public Long saveRoutineFromPost(
+			Long userId, RoutineDetailCreateRequest routineDetailCreateRequest
+	) {
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
+		Routine routine = Routine.builder()
+		                         .user(user)
+		                         .name(routineDetailCreateRequest.getName())
+		                         .startGoalTime(routineDetailCreateRequest.getStartGoalTime())
+		                         .durationGoalTime(routineDetailCreateRequest.getDurationGoalTime())
+		                         .weeks(routineDetailCreateRequest.getEnumWeeks(routineDetailCreateRequest.getWeeks()))
+		                         .routineCategory(routineDetailCreateRequest.getEnumRoutineCategory(routineDetailCreateRequest.getRoutineCategory()))
+		                         .color(routineDetailCreateRequest.getColor())
+		                         .emoji(routineDetailCreateRequest.getEmoji())
+		                         .build();
+		
+		for (MissionCreateRequest missionCreateRequest : routineDetailCreateRequest.getMissionCreateRequest()) {
+			missionRepository.save(missionCreateRequest.toEntity(routine));
+		}
+		return routineRepository.save(routine)
+		                        .getId();
 	}
 }

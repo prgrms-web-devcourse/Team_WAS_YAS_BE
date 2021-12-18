@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.routine.dto.RoutineCreateRequest;
+import org.prgrms.yas.domain.routine.dto.RoutineDetailCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateRequest;
@@ -85,5 +86,19 @@ public class RoutineController {
 				                                              biddingStatus
 		                                              ))
 		                                              .orElse(routineService.findRoutines(token.getId()))));
+	}
+	
+	@Operation(summary = "게시판에서 루틴을 가져 올 수 있다. ")
+	@GetMapping("/my")
+	public ResponseEntity<ApiResponse<Long>> createRoutineFromPost(
+			@Valid @RequestBody RoutineDetailCreateRequest routineDetailCreateRequest,
+			@AuthenticationPrincipal JwtAuthentication token
+	
+	) {
+		Long routineId = routineService.saveRoutineFromPost(
+				token.getId(),
+				routineDetailCreateRequest
+		);
+		return ResponseEntity.ok(ApiResponse.of(routineId));
 	}
 }
