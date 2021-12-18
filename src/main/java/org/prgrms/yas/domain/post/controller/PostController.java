@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
 import org.prgrms.yas.domain.post.service.PostService;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
-import org.prgrms.yas.domain.post.global.response.ApiResponse;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

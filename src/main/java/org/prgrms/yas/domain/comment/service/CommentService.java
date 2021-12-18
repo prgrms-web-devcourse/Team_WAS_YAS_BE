@@ -14,7 +14,7 @@ import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
-import org.prgrms.yas.domain.post.global.error.ErrorCode;
+import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 
 @Transactional

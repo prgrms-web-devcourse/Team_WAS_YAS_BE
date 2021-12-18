@@ -1,7 +1,7 @@
-package org.prgrms.yas.domain.post.global.error.exception;
+package org.prgrms.yas.global.exception;
 
 import lombok.Getter;
-import org.prgrms.yas.domain.post.global.error.ErrorCode;
+import org.prgrms.yas.global.error.ErrorCode;
 
 @Getter
 public class BusinessException extends RuntimeException {

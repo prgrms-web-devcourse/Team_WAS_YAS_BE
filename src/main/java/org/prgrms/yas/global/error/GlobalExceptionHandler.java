@@ -1,11 +1,11 @@
-package org.prgrms.yas.domain.post.global.error;
+package org.prgrms.yas.global.error;
 
 import lombok.extern.slf4j.Slf4j;
-import org.prgrms.yas.domain.post.global.response.ErrorResponse;
+import org.prgrms.yas.global.response.ErrorResponse;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
-import org.prgrms.yas.domain.post.global.exception.NotFoundException;
+import org.prgrms.yas.global.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

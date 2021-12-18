@@ -1,4 +1,4 @@
-package org.prgrms.yas.domain.post.global.response;
+package org.prgrms.yas.global.response;
 
 import lombok.Getter;
 

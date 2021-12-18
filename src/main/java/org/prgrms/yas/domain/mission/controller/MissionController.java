@@ -8,7 +8,7 @@ import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.mission.dto.MissionUpdateRequest;
 import org.prgrms.yas.domain.mission.service.MissionService;
-import org.prgrms.yas.domain.post.global.response.ApiResponse;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;

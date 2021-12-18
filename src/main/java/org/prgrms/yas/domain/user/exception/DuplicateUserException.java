@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.user.exception;
 
-import org.prgrms.yas.domain.post.global.error.ErrorCode;
-import org.prgrms.yas.domain.post.global.exception.BusinessException;
+import org.prgrms.yas.global.error.ErrorCode;
+import org.prgrms.yas.global.exception.BusinessException;
 
 public class DuplicateUserException extends BusinessException {
 	

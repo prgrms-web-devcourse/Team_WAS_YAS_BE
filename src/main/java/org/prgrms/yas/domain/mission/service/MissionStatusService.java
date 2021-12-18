@@ -21,7 +21,7 @@ import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineStatusException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.routine.repository.RoutineStatusRepository;
-import org.prgrms.yas.domain.post.global.error.ErrorCode;
+import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -8,7 +8,7 @@ import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusCreateResponse;
 import org.prgrms.yas.domain.mission.dto.MissionStatusUpdateRequest;
 import org.prgrms.yas.domain.mission.service.MissionStatusService;
-import org.prgrms.yas.domain.post.global.response.ApiResponse;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

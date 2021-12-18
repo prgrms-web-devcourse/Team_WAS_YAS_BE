@@ -1,4 +1,4 @@
-package org.prgrms.yas.domain.post.global.error;
+package org.prgrms.yas.global.error;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

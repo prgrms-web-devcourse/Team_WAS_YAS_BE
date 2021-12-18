@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.comment.dto.CommentCreateRequest;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.comment.service.CommentService;
-import org.prgrms.yas.domain.post.global.response.ApiResponse;
+import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
