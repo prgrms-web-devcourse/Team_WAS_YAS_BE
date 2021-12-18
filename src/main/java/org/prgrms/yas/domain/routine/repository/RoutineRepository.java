@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
 	
-	List<Routine> getByUser(User user);
+	List<Routine> getByUserAndIsDeletedFalse(User user);
 	
 	Optional<Routine> findByIdAndIsDeletedFalse(Long id);
 
