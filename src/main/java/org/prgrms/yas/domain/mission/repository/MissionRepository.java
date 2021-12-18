@@ -7,5 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MissionRepository extends JpaRepository<Mission, Long> {
 	
-	Optional<List<Mission>> findByRoutineId(Long routineId);
+	Optional<List<Mission>> findByRoutineIdAndIsDeletedFalse(Long routineId);
+	
+	void deleteByIdAndIsDeletedFalse(Long missionId);
+	
+	Mission getByIdAndIsDeletedFalse(Long missionId);
 }
