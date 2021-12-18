@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.post.dto.PostCreateRequest;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
 import org.prgrms.yas.domain.post.dto.PostListResponse;
 import org.prgrms.yas.domain.post.service.PostService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -28,10 +30,14 @@ public class PostController {
 	
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
-	public ResponseEntity<ApiResponse<Long>> create(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
-			final @PathVariable("id") Long routineId
+	public ResponseEntity<ApiResponse<Long>> create(		
 	) {
+			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @PathVariable("id") Long routineId,
+    @RequestBody PostCreateRequest postCreateRequest
+	) {
+     return ResponseEntity.ok(ApiResponse.of(postService.savePost(routineId,
+				postCreateRequest)));
 		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
 				token.getId(),
 				routineId
@@ -59,7 +65,7 @@ public class PostController {
 	}
 	
 	@Operation(summary = "루틴 조회(게시글 등록되지 않은 루틴)")
-	@GetMapping("routines/posts")
+	@GetMapping("/routines/posts")
 	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> findAll(
 			@AuthenticationPrincipal JwtAuthentication token
 	) {
@@ -85,7 +91,7 @@ public class PostController {
 	}
 	
 	@Operation(summary = "게시글 전체 조회(내가 쓴 게시글)")
-	@GetMapping("/posts/myPost")
+	@GetMapping("/posts/my")
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllMyPost(
 			@RequestParam Optional<String> category, @AuthenticationPrincipal JwtAuthentication token
 	) {

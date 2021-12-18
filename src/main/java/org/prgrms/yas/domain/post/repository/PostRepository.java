@@ -23,10 +23,10 @@ public interface PostRepository extends JpaRepository<RoutinePost, Long> {
 	@Query("SELECT b FROM RoutinePost b ORDER BY b.createdAt DESC")
 	List<RoutinePost> findByTitle();
 	
-	@Query("SELECT b FROM RoutinePost b left join fetch b.postLikes ORDER BY b.postLikes.size DESC")
+	@Query(value = "SELECT b FROM RoutinePost b left join fetch b.postLikes ORDER BY b.postLikes.size DESC")
 	List<RoutinePost> findAllByPostLikes();
 	
-	@Query("SELECT b FROM RoutinePost b join fetch b.routine a where a.user.id = :userId")
+	@Query(value = "SELECT b FROM RoutinePost b join fetch b.routine a where a.user.id = :userId")
 	List<RoutinePost> getByUser(@Param(value = "userId") Long userId);
 	
 }
