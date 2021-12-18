@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.likes.domain;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,6 +37,14 @@ public class PostLikes {
 	@Builder
 	public PostLikes(User user, RoutinePost routinePost) {
 		this.user = user;
+		this.routinePost = routinePost;
+	}
+
+	public void setRoutinePost(RoutinePost routinePost) {
+		if (Objects.nonNull(this.routinePost)) {
+			this.routinePost.getComments()
+			                .remove(this);
+		}
 		this.routinePost = routinePost;
 	}
 }
