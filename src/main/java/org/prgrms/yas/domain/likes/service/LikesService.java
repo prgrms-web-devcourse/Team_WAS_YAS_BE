@@ -38,10 +38,20 @@ public class LikesService {
 	
 	@Transactional
 	public void saveCommentLikes(Long userId, Long commentId) {
-		commentLikesRepository.saveCommentLikes(
-				userId,
-				commentId
-		);
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
+		Comment comment = commentRepository.findByIdAndIsDeletedFalse(commentId)
+		                                   .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		if (!isDuplicateCommentLikes(
+				user,
+				comment
+		)) {
+			commentLikesRepository.saveCommentLikes(
+					userId,
+					commentId
+			);
+		}
 	}
 	
 	@Transactional
@@ -65,10 +75,13 @@ public class LikesService {
 		
 		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		if (!isDuplicatePostLikes(user,
-				routinePost)) {
+		if (!isDuplicatePostLikes(
+				user,
+				routinePost
+		)) {
 			postLikesRepository.savePostLikes(
-					user,routinePost
+					user,
+					routinePost
 			);
 		}
 	}
@@ -93,5 +106,11 @@ public class LikesService {
 				routinePost
 		);
 	}
-
+	
+	private boolean isDuplicateCommentLikes(User user, Comment comment) {
+		return commentLikesRepository.existsByUserAndComment(
+				user,
+				comment
+		);
+	}
 }
