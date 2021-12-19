@@ -34,7 +34,7 @@ public class RoutineDetailCreateRequest {
 	) {
 		this.name = name;
 		this.routineCategory = routineCategory;
-		this.startGoalTime = startGoalTime;
+		this.startGoalTime = startGoalTime.plusHours(9);
 		this.durationGoalTime = durationGoalTime;
 		this.weeks = weeks;
 		this.emoji = emoji;

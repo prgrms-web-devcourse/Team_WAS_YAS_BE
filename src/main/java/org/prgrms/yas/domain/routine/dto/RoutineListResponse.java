@@ -32,7 +32,7 @@ public class RoutineListResponse {
 	) {
 		this.routineId = routineId;
 		this.name = name;
-		this.startGoalTime = startGoalTime;
+		this.startGoalTime = startGoalTime.plusHours(9);
 		this.durationGoalTime = durationGoalTime;
 		this.weeks = weeks;
 		this.routineCategory = routineCategory;
