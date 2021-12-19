@@ -66,8 +66,7 @@ public class PostService {
 		)) {
 			postRepository.deleteById(postId);
 		}
-		return postRepository.save(routinePost)
-		                     .getId();
+		return postId;
 	}
 	
 	public PostDetailResponse findOne(final Long postId) {
