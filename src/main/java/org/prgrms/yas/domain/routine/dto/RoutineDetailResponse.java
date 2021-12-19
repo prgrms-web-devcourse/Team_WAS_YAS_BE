@@ -32,7 +32,7 @@ public class RoutineDetailResponse {
 		this.emoji = emoji;
 		this.color = color;
 		this.durationGoalTime = durationGoalTime;
-		this.startGoalTime = startGoalTime;
+		this.startGoalTime = startGoalTime.plusHours(9);
 		this.routineCategory = routineCategory;
 		this.missionDetailResponses = missionDetailResponses;
 		this.weeks = weeks;
