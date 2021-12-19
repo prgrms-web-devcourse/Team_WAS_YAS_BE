@@ -14,13 +14,15 @@ public class MissionStatusDetailResponse {
 	private int orders;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	private Long userDurationTime;
 	
 	@Builder
 	public MissionStatusDetailResponse(
-			int orders, LocalDateTime startTime, LocalDateTime endTime
+			int orders, LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime
 	) {
 		this.orders = orders;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.userDurationTime = userDurationTime;
 	}
 }

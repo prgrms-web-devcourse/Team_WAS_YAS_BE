@@ -2,8 +2,6 @@ package org.prgrms.yas.domain.post.service;
 
 import static java.util.stream.Collectors.toList;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -37,15 +35,21 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final PostLikesRepository postLikesRepository;
 	
-	public Long savePost(final Long userId,final Long routineId, PostCreateRequest postCreateRequest) {
+	public Long savePost(
+			final Long userId, final Long routineId, PostCreateRequest postCreateRequest
+	) {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		RoutinePost routinePost = RoutinePost.builder()
 		                                     .routine(routine)
 		                                     .content(postCreateRequest.getContent())
 		                                     .build();
-
-		if (!userValid(userId, routine.getUser().getId()) && !routineValid(routineId)) {
+		
+		if (!userValid(
+				userId,
+				routine.getUser()
+				       .getId()
+		) && !routineValid(routineId)) {
 			postRepository.save(routinePost);
 		}
 		return routinePost.getId();
@@ -54,20 +58,29 @@ public class PostService {
 	public Long deletePost(final Long userId, final Long postId) {
 		RoutinePost routinePost = postRepository.findById(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		if(!userValid(userId, routinePost.getRoutine().getUser().getId())){
+		if (!userValid(
+				userId,
+				routinePost.getRoutine()
+				           .getUser()
+				           .getId()
+		)) {
 			postRepository.deleteById(postId);
 		}
 		return postRepository.save(routinePost)
 		                     .getId();
-  }
+	}
 	
 	public PostDetailResponse findOne(final Long postId) {
 		RoutinePost routinePost = postRepository.findById(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		return new PostDetailResponse(routinePost);
+		List<LikesResponse> likes = postLikesRepository.getByPost(postId);
+		return new PostDetailResponse(
+				routinePost,
+				likes
+		);
 	}
 	
-
+	
 	public boolean userValid(final Long userId, final Long compareUserId) {
 		if (!userId.equals(compareUserId)) {
 			throw new WrongUserException(ErrorCode.INVALID_INPUT_ERROR);
@@ -82,7 +95,7 @@ public class PostService {
 		return false;
 	}
 	
-
+	
 	public List<RoutineListResponse> findAll(Long id) {
 		List<Routine> notPostAll = routineRepository.findRoutinesNotPosted(id);
 		return notPostAll.stream()

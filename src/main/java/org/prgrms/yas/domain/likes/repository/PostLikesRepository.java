@@ -13,13 +13,14 @@ import org.springframework.data.repository.query.Param;
 public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	
 	@Modifying
-	@Query(value = "insert ignore into post_likes (user_id, routine_post_id) "
+	@Query(value = "insert into post_likes (user_id, routine_post_id) "
 			+ "values(?1,?2) ", nativeQuery = true)
-	void savePostLikes(Long userId, Long routinePostId);
+	void savePostLikes(User user, RoutinePost routinePost);
 	
 	Long deleteByUserAndRoutinePost(User user, RoutinePost routinePost);
 	
 	@Query("SELECT postLikes from PostLikes postLikes where postLikes.routinePost.id = :postId")
 	List<LikesResponse> getByPost(@Param(value = "postId") Long postId);
-
+	
+	boolean existsByUserAndRoutinePost(User user, RoutinePost post);
 }
