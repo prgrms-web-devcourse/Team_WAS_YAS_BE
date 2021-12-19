@@ -25,10 +25,8 @@ public class LikesService {
 	private final PostRepository postRepository;
 	
 	public LikesService(
-			CommentLikesRepository commentLikesRepository,
-			PostLikesRepository postLikesRepository,
-			UserRepository userRepository,
-			CommentRepository commentRepository,
+			CommentLikesRepository commentLikesRepository, PostLikesRepository postLikesRepository,
+			UserRepository userRepository, CommentRepository commentRepository,
 			PostRepository postRepository
 	) {
 		this.postLikesRepository = postLikesRepository;
@@ -40,8 +38,10 @@ public class LikesService {
 	
 	@Transactional
 	public void saveCommentLikes(Long userId, Long commentId) {
-		commentLikesRepository.saveCommentLikes(userId,
-				commentId);
+		commentLikesRepository.saveCommentLikes(
+				userId,
+				commentId
+		);
 	}
 	
 	@Transactional
@@ -52,27 +52,46 @@ public class LikesService {
 		Comment comment = commentRepository.findByIdAndIsDeletedFalse(commentId)
 		                                   .orElseThrow(() -> new NotFoundCommentException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
-		return commentLikesRepository.deleteByUserAndComment(user,
-				comment);
+		return commentLikesRepository.deleteByUserAndComment(
+				user,
+				comment
+		);
 	}
 	
-		@Transactional
-		public void savePostLikes(Long userId, Long postId) {
+	@Transactional
+	public void savePostLikes(Long userId, Long postId) {
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
+		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
+		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		if (!isDuplicatePostLikes(user,
+				routinePost)) {
 			postLikesRepository.savePostLikes(
-					userId,
-					postId
+					user,routinePost
 			);
 		}
+	}
+	
+	@Transactional
+	public Long deletePostLikes(Long userId, Long postId) {
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
+		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
-		@Transactional
-		public Long deletePostLikes(Long userId, Long postId) {
-			User user = userRepository.findByIdAndIsDeletedFalse(userId)
-			                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-			
-			RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
-			                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-			
-			return postLikesRepository.deleteByUserAndRoutinePost(user,
-					routinePost);
-		}
+		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
+		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
+		return postLikesRepository.deleteByUserAndRoutinePost(
+				user,
+				routinePost
+		);
+	}
+	
+	private boolean isDuplicatePostLikes(User user, RoutinePost routinePost) {
+		return postLikesRepository.existsByUserAndRoutinePost(
+				user,
+				routinePost
+		);
+	}
+
 }
