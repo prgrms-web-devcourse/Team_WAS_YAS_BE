@@ -89,6 +89,7 @@ public class MissionStatus {
 		                                  .endTime(endTime)
 		                                  .orders(orders)
 		                                  .startTime(startTime)
+		                                  .userDurationTime(userDurationTime)
 		                                  .build();
 	}
 }
