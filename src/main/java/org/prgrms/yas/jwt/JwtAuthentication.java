@@ -14,10 +14,6 @@ public class JwtAuthentication {
 	
 	public JwtAuthentication(Long id, String token, String username) {
 		checkArgument(
-				isNotEmpty(token),
-				"token must be provided"
-		);
-		checkArgument(
 				isNotEmpty(username),
 				"username must be provided"
 		);

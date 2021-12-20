@@ -1,19 +1,16 @@
 package org.prgrms.yas.configures;
 
 import javax.servlet.http.HttpServletResponse;
-import org.prgrms.yas.domain.user.service.OAuth2UserService;
 import org.prgrms.yas.domain.user.service.UserService;
 import org.prgrms.yas.jwt.Jwt;
 import org.prgrms.yas.jwt.JwtAuthenticationFilter;
 import org.prgrms.yas.jwt.JwtAuthenticationProvider;
-import org.prgrms.yas.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,12 +27,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final JwtConfig jwtConfig;
-	private final OAuth2UserService oAuth2UserService;
 	
 	
-	public WebSecurityConfig(JwtConfig jwtConfig, OAuth2UserService oAuth2UserService) {
+	public WebSecurityConfig(JwtConfig jwtConfig) {
 		this.jwtConfig = jwtConfig;
-		this.oAuth2UserService = oAuth2UserService;
 	}
 	
 	@Bean
@@ -85,15 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new JwtAuthenticationFilter(
 				jwtConfig.getHeader(),
 				jwt
-		);
-	}
-	
-	@Bean
-	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-		Jwt jwt = getApplicationContext().getBean(Jwt.class);
-		return new OAuth2AuthenticationSuccessHandler(
-				jwt,
-				oAuth2UserService
 		);
 	}
 	
@@ -152,9 +138,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .disable()
 		    .sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		    .and()
-		    .oauth2Login()
-		    .successHandler(oAuth2AuthenticationSuccessHandler())
 		    .and()
 		    .exceptionHandling()
 		    .accessDeniedHandler(accessDeniedHandler())
