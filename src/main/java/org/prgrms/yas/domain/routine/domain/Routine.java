@@ -26,11 +26,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
@@ -155,6 +155,12 @@ public class Routine {
 		this.weeks = weeks;
 	}
 	
+	public List<MissionDetailResponse> getMissionDetailResponse(List<Mission> missions) {
+		return missions.stream()
+		               .map(Mission::toMissionDetailResponse)
+		               .collect(Collectors.toList());
+	}
+	
 	public RoutineListResponse toRoutineListResponse() {
 		return RoutineListResponse.builder()
 		                          .routineId(id)
@@ -169,13 +175,6 @@ public class Routine {
 		                          .build();
 	}
 	
-	public List<MissionDetailResponse> getMissionDetailResponse(List<Mission> missions) {
-		return missions.stream()
-		               .map(Mission::toMissionDetailResponse)
-		               .collect(Collectors.toList());
-		
-	}
-	
 	public RoutineDetailResponse toRoutineDetailResponse(List<Mission> missions) {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
@@ -187,6 +186,19 @@ public class Routine {
 		                            .emoji(emoji)
 		                            .color(color)
 		                            .missionDetailResponses(getMissionDetailResponse(missions))
+		                            .build();
+	}
+	
+	public RoutineUpdateResponse toRoutineUpdateResponse() {
+		return RoutineUpdateResponse.builder()
+		                            .name(name)
+		                            .routineId(id)
+		                            .startGoalTime(startGoalTime)
+		                            .durationGoalTime(durationGoalTime)
+		                            .weeks(this.getStringWeeks(this.getWeeks()))
+		                            .routineCategory(this.getStringCategory(this.getRoutineCategory()))
+		                            .color(color)
+		                            .emoji(emoji)
 		                            .build();
 	}
 	
