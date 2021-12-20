@@ -18,9 +18,10 @@ public class RoutineListResponse {
 	private Long routineId;
 	private String name;
 	private List<String> routineCategory;
-	@JsonFormat(shape = Shape.STRING,pattern = "yyyy-MM-dd'T'HH:mm:ss",timezone = "Asia/Seoul")
+	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime startGoalTime;
 	private Long durationGoalTime;
+	private boolean isPosted;
 	private List<String> weeks;
 	private String color;
 	private String emoji;
@@ -28,12 +29,13 @@ public class RoutineListResponse {
 	@Builder
 	public RoutineListResponse(
 			Long routineId, String name, LocalDateTime startGoalTime, Long durationGoalTime,
-			List<String> weeks, List<String> routineCategory, String emoji, String color
+			boolean isPosted, List<String> weeks, List<String> routineCategory, String emoji, String color
 	) {
 		this.routineId = routineId;
 		this.name = name;
 		this.startGoalTime = startGoalTime.plusHours(9);
 		this.durationGoalTime = durationGoalTime;
+		this.isPosted = isPosted;
 		this.weeks = weeks;
 		this.routineCategory = routineCategory;
 		this.color = color;

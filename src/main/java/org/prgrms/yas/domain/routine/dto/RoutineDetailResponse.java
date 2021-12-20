@@ -17,6 +17,7 @@ public class RoutineDetailResponse {
 	private String color;
 	private LocalDateTime startGoalTime;
 	private Long durationGoalTime;
+	private boolean isPosted;
 	private List<String> routineCategory;
 	private List<String> weeks;
 	private List<MissionDetailResponse> missionDetailResponses;
@@ -24,7 +25,7 @@ public class RoutineDetailResponse {
 	@Builder
 	public RoutineDetailResponse(
 			String name, String emoji, String color, LocalDateTime startGoalTime, Long durationGoalTime,
-			List<String> routineCategory, List<String> weeks,
+			boolean isPosted, List<String> routineCategory, List<String> weeks,
 			List<MissionDetailResponse> missionDetailResponses
 	) {
 		
@@ -33,6 +34,7 @@ public class RoutineDetailResponse {
 		this.color = color;
 		this.durationGoalTime = durationGoalTime;
 		this.startGoalTime = startGoalTime.plusHours(9);
+		this.isPosted = isPosted;
 		this.routineCategory = routineCategory;
 		this.missionDetailResponses = missionDetailResponses;
 		this.weeks = weeks;

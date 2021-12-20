@@ -19,4 +19,5 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 	
 	List<Mission> getByRoutineAndIsDeletedFalse(Routine routine);
 	
+	Optional<List<Mission>> findByRoutine(Long routineId);
 }
