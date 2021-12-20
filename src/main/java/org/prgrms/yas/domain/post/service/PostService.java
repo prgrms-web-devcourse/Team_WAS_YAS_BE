@@ -51,6 +51,7 @@ public class PostService {
 				       .getId()
 		) && !routineValid(routineId)) {
 			postRepository.save(routinePost);
+			routine.updateIsPostedTrue();
 		}
 		return routinePost.getId();
 	}
@@ -58,12 +59,17 @@ public class PostService {
 	public Long deletePost(final Long userId, final Long postId) {
 		RoutinePost routinePost = postRepository.findById(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routinePost.getRoutine()
+		                                                                         .getId())
+		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		if (!userValid(
 				userId,
 				routinePost.getRoutine()
 				           .getUser()
 				           .getId()
 		)) {
+			routine.updateIsPostedFalse();
 			postRepository.deleteById(postId);
 		}
 		return postId;

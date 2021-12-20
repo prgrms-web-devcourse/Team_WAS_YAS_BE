@@ -40,7 +40,7 @@ public class MissionService {
 	public Long deleteMission(Long routineId, Long missionId) {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
-		Mission mission = missionRepository.findByIdAndIsDeletedFalse(missionId)
+		Mission mission = missionRepository.findById(missionId)
 		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		routine.minusDurationGoalTime(mission.getDurationGoalTime());
@@ -53,11 +53,11 @@ public class MissionService {
 	public List<MissionDetailResponse> updateMission(
 			Long routineId, MissionUpdateRequest missionUpdateRequest
 	) {
-		List<Mission> missions = missionRepository.findByRoutineIdAndIsDeletedFalse(routineId)
+		List<Mission> missions = missionRepository.findByRoutine(routineId)
 		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
-			missionRepository.getByIdAndIsDeletedFalse(missionOrder.getMissionId())
+			missionRepository.getById(missionOrder.getMissionId())
 			                 .updateOrders(missionOrder.getOrders());
 		}
 		
