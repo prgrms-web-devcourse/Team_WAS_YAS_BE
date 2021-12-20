@@ -89,7 +89,7 @@ public class RoutineController {
 	}
 	
 	@Operation(summary = "게시판에서 루틴을 가져 올 수 있다. ")
-	@GetMapping("/my")
+	@PostMapping("/my")
 	public ResponseEntity<ApiResponse<Long>> createRoutineFromPost(
 			@Valid @RequestBody RoutineDetailCreateRequest routineDetailCreateRequest,
 			@AuthenticationPrincipal JwtAuthentication token
