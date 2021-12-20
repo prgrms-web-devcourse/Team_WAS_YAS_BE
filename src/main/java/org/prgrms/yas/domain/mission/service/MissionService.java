@@ -53,7 +53,7 @@ public class MissionService {
 	public List<MissionDetailResponse> updateMission(
 			Long routineId, MissionUpdateRequest missionUpdateRequest
 	) {
-		List<Mission> missions = missionRepository.findByRoutine(routineId)
+		List<Mission> missions = missionRepository.findByRoutineId(routineId)
 		                                          .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		for (MissionOrder missionOrder : missionUpdateRequest.getMissionOrders()) {
