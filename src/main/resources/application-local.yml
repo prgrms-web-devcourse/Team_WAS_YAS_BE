@@ -25,7 +25,7 @@ jwt:
   header: token
   issuer: was
   client-secret: ${JWT_SECRET}
-  expiry-seconds: 6000
+  expiry-seconds: 86400
 
 cloud:
   aws:
