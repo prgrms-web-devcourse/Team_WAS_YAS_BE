@@ -20,7 +20,7 @@ public class RoutineDetailCreateRequest {
 	
 	private String name;
 	private List<String> routineCategory;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",timezone = "Asia/Seoul")
 	private LocalDateTime startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;

@@ -39,7 +39,7 @@ public class CommentController {
 	@Operation(summary = "댓글 수정 컨트롤러")
 	@PatchMapping("/comments/{id}")
 	public ResponseEntity<ApiResponse<Long>> update(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token, final @PathVariable("id") Long commentId,
+			final @AuthenticationPrincipal JwtAuthentication token, final @PathVariable("id") Long commentId,
 			final @RequestBody CommentUpdateRequest commentUpdateRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(commentService.updateComment(
@@ -52,7 +52,7 @@ public class CommentController {
 	@Operation(summary = "댓글 삭제 컨트롤러")
 	@DeleteMapping("/comments/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long commentId
 	) {
 		return ResponseEntity.ok(ApiResponse.of(commentService.deleteComment(token.getId(), commentId)));

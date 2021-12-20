@@ -13,7 +13,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 public class MissionCreateRequest {
 	
 	private String name;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 	private Long durationGoalTime;
 	private int orders;
 	private String emoji;

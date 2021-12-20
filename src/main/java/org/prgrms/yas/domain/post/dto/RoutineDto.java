@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.post.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class RoutineDto {
 	private String emoji;
 	private Long durationGoalTime;
 	private String color;
-	private LocalDateTime startGoalTime;
+	private String startGoalTime;
 	private List<String> weeks;
 	private List<String> category;
 	private List<MissionDto> missions = new ArrayList<>();
@@ -33,8 +34,8 @@ public class RoutineDto {
 		this.durationGoalTime = routine.getDurationGoalTime();
 		this.color = routine.getColor();
 		this.startGoalTime = routine.getStartGoalTime()
-		                            .plusHours(9);
-		;
+		                            .plusHours(9)
+		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.weeks = routine.getStringWeeks(routine.getWeeks());
 		this.category = routine.getStringCategory(routine.getRoutineCategory());
 		this.missions = routine.getMissions()

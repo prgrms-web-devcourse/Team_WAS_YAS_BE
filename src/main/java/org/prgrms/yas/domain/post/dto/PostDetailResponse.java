@@ -1,5 +1,6 @@
 package org.prgrms.yas.domain.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +24,10 @@ public class PostDetailResponse {
 	@Builder
 	public PostDetailResponse(RoutinePost routinePost, List<LikesResponse> likes) {
 		this.postId = routinePost.getId();
-		this.createdAt = routinePost.getCreatedAt()
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		this.updatedAt = routinePost.getUpdatedAt()
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.createdAt = routinePost.getCreatedAt().plusHours(9)
+		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.updatedAt = routinePost.getUpdatedAt().plusHours(9)
+		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.content = routinePost.getContent();
 		this.user = new UserDto(routinePost.getRoutine()
 		                                   .getUser());
