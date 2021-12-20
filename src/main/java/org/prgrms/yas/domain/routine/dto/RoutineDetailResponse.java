@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +16,7 @@ public class RoutineDetailResponse {
 	private String name;
 	private String emoji;
 	private String color;
-	private LocalDateTime startGoalTime;
+	private String startGoalTime;
 	private Long durationGoalTime;
 	private boolean isPosted;
 	private List<String> routineCategory;
@@ -33,7 +34,8 @@ public class RoutineDetailResponse {
 		this.emoji = emoji;
 		this.color = color;
 		this.durationGoalTime = durationGoalTime;
-		this.startGoalTime = startGoalTime.plusHours(9);
+		this.startGoalTime = startGoalTime.plusHours(9)
+		                                  .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.isPosted = isPosted;
 		this.routineCategory = routineCategory;
 		this.missionDetailResponses = missionDetailResponses;
