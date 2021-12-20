@@ -84,8 +84,19 @@ public class Routine {
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
 	private boolean isDeleted;
 	
+	@Column(nullable = false, columnDefinition = "TINYINT default false")
+	private boolean isPosted;
+	
 	public void deleteRoutine() {
 		this.isDeleted = true;
+	}
+	
+	public void updateIsPostedTrue() {
+		this.isPosted = true;
+	}
+	
+	public void updateIsPostedFalse() {
+		this.isPosted = false;
 	}
 	
 	public void addRoutineStatus(RoutineStatus routineCompletion) {
@@ -150,6 +161,7 @@ public class Routine {
 		                          .color(color)
 		                          .durationGoalTime(durationGoalTime)
 		                          .startGoalTime(startGoalTime)
+		                          .isPosted(isPosted)
 		                          .weeks(getStringWeeks(weeks))
 		                          .routineCategory(getStringCategory(routineCategory))
 		                          .emoji(emoji)
@@ -170,6 +182,7 @@ public class Routine {
 		                            .routineCategory(getStringCategory(routineCategory))
 		                            .startGoalTime(startGoalTime)
 		                            .durationGoalTime(durationGoalTime)
+		                            .isPosted(isPosted)
 		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
