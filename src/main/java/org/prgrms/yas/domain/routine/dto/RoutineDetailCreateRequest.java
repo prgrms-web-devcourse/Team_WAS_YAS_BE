@@ -9,8 +9,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.RoutineCategory;
 import org.prgrms.yas.domain.routine.domain.Week;
+import org.prgrms.yas.domain.user.domain.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,6 +42,19 @@ public class RoutineDetailCreateRequest {
 		this.emoji = emoji;
 		this.color = color;
 		this.missionCreateRequest = missionCreateRequest;
+	}
+	
+	public Routine toEntity(User user){
+		return Routine.builder()
+				.user(user)
+				.name(this.name)
+				.startGoalTime(this.startGoalTime)
+				.durationGoalTime(this.durationGoalTime)
+				.weeks(this.getEnumWeeks(this.getWeeks()))
+				.routineCategory(this.getEnumRoutineCategory(this.getRoutineCategory()))
+				.color(this.color)
+				.emoji(this.emoji)
+				.build();
 	}
 	
 	
