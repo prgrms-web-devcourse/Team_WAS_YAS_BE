@@ -41,7 +41,7 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@Operation(summary = "로그인 JWT 토큰 발행 컨트롤러")
+	@Operation(summary = "커스텀 로그인 JWT 토큰 발행 컨트롤러")
 	@PostMapping("/users/login")
 	public ResponseEntity<ApiResponse<UserToken>> signIn(
 			@RequestBody UserSignInRequest userSignInRequest
