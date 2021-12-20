@@ -57,7 +57,7 @@ public class PostService {
 	}
 	
 	public Long deletePost(final Long userId, final Long postId) {
-		RoutinePost routinePost = postRepository.findById(postId)
+		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routinePost.getRoutine()
@@ -76,7 +76,7 @@ public class PostService {
 	}
 	
 	public PostDetailResponse findOne(final Long postId) {
-		RoutinePost routinePost = postRepository.findById(postId)
+		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		List<LikesResponse> likes = postLikesRepository.getByPost(postId);
 		return new PostDetailResponse(
