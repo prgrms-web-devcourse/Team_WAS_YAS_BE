@@ -59,7 +59,7 @@ public class Routine {
 	@Enumerated(EnumType.STRING)
 	private List<RoutineCategory> routineCategory;
 	
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	private LocalDateTime startGoalTime;
 	
 	@Column(nullable = false)
