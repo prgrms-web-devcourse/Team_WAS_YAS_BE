@@ -131,6 +131,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .cors()
 		    .and()
 		    .authorizeRequests()
+		    .antMatchers("/swagger-ui/**")
+	            .permitAll()
 		    .antMatchers("/users/login")
 		    .permitAll()
 		    .antMatchers(
