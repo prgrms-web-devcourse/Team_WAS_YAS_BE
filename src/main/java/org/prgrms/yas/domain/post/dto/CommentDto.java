@@ -25,10 +25,10 @@ public class CommentDto {
 	public CommentDto(Comment comment) {
 		this.commentId = comment.getId();
 		this.user = new UserDto(comment.getUser());
-		this.createdAt = comment.getCreatedAt()
-		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		this.updatedAt = comment.getCreatedAt()
-		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.createdAt = comment.getCreatedAt().plusHours(9)
+		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.updatedAt = comment.getCreatedAt().plusHours(9)
+		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.content = comment.getContent();
 		this.likes = comment.getCommentLikes()
 		                    .stream()

@@ -25,10 +25,10 @@ public class PostListResponse {
 	@Builder
 	public PostListResponse(RoutinePost routinePost, List<LikesResponse> likesResponse) {
 		this.postId = routinePost.getId();
-		this.createdAt = routinePost.getCreatedAt()
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		this.updatedAt = routinePost.getUpdatedAt()
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		this.createdAt = routinePost.getCreatedAt().plusHours(9)
+		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.updatedAt = routinePost.getUpdatedAt().plusHours(9)
+		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.content = routinePost.getContent();
 		this.user = new UserDto(routinePost.getRoutine()
 		                                   .getUser());

@@ -31,7 +31,7 @@ public class PostController {
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
 	public ResponseEntity<ApiResponse<Long>> create(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long routineId, @RequestBody PostCreateRequest postCreateRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
@@ -44,7 +44,7 @@ public class PostController {
 	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/posts/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long postId
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(

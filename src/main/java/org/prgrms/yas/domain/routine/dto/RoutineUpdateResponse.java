@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -16,7 +17,7 @@ public class RoutineUpdateResponse {
 	private Long routineId;
 	private String name;
 	private List<String> routineCategory;
-	private LocalDateTime startGoalTime;
+	private String startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;
 	private String color;
@@ -29,7 +30,8 @@ public class RoutineUpdateResponse {
 	) {
 		this.routineId = routineId;
 		this.name = name;
-		this.startGoalTime = startGoalTime;
+		this.startGoalTime = startGoalTime.plusHours(9)
+		                                  .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
 		this.durationGoalTime = durationGoalTime;
 		this.weeks = weeks;
 		this.routineCategory = routineCategory;
