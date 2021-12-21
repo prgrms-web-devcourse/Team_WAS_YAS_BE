@@ -12,6 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	
 	List<Comment> findAllByRoutinePost(RoutinePost routinePost);
 	
-	void deleteAllByIsDeletedFalse();
+	void deleteAllByIsDeletedTrue();
   
 }

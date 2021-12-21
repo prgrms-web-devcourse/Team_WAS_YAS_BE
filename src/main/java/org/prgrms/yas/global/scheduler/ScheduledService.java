@@ -1,4 +1,4 @@
-package org.prgrms.yas.global;
+package org.prgrms.yas.global.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.comment.repository.CommentRepository;
@@ -15,7 +15,7 @@ public class ScheduledService {
 	
 	@Scheduled(cron = "0 0 0 L * ?")
 	public void clearSoftDeleteData() {
-		userRepository.deleteAllByIsDeletedFalse();
-		commentRepository.deleteAllByIsDeletedFalse();
+		userRepository.deleteAllByIsDeletedTrue();
+		commentRepository.deleteAllByIsDeletedTrue();
 	}
 }
