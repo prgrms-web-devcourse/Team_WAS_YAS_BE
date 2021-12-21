@@ -1,5 +1,7 @@
 package org.prgrms.yas.configures;
 
+import java.time.ZonedDateTime;
+import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import org.prgrms.yas.domain.user.service.UserService;
 import org.prgrms.yas.jwt.Jwt;
@@ -7,6 +9,7 @@ import org.prgrms.yas.jwt.JwtAuthenticationFilter;
 import org.prgrms.yas.jwt.JwtAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,6 +62,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			response.getWriter()
 			        .close();
 		};
+	}
+	
+	@Bean
+	public DateTimeProvider auditingDateTimeProvider() {
+		return () -> Optional.of(ZonedDateTime.now());
 	}
 	
 	@Bean
@@ -117,16 +125,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
+		
 		http.httpBasic()
 		    .disable()
 		    .cors()
 		    .and()
 		    .authorizeRequests()
-		    .antMatchers("/users/login").permitAll()
-		    .antMatchers(HttpMethod.POST,"/users").permitAll()
-	            .antMatchers(HttpMethod.GET,"/posts/**").permitAll()
-		    .anyRequest().authenticated()
+		    .antMatchers("/users/login")
+		    .permitAll()
+		    .antMatchers(
+				    HttpMethod.POST,
+				    "/users"
+		    )
+		    .permitAll()
+		    .antMatchers(
+				    HttpMethod.GET,
+				    "/posts/**"
+		    )
+		    .permitAll()
+		    .anyRequest()
+		    .authenticated()
 		    .and()
 		    .formLogin()
 		    .disable()
