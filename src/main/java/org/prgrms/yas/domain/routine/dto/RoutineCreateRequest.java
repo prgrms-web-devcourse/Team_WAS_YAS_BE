@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.routine.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ public class RoutineCreateRequest {
 	private String name;
 	private List<String> routineCategory;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",timezone = "Asia/Seoul")
-	private LocalDateTime startGoalTime;
+	private ZonedDateTime startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;
 	private String emoji;
@@ -28,7 +28,7 @@ public class RoutineCreateRequest {
 	
 	@Builder
 	public RoutineCreateRequest(
-			String name, LocalDateTime startGoalTime, Long durationGoalTime, List<String> weeks,
+			String name, ZonedDateTime startGoalTime, Long durationGoalTime, List<String> weeks,
 			List<String> routineCategory, String color, String emoji
 	) {
 		this.name = name;

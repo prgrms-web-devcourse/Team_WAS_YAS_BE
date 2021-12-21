@@ -87,13 +87,13 @@ public class RoutineController {
 		                                              ))
 		                                              .orElse(routineService.findRoutines(token.getId()))));
 	}
-	
+
 	@Operation(summary = "게시판에서 루틴을 가져 올 수 있다. ")
 	@PostMapping("/my")
 	public ResponseEntity<ApiResponse<Long>> createRoutineFromPost(
 			@Valid @RequestBody RoutineDetailCreateRequest routineDetailCreateRequest,
 			@AuthenticationPrincipal JwtAuthentication token
-	
+
 	) {
 		Long routineId = routineService.saveRoutineFromPost(
 				token.getId(),

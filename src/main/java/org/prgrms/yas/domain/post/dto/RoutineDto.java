@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.post.dto;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.prgrms.yas.domain.likes.dto.LikesDto;
 import org.prgrms.yas.domain.routine.domain.Routine;
 
 @Getter
@@ -21,7 +20,8 @@ public class RoutineDto {
 	private String emoji;
 	private Long durationGoalTime;
 	private String color;
-	private String startGoalTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime startGoalTime;
 	private List<String> weeks;
 	private List<String> category;
 	private List<MissionDto> missions = new ArrayList<>();
@@ -33,9 +33,7 @@ public class RoutineDto {
 		this.emoji = routine.getEmoji();
 		this.durationGoalTime = routine.getDurationGoalTime();
 		this.color = routine.getColor();
-		this.startGoalTime = routine.getStartGoalTime()
-		                            .plusHours(9)
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.startGoalTime = routine.getStartGoalTime();
 		this.weeks = routine.getStringWeeks(routine.getWeeks());
 		this.category = routine.getStringCategory(routine.getRoutineCategory());
 		this.missions = routine.getMissions()

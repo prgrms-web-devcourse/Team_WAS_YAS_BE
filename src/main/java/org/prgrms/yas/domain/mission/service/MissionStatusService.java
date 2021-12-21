@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.mission.service;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -44,7 +45,7 @@ public class MissionStatusService {
 		//routineStatus 테이블 생성
 		RoutineStatus routineStatus = RoutineStatus.builder()
 		                                           .routine(routine)
-		                                           .date(LocalDate.now())
+		                                           .dateTime(ZonedDateTime.now())
 		                                           .build();
 		Long routineStatusId = routineStatusRepository.save(routineStatus)
 		                                              .getId();
@@ -52,7 +53,7 @@ public class MissionStatusService {
 		//미션의 갯수만큼 미션 Status 테이블 생성
 		for (Mission mission : routine.getMissions()) {
 			MissionStatus missionStatus = missionStatusRepository.save(MissionStatus.builder()
-			                                                                        .date(LocalDate.now())
+			                                                                        .dateTime(ZonedDateTime.now())
 			                                                                        .mission(mission)
 			                                                                        .build());
 			
@@ -132,7 +133,7 @@ public class MissionStatusService {
 		List<MissionDetailStatusResponse> result = new ArrayList<>();
 		
 		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
-		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDate()
+		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDateTime().toLocalDate()
 		                                                                                       .isEqual(LocalDate.now()));
 		
 		for (Mission missions : routine.getMissions()) {

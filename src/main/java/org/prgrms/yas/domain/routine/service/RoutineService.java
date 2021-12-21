@@ -62,7 +62,7 @@ public class RoutineService {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		routine.updateRoutine(routineUpdateRequest.getEnumWeeks(routineUpdateRequest.getWeeks()));
-		
+
 		return routine.toRoutineUpdateResponse();
 	}
 	
@@ -91,52 +91,52 @@ public class RoutineService {
 		               .map(Routine::toRoutineListResponse)
 		               .collect(toList());
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<RoutineListResponse> findFinishRoutines(Long userId, String status) {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		
+
 		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		Calendar calendar = Calendar.getInstance();
-		
+
 		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
 		List<Routine> weekRoutine = routines.stream()
 		                                    .filter(routine -> {
-					
+
 					                                    long cnt = routine.getWeeks()
 					                                                      .stream()
 					                                                      .filter(isWeek)
 					                                                      .count();
-					
+
 					                                    return cnt != IS_NOT_WEEK;
 				                                    }
-		
+
 		                                    )
 		                                    .collect(toList());
-		
+
 		Status statusEnum = Status.from(status);
 		List<Routine> findRoutines = statusEnum.apply(weekRoutine);
-		
+
 		return findRoutines.stream()
 		                   .map(Routine::toRoutineListResponse)
 		                   .collect(Collectors.toList());
 	}
-	
+
 	@Transactional
 	public Long saveRoutineFromPost(
 			Long userId, RoutineDetailCreateRequest routineDetailCreateRequest
 	) {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		
+
 		Routine routine = routineDetailCreateRequest.toEntity(user);
-		
+
 		routineDetailCreateRequest.getMissionCreateRequest()
 		                          .stream()
 		                          .map(missionCreateRequest -> missionCreateRequest.toEntity(routine))
 		                          .forEach(missionRepository::save);
-		
+
 		return routineRepository.save(routine)
 		                        .getId();
 	}
