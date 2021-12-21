@@ -2,6 +2,7 @@ package org.prgrms.yas.domain.routine.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,11 +28,11 @@ public class RoutineStatus {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private LocalDateTime startTime;
+	private ZonedDateTime startTime;
 	
-	private LocalDateTime endTime;
+	private ZonedDateTime endTime;
 	
-	private LocalDate date;
+	private ZonedDateTime dateTime;
 	
 	@ColumnDefault("-1")
 	private Long userDurationTime;
@@ -42,14 +43,14 @@ public class RoutineStatus {
 	
 	@Builder
 	public RoutineStatus(
-			LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime, Routine routine,
-			LocalDate date
+			ZonedDateTime startTime, ZonedDateTime endTime, Long userDurationTime, Routine routine,
+			ZonedDateTime dateTime
 	) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.userDurationTime = userDurationTime;
 		this.routine = routine;
-		this.date = date;
+		this.dateTime = dateTime;
 	}
 	
 	public void setRoutine(Routine routine) {
@@ -60,11 +61,11 @@ public class RoutineStatus {
 		this.routine = routine;
 	}
 	
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(ZonedDateTime startTime) {
 		this.startTime = startTime;
 	}
 	
-	public void setEndTime(LocalDateTime endTime) {
+	public void setEndTime(ZonedDateTime endTime) {
 		this.endTime = endTime;
 	}
 	

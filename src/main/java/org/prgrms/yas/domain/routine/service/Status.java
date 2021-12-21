@@ -35,7 +35,7 @@ public enum Status {
 			}
 	);
 	
-	public static Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDate()
+	public static Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDateTime().toLocalDate()
 	                                                                               .isEqual(LocalDate.now()));
 	
 	public static Long isTodayRoutine(Routine routine) {

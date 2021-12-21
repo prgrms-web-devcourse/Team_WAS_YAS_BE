@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.routine.dto;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -17,7 +17,8 @@ public class RoutineUpdateResponse {
 	private Long routineId;
 	private String name;
 	private List<String> routineCategory;
-	private String startGoalTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime startGoalTime;
 	private Long durationGoalTime;
 	private List<String> weeks;
 	private String color;
@@ -25,13 +26,12 @@ public class RoutineUpdateResponse {
 	
 	@Builder
 	public RoutineUpdateResponse(
-			Long routineId, String name, LocalDateTime startGoalTime, Long durationGoalTime,
+			Long routineId, String name, ZonedDateTime startGoalTime, Long durationGoalTime,
 			List<String> weeks, List<String> routineCategory, String color, String emoji
 	) {
 		this.routineId = routineId;
 		this.name = name;
-		this.startGoalTime = startGoalTime.plusHours(9)
-		                                  .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.startGoalTime = startGoalTime;
 		this.durationGoalTime = durationGoalTime;
 		this.weeks = weeks;
 		this.routineCategory = routineCategory;

@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class Routine {
 	private List<RoutineCategory> routineCategory;
 	
 	@Column(nullable = false)
-	private LocalDateTime startGoalTime;
+	private ZonedDateTime startGoalTime;
 	
 	@Column(nullable = false)
 	@ColumnDefault("0")
@@ -121,7 +122,7 @@ public class Routine {
 	
 	@Builder
 	public Routine(
-			User user, String name, Long durationGoalTime, LocalDateTime startGoalTime, List<Week> weeks,
+			User user, String name, Long durationGoalTime, ZonedDateTime startGoalTime, List<Week> weeks,
 			List<RoutineCategory> routineCategory, String color, String emoji
 	) {
 		this.user = user;

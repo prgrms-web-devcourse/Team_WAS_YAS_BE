@@ -1,8 +1,7 @@
 package org.prgrms.yas.domain.mission.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,17 +13,19 @@ import lombok.NoArgsConstructor;
 public class MissionStatusDetailResponse {
 	
 	private int orders;
-	private String startTime;
-	private String endTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime startTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime endTime;
 	private Long userDurationTime;
 	
 	@Builder
 	public MissionStatusDetailResponse(
-			int orders, LocalDateTime startTime, LocalDateTime endTime, Long userDurationTime
+			int orders, ZonedDateTime startTime, ZonedDateTime endTime, Long userDurationTime
 	) {
 		this.orders = orders;
-		this.startTime = startTime.plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-		this.endTime = endTime.plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.userDurationTime = userDurationTime;
 	}
 }
