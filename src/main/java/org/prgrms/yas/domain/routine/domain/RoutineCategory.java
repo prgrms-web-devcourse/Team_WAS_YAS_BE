@@ -14,7 +14,10 @@ public enum RoutineCategory {
 	HOBBY("HOBBY"),
 	STUDY("STUDY"),
 	TOTAL("TOTAL"),
-	SHOPPING("SHOPPING");
+	SHOPPING("SHOPPING"),
+	LIFE("LIFE"),
+	ART("ART"),
+	MUSIC("MUSIC");
 	
 	private String routineCategory;
 	
