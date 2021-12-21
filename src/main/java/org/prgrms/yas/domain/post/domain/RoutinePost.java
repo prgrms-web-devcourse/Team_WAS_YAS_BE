@@ -27,16 +27,12 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE routine_post SET is_deleted = true WHERE id =?")
 public class RoutinePost extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  
-  @Column(nullable = false, columnDefinition = "TINYINT default false")
-  private boolean isDeleted;
-    
+	
   @Column(columnDefinition = "TEXT")
 	private String content;
   
