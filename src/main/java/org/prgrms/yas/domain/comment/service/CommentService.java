@@ -26,7 +26,6 @@ public class CommentService {
 	private final UserRepository userRepository;
 	private final PostRepository postRepository;
 	private final CommentRepository commentRepository;
-	private final CommentLikesRepository commentLikesRepository;
 	
 	public Long saveComment(
 			final Long userId, final Long postId, final CommentCreateRequest commentCreateRequest

@@ -95,14 +95,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		configuration.setAllowCredentials(true);
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration(
+				"/**",
+				configuration
+		);
 		return source;
 	}
 	
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(WebSecurity web) {
 		web.ignoring()
-		   .mvcMatchers("/swagger-ui.html/**",
+		   .mvcMatchers(
+				   "/swagger-ui.html/**",
 				   "/configuration/**",
 				   "/swagger-resources/**",
 				   "/v2/api-docs",
@@ -113,18 +117,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.httpBasic()
-				.disable()
-				.cors()
-				.and()
-				.authorizeRequests()
-				.antMatchers("/swagger-ui/**").permitAll()
-				.antMatchers("/users/login").permitAll()
-				.antMatchers(HttpMethod.POST,"/users").permitAll()
-				.antMatchers(HttpMethod.GET,"/posts/**").permitAll()
-				.anyRequest().authenticated()
-				.and()
+		http.httpBasic()
+		    .disable()
+		    .cors()
+		    .and()
+		    .authorizeRequests()
+		    .antMatchers("/users/login")
+		    .permitAll()
+		    .antMatchers(
+				    HttpMethod.POST,
+				    "/users"
+		    )
+		    .permitAll()
+		    .antMatchers(
+				    HttpMethod.GET,
+				    "/posts/**"
+		    )
+		    .permitAll()
+		    .anyRequest()
+		    .authenticated()
+		    .and()
 		    .formLogin()
 		    .disable()
 		    .csrf()
