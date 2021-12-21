@@ -117,22 +117,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.httpBasic()
 		    .disable()
 		    .cors()
 		    .and()
 		    .authorizeRequests()
-		    .antMatchers("/users/login")
-		    .permitAll()
-		    .antMatchers(
-				    HttpMethod.POST,
-				    "/users"
-		    )
-		    .permitAll()
-		    .antMatchers(
-				    HttpMethod.GET,
-				    "/posts/**"
-		    )
+		    .antMatchers("/users/login").permitAll()
+				.antMatchers(HttpMethod.POST,"/users").permitAll()
+				.antMatchers(HttpMethod.GET,"/posts/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
 		    .permitAll()
 		    .anyRequest()
 		    .authenticated()
