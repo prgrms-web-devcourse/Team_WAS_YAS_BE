@@ -73,7 +73,7 @@ public class LikesService {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
-		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
+		RoutinePost routinePost = postRepository.findById(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		if (!isDuplicatePostLikes(
 				user,
@@ -91,7 +91,7 @@ public class LikesService {
 		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
-		RoutinePost routinePost = postRepository.findByIdAndIsDeletedFalse(postId)
+		RoutinePost routinePost = postRepository.findById(postId)
 		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		return postLikesRepository.deleteByUserAndRoutinePost(
