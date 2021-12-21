@@ -1,15 +1,15 @@
 
+<br><br><br>
+
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/46310555/146953344-4e15ee83-d8ed-4db1-aa0f-cab692e8712f.png
-" />
+  <img src="https://user-images.githubusercontent.com/46310555/146953719-e94007b3-8cc1-4dd2-82fb-447121d28019.png" />
 </p>
 
-#  ⭐️YAS
-> **평범한 일상에 특별함을 더해줄 You Are Special** 
 
-<br/>
-
+> **평범한 일상에 특별함을 더해줄 You Are Special**  <br>
 [프론트엔드 레포지토리](https://github.com/prgrms-web-devcourse/Team_WAS_YAS_FE) 
+
+<br>
 
 ## 👩‍👩‍👦 Team
 
