@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.mission.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,15 +15,15 @@ public class MissionStatusUpdateRequest {
 	private Long missionStatusId;
 	private int orders;
 	private Long userDurationTime;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",timezone = "Asia/Seoul")
-	private LocalDateTime endTime;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",timezone = "Asia/Seoul")
-	private LocalDateTime startTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime endTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime startTime;
 	
 	@Builder
 	public MissionStatusUpdateRequest(
-			Long missionStatusId, int orders, Long userDurationTime, LocalDateTime endTime,
-			LocalDateTime startTime, Long routineStatusId
+			Long missionStatusId, int orders, Long userDurationTime, ZonedDateTime endTime,
+			ZonedDateTime startTime, Long routineStatusId
 	) {
 		this.missionStatusId = missionStatusId;
 		this.orders = orders;

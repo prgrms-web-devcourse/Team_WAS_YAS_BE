@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.post.dto;
 
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -16,8 +17,10 @@ public class CommentDto {
 	
 	private Long commentId;
 	private UserDto user;
-	private String createdAt;
-	private String updatedAt;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime createdAt;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime updatedAt;
 	private String content;
 	private List<LikesDto> likes;
 	
@@ -25,10 +28,8 @@ public class CommentDto {
 	public CommentDto(Comment comment) {
 		this.commentId = comment.getId();
 		this.user = new UserDto(comment.getUser());
-		this.createdAt = comment.getCreatedAt().plusHours(9)
-		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-		this.updatedAt = comment.getCreatedAt().plusHours(9)
-		                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.createdAt = comment.getCreatedAt();
+		this.updatedAt = comment.getCreatedAt();
 		this.content = comment.getContent();
 		this.likes = comment.getCommentLikes()
 		                    .stream()

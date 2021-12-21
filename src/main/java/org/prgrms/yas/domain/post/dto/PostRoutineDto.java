@@ -1,7 +1,7 @@
 package org.prgrms.yas.domain.post.dto;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
@@ -21,7 +21,8 @@ public class PostRoutineDto {
 	private String color;
 	private List<String> category;
 	private List<String> week;
-	private String startGoalTime;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private ZonedDateTime startGoalTime;
 	
 	@Builder
 	public PostRoutineDto(final Routine routine) {
@@ -38,9 +39,7 @@ public class PostRoutineDto {
 		                   .stream()
 		                   .map(WeekDto::weekToString)
 		                   .collect(Collectors.toList());
-		this.startGoalTime = routine.getStartGoalTime()
-		                            .plusHours(9)
-		                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+		this.startGoalTime = routine.getStartGoalTime();
 	}
 	
 }
