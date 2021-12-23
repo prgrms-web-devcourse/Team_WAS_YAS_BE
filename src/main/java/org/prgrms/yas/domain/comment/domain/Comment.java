@@ -34,7 +34,6 @@ import lombok.AccessLevel;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Where(clause = "is_deleted = false")
-@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id =?")
 public class Comment extends BaseEntity {
 
   @Id

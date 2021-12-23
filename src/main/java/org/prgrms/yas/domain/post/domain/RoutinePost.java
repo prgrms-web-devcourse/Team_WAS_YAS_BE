@@ -40,7 +40,7 @@ public class RoutinePost extends BaseEntity {
   @JoinColumn(name = "routine_id")
   private Routine routine;
 
-  @OneToMany(mappedBy = "routinePost", orphanRemoval = true)
+  @OneToMany(mappedBy = "routinePost",cascade = CascadeType.ALL,orphanRemoval = true)
   private List<Comment> comments = new ArrayList<>();
   
  	@OneToMany(mappedBy = "routinePost", cascade = CascadeType.ALL)
