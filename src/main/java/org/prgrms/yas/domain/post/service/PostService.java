@@ -8,7 +8,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.prgrms.yas.domain.comment.domain.Comment;
+import org.prgrms.yas.domain.comment.repository.CommentRepository;
 import org.prgrms.yas.domain.likes.dto.LikesResponse;
+import org.prgrms.yas.domain.likes.repository.CommentLikesRepository;
 import org.prgrms.yas.domain.likes.repository.PostLikesRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.dto.PostCreateRequest;
@@ -34,6 +37,8 @@ public class PostService {
 	private final RoutineRepository routineRepository;
 	private final PostRepository postRepository;
 	private final PostLikesRepository postLikesRepository;
+	private final CommentLikesRepository commentLikesRepository;
+	private final CommentRepository commentRepository;
 	
 	public Long savePost(
 			final Long userId, final Long routineId, PostCreateRequest postCreateRequest
@@ -63,6 +68,12 @@ public class PostService {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routinePost.getRoutine()
 		                                                                         .getId())
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		List<Comment> comments = commentRepository.findAllByRoutinePost(routinePost);
+		
+		for(int i = 0; i < comments.size(); i++){
+			commentLikesRepository.deleteAllByComment(comments.get(i));
+		}
+		
 		if (!userValid(
 				userId,
 				routinePost.getRoutine()

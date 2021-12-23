@@ -33,7 +33,7 @@ import lombok.AccessLevel;
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "is_deleted = false")
+//@Where(clause = "is_deleted = false")
 public class Comment extends BaseEntity {
 
   @Id
