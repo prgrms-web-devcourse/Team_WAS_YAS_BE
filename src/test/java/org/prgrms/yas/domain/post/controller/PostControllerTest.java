@@ -9,22 +9,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgrms.yas.domain.comment.domain.Comment;
-import org.prgrms.yas.domain.comment.repository.CommentRepository;
+import org.prgrms.yas.domain.likes.dto.LikesResponse;
+import org.prgrms.yas.domain.likes.repository.PostLikesRepository;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.dto.PostCreateRequest;
 import org.prgrms.yas.domain.post.exception.NotFoundRoutinePostException;
-import org.prgrms.yas.domain.routine.domain.Routine;
-import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.repository.UserRepository;
+import org.prgrms.yas.domain.post.repository.PostRepository;
 import org.prgrms.yas.global.aws.S3Uploader;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.prgrms.yas.setting.security.WithMockJwtAuthentication;
-import org.prgrms.yas.setting.setup.PostSetup;
-import org.prgrms.yas.setting.setup.RoutineSetup;
-import org.prgrms.yas.setting.setup.UserSetup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,16 +46,10 @@ class PostControllerTest {
 	private ObjectMapper objectMapper;
 	
 	@Autowired
-	private UserSetup userSetup;
+	private PostRepository postRepository;
 	
 	@Autowired
-	private RoutineSetup routineSetup;
-	
-	@Autowired
-	private PostSetup postSetup;
-	
-	@Autowired
-	private UserRepository userRepository;
+	private PostLikesRepository postLikesRepository;
 	
 	@Test
 	@DisplayName("게시글등록_테스트")
@@ -73,7 +64,7 @@ class PostControllerTest {
 				routineId
 		).contentType(MediaType.APPLICATION_JSON)
 		 .content(objectMapper.writeValueAsString(postCreateRequest)));
-
+		
 		// then
 		result.andExpect(status().isOk())
 		      .andExpect(jsonPath("$.data").isNumber());
@@ -103,7 +94,9 @@ class PostControllerTest {
 	void findOneTest() throws Exception {
 		//given
 		Long postId = 1L;
-		
+		RoutinePost routinePost = postRepository.findById(postId)
+		                                        .orElseThrow(() -> new NotFoundRoutinePostException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+		List<LikesResponse> likes = postLikesRepository.getByPost(postId);
 		//when
 		ResultActions result = mockMvc.perform(get(
 				"/posts/{id}",
@@ -114,22 +107,107 @@ class PostControllerTest {
 		result.andExpect(status().isOk())
 		      .andDo(print())
 		      .andExpect(jsonPath("$.data.postId").value(postId))
-		      .andExpect(jsonPath("$.data.createdAt").isString())
-		      .andExpect(jsonPath("$.data.updatedAt").isString())
-		      .andExpect(jsonPath("$.data.content").value("content"))
-		      .andExpect(jsonPath("$.data.user.userId").value(1L))
-		      .andExpect(jsonPath("$.data.user.nickname").value("nickname"))
-		      .andExpect(jsonPath("$.data.user.profileImage").isEmpty())
-		      .andExpect(jsonPath("$.data.routine.routineId").value(1L))
-		      .andExpect(jsonPath("$.data.routine.name").value("routineName"))
-		      .andExpect(jsonPath("$.data.routine.emoji").value("^^"))
-		      .andExpect(jsonPath("$.data.routine.durationGoalTime").value(1))
-		      .andExpect(jsonPath("$.data.routine.color").value("black"))
-		      .andExpect(jsonPath("$.data.routine.startGoalTime").isNotEmpty())
-		      .andExpect(jsonPath("$.data.routine.weeks", hasSize(2)))
-		      .andExpect(jsonPath("$.data.routine.category", hasSize(2)))
-		      .andExpect(jsonPath("$.data.routine.missions", hasSize(1)))
-		      .andExpect(jsonPath("$.data.comments", hasSize(1)))
-		      .andExpect(jsonPath("$.data.likes", hasSize(1)));
+		      .andExpect(jsonPath("$.data.createdAt").value(routinePost.getCreatedAt().plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+		      .andExpect(jsonPath("$.data.updatedAt").value(routinePost.getUpdatedAt().plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+		      .andExpect(jsonPath("$.data.content").value(routinePost.getContent()))
+		      .andExpect(jsonPath("$.data.user.userId").value(routinePost.getRoutine()
+		                                                                 .getUser()
+		                                                                 .getId()))
+		      .andExpect(jsonPath("$.data.user.nickname").value(routinePost.getRoutine()
+		                                                                   .getUser()
+		                                                                   .getNickname()))
+		      .andExpect(jsonPath("$.data.user.profileImage").value(routinePost.getRoutine()
+		                                                                       .getUser()
+		                                                                       .getProfileImage()))
+		      .andExpect(jsonPath("$.data.routine.routineId").value(routinePost.getRoutine()
+		                                                                       .getId()))
+		      .andExpect(jsonPath("$.data.routine.name").value(routinePost.getRoutine()
+		                                                                  .getName()))
+		      .andExpect(jsonPath("$.data.routine.emoji").value(routinePost.getRoutine()
+		                                                                   .getEmoji()))
+		      .andExpect(jsonPath("$.data.routine.durationGoalTime").value(routinePost.getRoutine()
+		                                                                              .getDurationGoalTime()))
+		      .andExpect(jsonPath("$.data.routine.color").value(routinePost.getRoutine()
+		                                                                   .getColor()))
+		      .andExpect(jsonPath("$.data.routine.startGoalTime").value(routinePost.getRoutine()
+		                                                                           .getStartGoalTime()
+		                                                                           .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"))))
+		      .andExpect(jsonPath("$.data.routine.weeks[0]").value(routinePost.getRoutine()
+		                                                                      .getWeeks()
+		                                                                      .get(0)
+		                                                                      .toString()))
+		      .andExpect(jsonPath("$.data.routine.weeks[1]").value(routinePost.getRoutine()
+		                                                                      .getWeeks()
+		                                                                      .get(1)
+		                                                                      .toString()))
+		      .andExpect(jsonPath(
+				      "$.data.routine.weeks",
+				      hasSize(2)
+		      ))
+		      .andExpect(jsonPath("$.data.routine.category[0]").value(routinePost.getRoutine()
+		                                                                         .getRoutineCategory()
+		                                                                         .get(0)
+		                                                                         .toString()))
+		      .andExpect(jsonPath("$.data.routine.category[1]").value(routinePost.getRoutine()
+		                                                                         .getRoutineCategory()
+		                                                                         .get(1)
+		                                                                         .toString()))
+		      .andExpect(jsonPath(
+				      "$.data.routine.category",
+				      hasSize(2)
+		      ))
+		      .andExpect(jsonPath("$.data.comments[0].commentId").value(routinePost.getComments()
+		                                                                           .get(0)
+		                                                                           .getId()))
+		      .andExpect(jsonPath("$.data.comments[0].user.userId").value(routinePost.getComments()
+		                                                                             .get(0)
+		                                                                             .getUser()
+		                                                                             .getId()))
+		      .andExpect(jsonPath("$.data.comments[0].user.nickname").value(routinePost.getComments()
+		                                                                               .get(0)
+		                                                                               .getUser()
+		                                                                               .getNickname()))
+		      .andExpect(jsonPath("$.data.comments[0].user.profileImage").value(routinePost.getComments()
+		                                                                                   .get(0)
+		                                                                                   .getUser()
+		                                                                                   .getProfileImage()))
+		      .andExpect(jsonPath("$.data.comments[0].createdAt").value(routinePost.getComments()
+		                                                                           .get(0)
+		                                                                           .getCreatedAt()
+		                                                                           .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"))))
+		      .andExpect(jsonPath("$.data.comments[0].updatedAt").value(routinePost.getComments()
+		                                                                           .get(0)
+		                                                                           .getUpdatedAt()
+		                                                                           .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"))))
+		      .andExpect(jsonPath("$.data.comments[0].content").value(routinePost.getComments()
+		                                                                         .get(0)
+		                                                                         .getContent()))
+		      .andExpect(jsonPath("$.data.comments[0].likes[0].userId").value(routinePost.getComments()
+		                                                                                 .get(0)
+		                                                                                 .getCommentLikes()
+		                                                                                 .get(0)
+		                                                                                 .getUser()
+		                                                                                 .getId()))
+		      .andExpect(jsonPath("$.data.comments[0].likes[0].username").value(routinePost.getComments()
+		                                                                                   .get(0)
+		                                                                                   .getCommentLikes()
+		                                                                                   .get(0)
+		                                                                                   .getUser()
+		                                                                                   .getNickname()))
+		      .andExpect(jsonPath(
+				      "$.data.comments[0].likes",
+				      hasSize(1)
+		      ))
+		      .andExpect(jsonPath(
+				      "$.data.comments",
+				      hasSize(1)
+		      ))
+		      .andExpect(jsonPath("$.data.likes[0].userId").value(likes.get(0)
+		                                                               .getUserId()))
+		      .andExpect(jsonPath(
+				      "$.data.likes",
+				      hasSize(1)
+		      ));
+		
 	}
 }
