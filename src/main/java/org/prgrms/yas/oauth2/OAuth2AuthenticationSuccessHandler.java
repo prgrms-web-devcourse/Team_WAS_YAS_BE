@@ -3,6 +3,7 @@ package org.prgrms.yas.oauth2;
 import static org.prgrms.yas.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -54,10 +55,7 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 			                                       .queryParam("token", token)
 			                                       .queryParam("userId", user.getId())
 			                                       .build().toUriString();
-			logger.info("token : {}", token);
 			logger.info("redirectUri : {}" ,redirectUri);
-			logger.info("targetUrl : {}" ,targetUrl);
-
 			clearAuthenticationAttributes(req,res);
 			getRedirectStrategy().sendRedirect(req,res,targetUrl);
 		}else{
