@@ -27,8 +27,8 @@ spring:
         registration:
           kakao:
             client-name:  kakao
-            client-id:  82f464ab83721b86587f7e7b1c108691
-            client-secret:  jmrGOa3uWghfKFnvXU2OmqWbjkYO1p1x
+            client-id:  ${KAKAO_CLIENT_ID}
+            client-secret:  ${KAKAO_CLIENT_SECRET}
             scope:  profile_nickname, account_email
             redirect-uri: "https://was-yas.netlify.app/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
