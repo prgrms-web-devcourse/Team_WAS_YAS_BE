@@ -7,7 +7,8 @@
 
 
 > **평범한 일상에 특별함을 더해줄 You Are Special**  <br>
-[프론트엔드 레포지토리](https://github.com/prgrms-web-devcourse/Team_WAS_YAS_FE) 
+[프론트엔드 레포지토리](https://github.com/prgrms-web-devcourse/Team_WAS_YAS_FE) <br>
+[깃헙위키](https://github.com/prgrms-web-devcourse/Team_WAS_YAS_BE/wiki/01-YAS-Planning)
 
 <br>
 
