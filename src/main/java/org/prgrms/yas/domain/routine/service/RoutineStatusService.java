@@ -34,7 +34,6 @@ public class RoutineStatusService {
 		                                                     .orElseThrow(() -> new NotFoundRoutineStatusException(NOT_FOUND_RESOURCE_ERROR));
 		if (files.size() > 0) {
 			for (MultipartFile file : files) {
-				//routineStatusCreateRequest.setReviewImages(routineStatus.getRoutineStatusImages());
 				routineStatusCreateRequest.setReviewImages(s3Uploader.upload(
 						file,
 						DIRECTORY
@@ -42,20 +41,19 @@ public class RoutineStatusService {
 			}
 		}
 		
-		//RoutineStatusImage에 저장
-			List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
-			for (String image : routineStatusCreateRequest.getReviewImages()) {
-				RoutineStatusImage routineStatusImage = RoutineStatusImage.builder()
-				                                                          .routineStatus(routineStatus)
-				                                                          .reviewImage(image)
-				                                                          .build();
-				
-				System.out.println("routineStatusImage.getId() : "+  routineStatusImage.getId());
-				RoutineStatusImage savedRoutineStatusImage = routineStatusImageRepository.save(routineStatusImage);
-				routineStatusImages.add(savedRoutineStatusImage);
-			}
-			routineStatus.createRoutineStatus(routineStatusCreateRequest,routineStatusImages);
+		List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
+		for (String image : routineStatusCreateRequest.getReviewImages()) {
+			RoutineStatusImage routineStatusImage = RoutineStatusImage.builder()
+			                                                          .routineStatus(routineStatus)
+			                                                          .reviewImage(image)
+			                                                          .build();
 			
-			return routineStatusCreateRequest.getRoutineStatusId();
+			RoutineStatusImage savedRoutineStatusImage = routineStatusImageRepository.save(routineStatusImage);
+			routineStatusImages.add(savedRoutineStatusImage);
+		}
+		routineStatus.createRoutineStatus(routineStatusCreateRequest,
+				routineStatusImages);
+		
+		return routineStatusCreateRequest.getRoutineStatusId();
 	}
 }
