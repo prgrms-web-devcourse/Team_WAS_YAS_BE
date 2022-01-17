@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
@@ -131,6 +132,11 @@ public class UserService {
 	public Long delete(Long id) {
 		userRepository.deleteById(findActiveUser(id).getId());
 		return id;
+	}
+	
+	@Transactional(readOnly = true)
+	public boolean isValidEmail(UserEmailRequest userEmailRequest){
+		return !userRepository.existsByEmail(userEmailRequest.getEmail());
 	}
 	
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
