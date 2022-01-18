@@ -39,10 +39,6 @@ public class Jwt {
 				"id",
 				claims.id
 		);
-		builder.withClaim(
-				"username",
-				claims.username
-		);
 		builder.withArrayClaim(
 				"roles",
 				claims.roles
@@ -58,7 +54,6 @@ public class Jwt {
 	static public class Claims {
 		
 		Long id;
-		String username;
 		String[] roles;
 		Date iat;
 		Date exp;
@@ -67,10 +62,6 @@ public class Jwt {
 		}
 		
 		Claims(DecodedJWT decodedJWT) {
-			Claim username = decodedJWT.getClaim("username");
-			if (username != null) {
-				this.username = username.asString();
-			}
 			Claim roles = decodedJWT.getClaim("roles");
 			if (roles != null) {
 				this.roles = roles.asArray(String.class);
@@ -83,10 +74,9 @@ public class Jwt {
 			this.exp = decodedJWT.getExpiresAt();
 		}
 		
-		public static Claims from(Long id, String username, String[] roles) {
+		public static Claims from(Long id, String[] roles) {
 			Claims claims = new Claims();
 			claims.id = id;
-			claims.username = username;
 			claims.roles = roles;
 			return claims;
 		}
@@ -96,10 +86,6 @@ public class Jwt {
 			map.put(
 					"id",
 					id
-			);
-			map.put(
-					"username",
-					username
 			);
 			map.put(
 					"roles",

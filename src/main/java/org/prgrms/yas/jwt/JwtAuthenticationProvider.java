@@ -50,15 +50,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 			List<GrantedAuthority> authorities = user.getAuthorities();
 			String token = getToken(
 					user.getId(),
-					user.getEmail(),
 					authorities
 			);
 			Long id = user.getId();
 			JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(
 					new JwtAuthentication(
 							id,
-							token,
-							user.getEmail()
+							token
 					),
 					null,
 					authorities
@@ -75,14 +73,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 		}
 	}
 	
-	private String getToken(Long id, String email, List<GrantedAuthority> authorities) {
+	private String getToken(Long id,List<GrantedAuthority> authorities) {
 		String[] roles = authorities.stream()
 		                            .map(GrantedAuthority::getAuthority)
 		                            .toArray(String[]::new);
 		
 		return jwt.sign(Jwt.Claims.from(
 				id,
-				email,
 				roles
 		));
 	}
