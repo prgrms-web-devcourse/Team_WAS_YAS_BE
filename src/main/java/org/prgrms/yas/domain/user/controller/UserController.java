@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import javax.validation.Valid;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
+import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignInRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,5 +106,24 @@ public class UserController {
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
 	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId())));
+	}
+	
+	@Operation(summary = "회원수정(비밀번호) 컨트롤러")
+	@PutMapping("/users/password")
+	public ResponseEntity<ApiResponse<Long>> updatePassword(
+			@AuthenticationPrincipal JwtAuthentication token,
+			@Valid @RequestBody UserPasswordRequest userPasswordRequest
+	){
+		return ResponseEntity.ok(ApiResponse.of(userService.updatePassword(
+				token.getId(),
+				userPasswordRequest
+		)));
+
+	@Operation(summary = "회원가입시 이메일 중복확인")
+	@GetMapping("/users/email")
+	public ResponseEntity<ApiResponse<Boolean>> checkValidEmail(
+			@RequestBody UserEmailRequest userEmailRequest
+	){
+		return ResponseEntity.ok(ApiResponse.of(userService.isValidEmail(userEmailRequest)));
 	}
 }
