@@ -86,14 +86,13 @@ public class UserService {
 		                     .orElseGet(() -> {
 			                     Map<String, Object> attributes = oAuth2User.getAttributes();
 			                     Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-													 Map<String,Object> accounts = (Map<String, Object>) attributes.get("kakao_account");
-													 
+			                     String nickname = (String) properties.get("nickname");
 													 User user = User.builder()
-													                 .name((String) properties.get("nickname"))
+													                 .name(nickname)
+													                 .nickname(nickname)
 													                 .provider(provider)
 													                 .providerId(providerId)
 													                 .build();
-			
 			                     userRepository.save(user);
 			                     return user;
 		                     });
@@ -156,7 +155,6 @@ public class UserService {
 		return !userRepository.existsByEmail(userEmailRequest.getEmail());
 	}
 	
-  @Transactional(readOnly = true)
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_VALUE_ERROR);
