@@ -118,6 +118,7 @@ public class UserController {
 				token.getId(),
 				userPasswordRequest
 		)));
+	}
 
 	@Operation(summary = "회원가입시 이메일 중복확인")
 	@GetMapping("/users/email")
