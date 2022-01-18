@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
@@ -129,27 +130,37 @@ public class UserService {
 	}
 	
 	@Transactional
+	public Long updatePassword(Long id, UserPasswordRequest userPasswordRequest){
+		User user = findActiveUser(id);
+		user.checkPassword(passwordEncoder,userPasswordRequest.getNowPassword());
+		if(!userPasswordRequest.isDifferentPassword()){
+			user.updateUserPasswordInfo(passwordEncoder, userPasswordRequest);
+		}
+		return user.getId();
+	}
+	
+	@Transactional
 	public Long delete(Long id) {
 		userRepository.deleteById(findActiveUser(id).getId());
 		return id;
 	}
 	
 	@Transactional(readOnly = true)
+	public User findActiveUser(Long id) {
+		return userRepository.findById(id)
+		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+  }
+  
+  @Transactional(readOnly = true)
 	public boolean isValidEmail(UserEmailRequest userEmailRequest){
 		return !userRepository.existsByEmail(userEmailRequest.getEmail());
 	}
 	
+  @Transactional(readOnly = true)
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_VALUE_ERROR);
 		}
-		
 		return false;
-	}
-	
-	@Transactional(readOnly = true)
-	public User findActiveUser(Long id) {
-		return userRepository.findById(id)
-		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 	}
 }
