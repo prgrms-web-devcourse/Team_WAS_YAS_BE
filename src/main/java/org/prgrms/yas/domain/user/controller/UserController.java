@@ -3,9 +3,9 @@ package org.prgrms.yas.domain.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
-import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignInRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+@Validated
 @RestController
 public class UserController {
 	
@@ -118,12 +120,12 @@ public class UserController {
 				userPasswordRequest
 		)));
 	}
-
+	
 	@Operation(summary = "회원가입시 이메일 중복확인")
 	@GetMapping("/users/email")
 	public ResponseEntity<ApiResponse<Boolean>> checkValidEmail(
-			@RequestBody UserEmailRequest userEmailRequest
+			@Email @RequestParam(value="value") String email
 	){
-		return ResponseEntity.ok(ApiResponse.of(userService.isValidEmail(userEmailRequest)));
+		return ResponseEntity.ok(ApiResponse.of(userService.isValidEmail(email)));
 	}
 }
