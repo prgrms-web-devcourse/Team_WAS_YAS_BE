@@ -83,11 +83,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler(){
+	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
 		Jwt jwt = getApplicationContext().getBean(Jwt.class);
 		UserService userService = getApplicationContext().getBean(UserService.class);
 		HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository = getApplicationContext().getBean(HttpCookieOAuth2AuthorizationRequestRepository.class);
-		return new OAuth2AuthenticationSuccessHandler(userService,jwt,authorizationRequestRepository);
+		return new OAuth2AuthenticationSuccessHandler(userService,
+				jwt,
+				authorizationRequestRepository);
 	}
 	
 	@Bean
@@ -124,7 +126,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository(){
+	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
 		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
 	
@@ -150,7 +152,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .and()
 		    .authorizeRequests()
 		    .antMatchers("/swagger-ui/**")
-	            .permitAll()
+		    .permitAll()
 		    .antMatchers("/users/login")
 		    .permitAll()
 		    .antMatchers(
@@ -162,6 +164,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				    HttpMethod.GET,
 				    "/posts/**"
 		    )
+		    .permitAll()
+		    .antMatchers(HttpMethod.GET,
+				    "/users/email")
 		    .permitAll()
 		    .anyRequest()
 		    .authenticated()
@@ -181,12 +186,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		    .and()
-				.oauth2Login()
-				.authorizationEndpoint()
-				.authorizationRequestRepository(authorizationRequestRepository())
-				.and()
-				.successHandler(oAuth2AuthenticationSuccessHandler())
-				.and()
+		    .oauth2Login()
+		    .authorizationEndpoint()
+		    .authorizationRequestRepository(authorizationRequestRepository())
+		    .and()
+		    .successHandler(oAuth2AuthenticationSuccessHandler())
+		    .and()
 		    .exceptionHandling()
 		    .accessDeniedHandler(accessDeniedHandler())
 		    .and()
