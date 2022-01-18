@@ -49,16 +49,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 			if (token != null) {
 				try {
 					Jwt.Claims claims = verify(token);
-					String username = claims.username;
 					Long id = claims.id;
 					List<GrantedAuthority> authorities = getAuthorities(claims);
 					
-					if (isNotEmpty(username) && authorities.size() > 0) {
+					if (authorities.size() > 0) {
 						JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(
 								new JwtAuthentication(
 										id,
-										token,
-										username
+										token
 								),
 								null,
 								authorities

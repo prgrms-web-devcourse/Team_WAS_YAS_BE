@@ -63,7 +63,6 @@ public class UserController {
 		return ResponseEntity.ok(ApiResponse.of(new UserToken(
 				user.getId(),
 				principal.getToken(),
-				principal.getUsername(),
 				user.getRoles()
 				    .toString()
 		)));
