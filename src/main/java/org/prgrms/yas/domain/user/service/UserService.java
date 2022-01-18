@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
+import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
@@ -148,8 +149,14 @@ public class UserService {
 	public User findActiveUser(Long id) {
 		return userRepository.findById(id)
 		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
+  }
+  
+  @Transactional(readOnly = true)
+	public boolean isValidEmail(UserEmailRequest userEmailRequest){
+		return !userRepository.existsByEmail(userEmailRequest.getEmail());
 	}
 	
+  @Transactional(readOnly = true)
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_VALUE_ERROR);
