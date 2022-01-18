@@ -1,5 +1,8 @@
 package org.prgrms.yas.domain.user.service;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
@@ -149,10 +152,11 @@ public class UserService {
 		return userRepository.findById(id)
 		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
   }
-  
-  @Transactional(readOnly = true)
-	public boolean isValidEmail(UserEmailRequest userEmailRequest){
-		return !userRepository.existsByEmail(userEmailRequest.getEmail());
+	
+	@Transactional(readOnly = true)
+	public boolean isValidEmail(String email){
+		checkArgument(isNotEmpty(email),"이메일은 작성해야 합니다.");
+		return !userRepository.existsByEmail(email);
 	}
 	
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
