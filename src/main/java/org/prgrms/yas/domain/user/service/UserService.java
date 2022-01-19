@@ -59,7 +59,6 @@ public class UserService {
 		return user;
 	}
 	
-	
 	@Transactional
 	public Long signUp(UserSignUpRequest userSignUpRequest) {
 		if ((!isDuplicateUser(userSignUpRequest)) && !userSignUpRequest.isDifferentPassword()) {
@@ -89,12 +88,18 @@ public class UserService {
 		                     .orElseGet(() -> {
 			                     Map<String, Object> attributes = oAuth2User.getAttributes();
 			                     Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+			                     Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+			                     Map<String, Object> kakaoAccountProfile = (Map<String, Object>) kakaoAccount.get("profile");
+													 
 			                     String nickname = (String) properties.get("nickname");
+													 String profileImage = (String) kakaoAccountProfile.get("profile_image_url");
+													 
 													 User user = User.builder()
 													                 .name(nickname)
 													                 .nickname(nickname)
 													                 .provider(provider)
 													                 .providerId(providerId)
+													                 .profileImage(profileImage)
 													                 .build();
 			                     userRepository.save(user);
 			                     return user;
