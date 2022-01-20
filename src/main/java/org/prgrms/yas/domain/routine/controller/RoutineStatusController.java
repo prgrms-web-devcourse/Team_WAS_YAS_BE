@@ -24,11 +24,11 @@ public class RoutineStatusController {
 	
 	@Operation(summary = "루틴진행 추가 컨트롤러")
 	@PutMapping(value = "/routineStatus", consumes = {"multipart/form-data"})
-	public ResponseEntity<ApiResponse<Long>> createRoutineStatus(
+	public ResponseEntity<ApiResponse<Long>> updateRoutineStatus(
 			@Valid @RequestPart RoutineStatusCreateRequest routineStatusCreateRequest,
 			@RequestPart(value = "file", required = false) List<MultipartFile> files
 	) throws IOException {
-		return ResponseEntity.ok(ApiResponse.of(routineStatusService.createRoutineStatus(
+		return ResponseEntity.ok(ApiResponse.of(routineStatusService.updateRoutineStatus(
 				routineStatusCreateRequest,
 				files
 		)));

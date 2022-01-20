@@ -29,7 +29,7 @@ public class RoutineStatusService {
 	private final RoutineStatusImageRepository routineStatusImageRepository;
 	
 	@Transactional
-	public Long createRoutineStatus(
+	public Long updateRoutineStatus(
 			RoutineStatusCreateRequest routineStatusCreateRequest, List<MultipartFile> files
 	) throws IOException {
 		RoutineStatus routineStatus = routineStatusRepository.findById(routineStatusCreateRequest.getRoutineStatusId())
