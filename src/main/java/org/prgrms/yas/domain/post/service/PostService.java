@@ -13,6 +13,7 @@ import org.prgrms.yas.domain.comment.repository.CommentRepository;
 import org.prgrms.yas.domain.likes.dto.LikesResponse;
 import org.prgrms.yas.domain.likes.repository.CommentLikesRepository;
 import org.prgrms.yas.domain.likes.repository.PostLikesRepository;
+import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
 import org.prgrms.yas.domain.post.dto.PostCreateRequest;
 import org.prgrms.yas.domain.post.dto.PostDetailResponse;
@@ -114,7 +115,21 @@ public class PostService {
 	
 	public List<RoutineListResponse> findAll(Long id) {
 		List<Routine> notPostAll = routineRepository.findRoutinesNotPosted(id);
-		return notPostAll.stream()
+		List<Routine> realNotPostAll = new ArrayList<>();
+		
+		for(Routine r : notPostAll){
+			int	count = 0;
+			for(Mission m : r.getMissions()){
+				if(!m.isDeleted()){
+					count += 1;
+				}
+			}
+			if(count > 0){
+				realNotPostAll.add(r);
+			}
+		}
+		
+		return realNotPostAll.stream()
 		                 .map(Routine::toRoutineListResponse)
 		                 .collect(toList());
 	}
