@@ -1,13 +1,11 @@
 package org.prgrms.yas.global.aws;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +42,5 @@ public class S3Uploader {
 	
 	public void delete(String fileName) {
 		s3Client.deleteObject(new DeleteObjectRequest(bucket,fileName));
-	}
-	
-	private String createFileName(MultipartFile file,String dirName) throws IOException {
-		InputStream uploadFile = file.getInputStream();
-		String fileName = dirName + "/" + uploadFile;
-		return fileName;
 	}
 }

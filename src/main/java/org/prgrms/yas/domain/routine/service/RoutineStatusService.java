@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.prgrms.yas.domain.routine.domain.RoutineStatus;
 import org.prgrms.yas.domain.routine.domain.RoutineStatusImage;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
@@ -43,14 +44,12 @@ public class RoutineStatusService {
 			}
 		}
 		
-		//s3Uploader.delete("static/review/sun.nio.ch.ChannelInputStream@21ea0d4f");//51
 		//이미지 파일 삭제
 		if (routineStatusCreateRequest.getDeletedImages().size() > 0 ) {
 			for (Long deletedImage : routineStatusCreateRequest.getDeletedImages()) {
 				RoutineStatusImage routineStatusImage = routineStatusImageRepository.findById(deletedImage)
 				                                                                    .orElseThrow(() -> new NotFoundRoutineStatusImageException(NOT_FOUND_RESOURCE_ERROR));
-				
-				s3Uploader.delete(routineStatusImage.getReviewImage().substring(51));
+				s3Uploader.delete(DIRECTORY + "/sun.nio.ch.ChannelInputStream@" + routineStatusImage.getReviewImage().substring(97));
 				routineStatusImageRepository.delete(routineStatusImage);
 			}
 		}
