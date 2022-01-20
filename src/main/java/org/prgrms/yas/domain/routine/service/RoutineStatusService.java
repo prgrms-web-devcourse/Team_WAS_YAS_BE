@@ -10,6 +10,7 @@ import org.prgrms.yas.domain.routine.domain.RoutineStatus;
 import org.prgrms.yas.domain.routine.domain.RoutineStatusImage;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineStatusException;
+import org.prgrms.yas.domain.routine.exception.NotFoundRoutineStatusImageException;
 import org.prgrms.yas.domain.routine.repository.RoutineStatusImageRepository;
 import org.prgrms.yas.domain.routine.repository.RoutineStatusRepository;
 import org.prgrms.yas.global.aws.S3Uploader;
@@ -32,7 +33,8 @@ public class RoutineStatusService {
 	) throws IOException {
 		RoutineStatus routineStatus = routineStatusRepository.findById(routineStatusCreateRequest.getRoutineStatusId())
 		                                                     .orElseThrow(() -> new NotFoundRoutineStatusException(NOT_FOUND_RESOURCE_ERROR));
-		if (files.size() > 0) {
+		//이미지 파일 추가
+		if (files != null) {
 			for (MultipartFile file : files) {
 				routineStatusCreateRequest.setReviewImages(s3Uploader.upload(
 						file,
@@ -41,18 +43,33 @@ public class RoutineStatusService {
 			}
 		}
 		
-		List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
-		for (String image : routineStatusCreateRequest.getReviewImages()) {
-			RoutineStatusImage routineStatusImage = RoutineStatusImage.builder()
-			                                                          .routineStatus(routineStatus)
-			                                                          .reviewImage(image)
-			                                                          .build();
-			
-			RoutineStatusImage savedRoutineStatusImage = routineStatusImageRepository.save(routineStatusImage);
-			routineStatusImages.add(savedRoutineStatusImage);
+		//s3Uploader.delete("static/review/sun.nio.ch.ChannelInputStream@21ea0d4f");//51
+		//이미지 파일 삭제
+		if (routineStatusCreateRequest.getDeletedImages().size() > 0 ) {
+			for (Long deletedImage : routineStatusCreateRequest.getDeletedImages()) {
+				RoutineStatusImage routineStatusImage = routineStatusImageRepository.findById(deletedImage)
+				                                                                    .orElseThrow(() -> new NotFoundRoutineStatusImageException(NOT_FOUND_RESOURCE_ERROR));
+				
+				s3Uploader.delete(routineStatusImage.getReviewImage().substring(51));
+				routineStatusImageRepository.delete(routineStatusImage);
+			}
 		}
-		routineStatus.createRoutineStatus(routineStatusCreateRequest,
-				routineStatusImages);
+		List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
+		if (files != null) {
+			for (String image : routineStatusCreateRequest.getReviewImages()) {
+				RoutineStatusImage routineStatusImage = RoutineStatusImage.builder()
+				                                                          .routineStatus(routineStatus)
+				                                                          .reviewImage(image)
+				                                                          .build();
+				
+				RoutineStatusImage savedRoutineStatusImage = routineStatusImageRepository.save(routineStatusImage);
+				routineStatusImages.add(savedRoutineStatusImage);
+			}
+		}
+		routineStatus.createRoutineStatus(
+				routineStatusCreateRequest,
+				routineStatusImages
+		);
 		
 		return routineStatusCreateRequest.getRoutineStatusId();
 	}
