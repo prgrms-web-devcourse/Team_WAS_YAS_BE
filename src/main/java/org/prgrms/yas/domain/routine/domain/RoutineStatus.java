@@ -37,6 +37,7 @@ public class RoutineStatus {
 	
 	private ZonedDateTime dateTime;
 	
+	@ColumnDefault("0")
 	private Integer emoji;
 	
 	@Column(columnDefinition = "TEXT")
