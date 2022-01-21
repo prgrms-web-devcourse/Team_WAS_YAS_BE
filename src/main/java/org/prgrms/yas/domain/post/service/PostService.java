@@ -112,7 +112,6 @@ public class PostService {
 		return false;
 	}
 	
-	
 	public List<RoutineListResponse> findAll(Long id) {
 		List<Routine> notPostAll = routineRepository.findRoutinesNotPosted(id);
 		List<Routine> realNotPostAll = new ArrayList<>();
@@ -122,6 +121,7 @@ public class PostService {
 			for(Mission m : r.getMissions()){
 				if(!m.isDeleted()){
 					count += 1;
+					break;
 				}
 			}
 			if(count > 0){
