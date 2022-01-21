@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RoutineStatusService {
 	
 	private static final String DIRECTORY = "static/review";
+	private static final String DELETE_DIRECTORY ="static/review/sun.nio.ch.ChannelInputStream@";
 	private final S3Uploader s3Uploader;
 	private final RoutineStatusRepository routineStatusRepository;
 	private final RoutineStatusImageRepository routineStatusImageRepository;
@@ -49,7 +50,7 @@ public class RoutineStatusService {
 			for (Long deletedImage : routineStatusCreateRequest.getDeletedImages()) {
 				RoutineStatusImage routineStatusImage = routineStatusImageRepository.findById(deletedImage)
 				                                                                    .orElseThrow(() -> new NotFoundRoutineStatusImageException(NOT_FOUND_RESOURCE_ERROR));
-				s3Uploader.delete(DIRECTORY + "/sun.nio.ch.ChannelInputStream@" + routineStatusImage.getReviewImage().substring(97));
+				s3Uploader.delete(DELETE_DIRECTORY + routineStatusImage.getReviewImage().substring(97));
 				routineStatusImageRepository.delete(routineStatusImage);
 			}
 		}
