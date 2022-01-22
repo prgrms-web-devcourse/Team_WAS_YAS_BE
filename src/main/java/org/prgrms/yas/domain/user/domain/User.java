@@ -19,6 +19,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
+import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
+import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -97,7 +99,7 @@ public class User {
 				credentials,
 				password
 		)) {
-			throw new IllegalArgumentException("Bad credentials");
+			throw new NotSamePasswordException(ErrorCode.CONFLICT_PASSWORD_ERROR);
 		}
 	}
 	

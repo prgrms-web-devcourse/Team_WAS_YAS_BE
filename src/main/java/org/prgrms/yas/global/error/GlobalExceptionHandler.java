@@ -1,6 +1,7 @@
 package org.prgrms.yas.global.error;
 
 import lombok.extern.slf4j.Slf4j;
+import org.prgrms.yas.domain.user.exception.NotValidPasswordException;
 import org.prgrms.yas.global.response.ErrorResponse;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
@@ -63,14 +64,14 @@ public class GlobalExceptionHandler {
 		);
 	}
 	
-	@ExceptionHandler({NotSamePasswordException.class})
+	@ExceptionHandler({NotSamePasswordException.class, NotValidPasswordException.class})
 	public ResponseEntity<ErrorResponse> handleNotSamePasswordException(NotSamePasswordException e) {
 		log.error(
 				"Handle Check Password Exception {}",
 				e.toString()
 		);
 		
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_VALUE_ERROR);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_PASSWORD_ERROR);
 		return new ResponseEntity<>(
 				errorResponse,
 				HttpStatus.CONFLICT

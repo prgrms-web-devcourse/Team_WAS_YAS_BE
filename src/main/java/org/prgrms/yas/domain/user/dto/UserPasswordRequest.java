@@ -26,7 +26,7 @@ public class UserPasswordRequest {
 	
 	public boolean isDifferentPassword() {
 		if (!this.newPassword.equals(this.newPasswordCheck)) {
-			throw new NotSamePasswordException(ErrorCode.CONFLICT_VALUE_ERROR);
+			throw new NotSamePasswordException(ErrorCode.CONFLICT_PASSWORD_ERROR);
 		}
 		return false;
 	}
