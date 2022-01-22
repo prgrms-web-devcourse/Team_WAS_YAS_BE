@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
+import org.prgrms.yas.domain.user.exception.NotValidPasswordException;
 import org.prgrms.yas.global.error.ErrorCode;
 
 @Getter
@@ -47,7 +47,7 @@ public class UserSignUpRequest {
 	
 	public boolean isDifferentPassword() {
 		if (!this.password.equals(this.checkPassword)) {
-			throw new NotSamePasswordException(ErrorCode.CONFLICT_VALUE_ERROR);
+			throw new NotValidPasswordException(ErrorCode.CONFLICT_VALUE_ERROR);
 		}
 		return false;
 	}

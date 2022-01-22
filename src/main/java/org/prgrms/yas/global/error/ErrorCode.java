@@ -20,7 +20,12 @@ public enum ErrorCode {
 	CONFLICT_VALUE_ERROR(
 			"중복된 값입니다",
 			HttpStatus.CONFLICT.value()
+	),
+	CONFLICT_PASSWORD_ERROR(
+			"잘못된 비밀번호입니다.",
+			HttpStatus.CONFLICT.value()
 	);
+	
 	
 	private final String message;
 	private final int status;
