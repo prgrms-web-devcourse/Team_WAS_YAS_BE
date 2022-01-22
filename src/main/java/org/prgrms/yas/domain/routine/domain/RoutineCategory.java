@@ -18,7 +18,7 @@ public enum RoutineCategory {
 	ART("ART"),
 	MUSIC("MUSIC"),
 	SHOPPING("SHOPPING");
-	
+  
 	private String routineCategory;
 	
 	RoutineCategory(String routineCategory) {

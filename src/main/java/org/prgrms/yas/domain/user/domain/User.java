@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.springframework.security.core.GrantedAuthority;
@@ -103,5 +104,9 @@ public class User {
 	public void updateUserInfo(UserUpdateRequest userUpdateRequest) {
 		this.nickname = userUpdateRequest.getNickname();
 		this.profileImage = userUpdateRequest.getProfileImage();
+	}
+	
+	public void updateUserPasswordInfo(PasswordEncoder passwordEncoder, UserPasswordRequest userPasswordRequest){
+		this.password = passwordEncoder.encode(userPasswordRequest.getNewPassword());
 	}
 }
