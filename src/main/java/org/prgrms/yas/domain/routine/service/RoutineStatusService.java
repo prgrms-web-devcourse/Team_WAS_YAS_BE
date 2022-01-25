@@ -32,6 +32,7 @@ public class RoutineStatusService {
 	private final S3Uploader s3Uploader;
 	private final RoutineStatusRepository routineStatusRepository;
 	private final RoutineStatusImageRepository routineStatusImageRepository;
+	private final int YEAR_MONTH = 7;
 	
 	@Transactional
 	public Long updateRoutineStatus(
@@ -83,7 +84,7 @@ public class RoutineStatusService {
 	@Transactional
 	public List<RoutineStatusListResponse> getRoutineStatuses(String date, Long userId) {
 		List<RoutineStatus> routineStatuses = new ArrayList<>();
-		if (date.length() == 7) {
+		if (date.length() == YEAR_MONTH) {
 			routineStatuses = routineStatusRepository.getByDays(date);
 		} else {
 			routineStatuses = routineStatusRepository.getByDate(date);
