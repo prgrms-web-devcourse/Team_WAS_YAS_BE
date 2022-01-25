@@ -140,6 +140,8 @@ public class RoutineStatus {
 		                                  .routineStatusImage(toRoutineStatusImageDtos())
 		                                  .routineStatusId(id)
 		                                  .dateTime(dateTime)
+		                                  .emoji(emoji)
+		                                  .content(content)
 		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))
 		                                  .build();
 	}

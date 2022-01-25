@@ -14,17 +14,22 @@ public class RoutineStatusDetailResponse {
 	
 	private Long routineStatusId;
 	private ZonedDateTime dateTime;
+	private String content;
+	private int emoji;
 	private RoutineDetailResponse RoutineDetailResponse;
 	private List<RoutineStatusImageDto> routineStatusImage = new ArrayList<>();
 	
 	@Builder
 	public RoutineStatusDetailResponse(
-			Long routineStatusId, ZonedDateTime dateTime, RoutineDetailResponse routineDetailResponse,
+			Long routineStatusId, ZonedDateTime dateTime, String content, int emoji,
+			org.prgrms.yas.domain.routine.dto.RoutineDetailResponse routineDetailResponse,
 			List<RoutineStatusImageDto> routineStatusImage
 	) {
 		this.routineStatusId = routineStatusId;
 		this.dateTime = dateTime;
-		this.RoutineDetailResponse = routineDetailResponse;
+		this.content = content;
+		this.emoji = emoji;
+		RoutineDetailResponse = routineDetailResponse;
 		this.routineStatusImage = routineStatusImage;
 	}
 }
