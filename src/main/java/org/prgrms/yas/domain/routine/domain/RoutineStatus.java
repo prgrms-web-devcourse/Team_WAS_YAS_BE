@@ -19,7 +19,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusImageDto;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusListResponse;
 
 @Entity
 @Table(name = "routine_status")
@@ -112,4 +116,33 @@ public class RoutineStatus {
 		return this;
 	}
 	
+	public RoutineStatusListResponse toRoutineStatusListResponse() {
+		return RoutineStatusListResponse.builder()
+		                                .routineListResponse(routine.toRoutineListResponse())
+		                                .routineStatusId(id)
+		                                .dateTime(dateTime)
+		                                .build();
+	}
+	
+	public List<RoutineStatusImageDto> toRoutineStatusImageDtos() {
+		List<RoutineStatusImageDto> routineStatusImageDtos = new ArrayList<>();
+		for (RoutineStatusImage routineStatusImage : this.getRoutineStatusImages()) {
+			routineStatusImageDtos.add(RoutineStatusImageDto.builder()
+			                                                .routineStatusImageId(routineStatusImage.getId())
+			                                                .imageUrl(routineStatusImage.getReviewImage())
+			                                                .build());
+		}
+		return routineStatusImageDtos;
+	}
+	
+	public RoutineStatusDetailResponse toRoutineStatusDetailResposne(List<Mission> missions) {
+		return RoutineStatusDetailResponse.builder()
+		                                  .routineStatusImage(toRoutineStatusImageDtos())
+		                                  .routineStatusId(id)
+		                                  .dateTime(dateTime)
+		                                  .emoji(emoji)
+		                                  .content(content)
+		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))
+		                                  .build();
+	}
 }
