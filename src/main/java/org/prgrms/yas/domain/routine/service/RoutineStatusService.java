@@ -33,6 +33,7 @@ public class RoutineStatusService {
 	private final RoutineStatusRepository routineStatusRepository;
 	private final RoutineStatusImageRepository routineStatusImageRepository;
 	private final int YEAR_MONTH = 7;
+	private final int FILE_NAME = 97;
 	
 	@Transactional
 	public Long updateRoutineStatus(
@@ -57,7 +58,7 @@ public class RoutineStatusService {
 				RoutineStatusImage routineStatusImage = routineStatusImageRepository.findById(deletedImage)
 				                                                                    .orElseThrow(() -> new NotFoundRoutineStatusImageException(NOT_FOUND_RESOURCE_ERROR));
 				s3Uploader.delete(DELETE_DIRECTORY + routineStatusImage.getReviewImage()
-				                                                       .substring(97));
+				                                                       .substring(FILE_NAME));
 				routineStatusImageRepository.delete(routineStatusImage);
 			}
 		}
