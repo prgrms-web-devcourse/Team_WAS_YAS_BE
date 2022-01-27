@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class S3Uploader {
 
 	public String upload(MultipartFile file, String dirName) throws IOException {
 		InputStream uploadFile = file.getInputStream();
-		String fileName = dirName + "/" + uploadFile;
+		String fileName = dirName + "/" + UUID.randomUUID() + uploadFile;
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		byte[] bytes = IOUtils.toByteArray(file.getInputStream());
