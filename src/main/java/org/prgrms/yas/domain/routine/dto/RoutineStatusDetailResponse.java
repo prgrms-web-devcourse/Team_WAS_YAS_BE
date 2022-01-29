@@ -15,20 +15,20 @@ public class RoutineStatusDetailResponse {
 	private Long routineStatusId;
 	private ZonedDateTime dateTime;
 	private String content;
-	private int emoji;
+	private int emotion;
 	private RoutineDetailResponse RoutineDetailResponse;
 	private List<RoutineStatusImageDto> routineStatusImage = new ArrayList<>();
 	
 	@Builder
 	public RoutineStatusDetailResponse(
-			Long routineStatusId, ZonedDateTime dateTime, String content, int emoji,
+			Long routineStatusId, ZonedDateTime dateTime, String content, int emotion,
 			org.prgrms.yas.domain.routine.dto.RoutineDetailResponse routineDetailResponse,
 			List<RoutineStatusImageDto> routineStatusImage
 	) {
 		this.routineStatusId = routineStatusId;
 		this.dateTime = dateTime;
 		this.content = content;
-		this.emoji = emoji;
+		this.emotion = emotion;
 		RoutineDetailResponse = routineDetailResponse;
 		this.routineStatusImage = routineStatusImage;
 	}

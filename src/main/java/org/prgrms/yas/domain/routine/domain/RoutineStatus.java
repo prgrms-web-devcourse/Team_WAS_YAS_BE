@@ -42,21 +42,21 @@ public class RoutineStatus {
 	private ZonedDateTime dateTime;
 	
 	@ColumnDefault("0")
-	private Integer emoji;
+	private Integer emotion;
 	
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
 	@Builder
 	public RoutineStatus(
-			ZonedDateTime startTime, ZonedDateTime endTime, ZonedDateTime dateTime, Integer emoji,
+			ZonedDateTime startTime, ZonedDateTime endTime, ZonedDateTime dateTime, Integer emotion,
 			String content, List<RoutineStatusImage> routineStatusImages, Long userDurationTime,
 			Routine routine
 	) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.dateTime = dateTime;
-		this.emoji = emoji;
+		this.emotion = emotion;
 		this.content = content;
 		this.routineStatusImages = routineStatusImages;
 		this.userDurationTime = userDurationTime;
@@ -101,7 +101,7 @@ public class RoutineStatus {
 			RoutineStatusCreateRequest routineStatusCreateRequest,
 			List<RoutineStatusImage> routineStatusImages
 	) {
-		this.emoji = routineStatusCreateRequest.getEmoji();
+		this.emotion = routineStatusCreateRequest.getEmotion();
 		this.content = routineStatusCreateRequest.getContent();
 		this.routineStatusImages = routineStatusImages;
 	}
@@ -140,7 +140,7 @@ public class RoutineStatus {
 		                                  .routineStatusImage(toRoutineStatusImageDtos())
 		                                  .routineStatusId(id)
 		                                  .dateTime(dateTime)
-		                                  .emoji(emoji)
+		                                  .emotion(emotion)
 		                                  .content(content)
 		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))
 		                                  .build();
