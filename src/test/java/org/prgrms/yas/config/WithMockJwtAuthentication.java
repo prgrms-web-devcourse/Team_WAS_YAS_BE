@@ -9,6 +9,5 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 public @interface WithMockJwtAuthentication {
 	long id() default 1L;
 	String token() default "testToken";
-	String username() default "testName";
 	String role() default "USER";
 }
