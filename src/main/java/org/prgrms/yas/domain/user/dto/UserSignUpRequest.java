@@ -41,6 +41,18 @@ public class UserSignUpRequest {
 		           .build();
 	}
 	
+	protected UserSignUpRequest(){}
+	
+	public UserSignUpRequest(
+			String email, String password, String checkPassword, String nickname, String name
+	) {
+		this.email = email;
+		this.password = password;
+		this.checkPassword = checkPassword;
+		this.nickname = nickname;
+		this.name = name;
+	}
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
