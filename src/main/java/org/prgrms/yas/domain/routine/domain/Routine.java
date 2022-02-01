@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.routine.domain;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +27,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.user.domain.User;
 
 @Entity
@@ -60,7 +61,7 @@ public class Routine {
 	private List<RoutineCategory> routineCategory;
 	
 	@Column(nullable = false)
-	private LocalDateTime startGoalTime;
+	private ZonedDateTime startGoalTime;
 	
 	@Column(nullable = false)
 	@ColumnDefault("0")
@@ -84,8 +85,19 @@ public class Routine {
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
 	private boolean isDeleted;
 	
+	@Column(nullable = false, columnDefinition = "TINYINT default false")
+	private boolean isPosted;
+	
 	public void deleteRoutine() {
 		this.isDeleted = true;
+	}
+	
+	public void updateIsPostedTrue() {
+		this.isPosted = true;
+	}
+	
+	public void updateIsPostedFalse() {
+		this.isPosted = false;
 	}
 	
 	public void addRoutineStatus(RoutineStatus routineCompletion) {
@@ -110,7 +122,7 @@ public class Routine {
 	
 	@Builder
 	public Routine(
-			User user, String name, Long durationGoalTime, LocalDateTime startGoalTime, List<Week> weeks,
+			User user, String name, Long durationGoalTime, ZonedDateTime startGoalTime, List<Week> weeks,
 			List<RoutineCategory> routineCategory, String color, String emoji
 	) {
 		this.user = user;
@@ -144,12 +156,19 @@ public class Routine {
 		this.weeks = weeks;
 	}
 	
+	public List<MissionDetailResponse> getMissionDetailResponse(List<Mission> missions) {
+		return missions.stream()
+		               .map(Mission::toMissionDetailResponse)
+		               .collect(Collectors.toList());
+	}
+	
 	public RoutineListResponse toRoutineListResponse() {
 		return RoutineListResponse.builder()
 		                          .routineId(id)
 		                          .color(color)
 		                          .durationGoalTime(durationGoalTime)
 		                          .startGoalTime(startGoalTime)
+		                          .isPosted(isPosted)
 		                          .weeks(getStringWeeks(weeks))
 		                          .routineCategory(getStringCategory(routineCategory))
 		                          .emoji(emoji)
@@ -157,24 +176,30 @@ public class Routine {
 		                          .build();
 	}
 	
-	public List<MissionDetailResponse> getMissionDetailResponse() {
-		List<Mission> missions = this.getMissions();
-		return missions.stream()
-		               .map(Mission::toMissionDetailResponse)
-		               .collect(Collectors.toList());
-		
-	}
-	
-	public RoutineDetailResponse toRoutineDetailResponse() {
+	public RoutineDetailResponse toRoutineDetailResponse(List<Mission> missions) {
 		return RoutineDetailResponse.builder()
 		                            .name(name)
 		                            .routineCategory(getStringCategory(routineCategory))
 		                            .startGoalTime(startGoalTime)
 		                            .durationGoalTime(durationGoalTime)
+		                            .isPosted(isPosted)
 		                            .weeks(getStringWeeks(weeks))
 		                            .emoji(emoji)
 		                            .color(color)
-		                            .missionDetailResponses(getMissionDetailResponse())
+		                            .missionDetailResponses(getMissionDetailResponse(missions))
+		                            .build();
+	}
+	
+	public RoutineUpdateResponse toRoutineUpdateResponse() {
+		return RoutineUpdateResponse.builder()
+		                            .name(name)
+		                            .routineId(id)
+		                            .startGoalTime(startGoalTime)
+		                            .durationGoalTime(durationGoalTime)
+		                            .weeks(this.getStringWeeks(this.getWeeks()))
+		                            .routineCategory(this.getStringCategory(this.getRoutineCategory()))
+		                            .color(color)
+		                            .emoji(emoji)
 		                            .build();
 	}
 	

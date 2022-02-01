@@ -10,11 +10,17 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long> {
 	@Modifying
-	@Query(value = "insert ignore into comment_likes (user_id, comment_id) "
+	@Query(value = "insert into comment_likes (user_id, comment_id) "
 			+ "values(?1,?2) ", nativeQuery = true)
 	void saveCommentLikes(Long userId, Long commentId);
 	
 	Long deleteByUserAndComment(User user, Comment comment);
 	
 	List<CommentLikes> findByComment(Long commentId);
+	
+	boolean existsByUserAndComment(User user, Comment comment);
+	
+	List<CommentLikes> findAllByComment(Comment comment);
+	
+	void deleteAllByComment(Comment comment);
 }

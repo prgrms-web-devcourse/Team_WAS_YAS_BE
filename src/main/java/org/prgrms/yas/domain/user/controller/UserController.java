@@ -3,7 +3,9 @@ package org.prgrms.yas.domain.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignInRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
@@ -17,16 +19,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+@Validated
 @RestController
 public class UserController {
 	
@@ -41,7 +46,7 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@Operation(summary = "커스텀 로그인 JWT 토큰 발행 컨트롤러")
+	@Operation(summary = "로그인 JWT 토큰 발행 컨트롤러")
 	@PostMapping("/users/login")
 	public ResponseEntity<ApiResponse<UserToken>> signIn(
 			@RequestBody UserSignInRequest userSignInRequest
@@ -60,7 +65,6 @@ public class UserController {
 		return ResponseEntity.ok(ApiResponse.of(new UserToken(
 				user.getId(),
 				principal.getToken(),
-				principal.getUsername(),
 				user.getRoles()
 				    .toString()
 		)));
@@ -103,5 +107,25 @@ public class UserController {
 			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
 	) {
 		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId())));
+	}
+	
+	@Operation(summary = "회원수정(비밀번호) 컨트롤러")
+	@PutMapping("/users/password")
+	public ResponseEntity<ApiResponse<Long>> updatePassword(
+			@AuthenticationPrincipal JwtAuthentication token,
+			@Valid @RequestBody UserPasswordRequest userPasswordRequest
+	){
+		return ResponseEntity.ok(ApiResponse.of(userService.updatePassword(
+				token.getId(),
+				userPasswordRequest
+		)));
+	}
+	
+	@Operation(summary = "회원가입시 이메일 중복확인")
+	@GetMapping("/users/email")
+	public ResponseEntity<ApiResponse<Boolean>> checkValidEmail(
+			@Email @RequestParam(value="value") String email
+	){
+		return ResponseEntity.ok(ApiResponse.of(userService.isValidEmail(email)));
 	}
 }

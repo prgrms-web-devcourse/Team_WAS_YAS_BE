@@ -12,14 +12,9 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 	List<Routine> getByUserAndIsDeletedFalse(User user);
 	
 	Optional<Routine> findByIdAndIsDeletedFalse(Long id);
-
-	@Query(
-			value =
-					"select * from routine r "
-			+"left outer join routine_post p "
-			+"on r.id = p.routine_id "
-			+"where p.routine_id is null and r.is_deleted = false and r.user_id = ?1",
-			nativeQuery = true)
+	
+	@Query(value = "select * from routine r "
+			+ "where r.is_posted = false and r.is_deleted = false and r.user_id = ?1", nativeQuery = true)
 	List<Routine> findRoutinesNotPosted(Long id);
-
+	
 }

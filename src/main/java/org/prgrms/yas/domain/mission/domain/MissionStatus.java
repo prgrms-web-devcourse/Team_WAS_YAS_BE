@@ -2,6 +2,7 @@ package org.prgrms.yas.domain.mission.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +36,10 @@ public class MissionStatus {
 	@ColumnDefault("-1")
 	private Long userDurationTime;
 	
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
+	private ZonedDateTime startTime;
+	private ZonedDateTime endTime;
 	
-	private LocalDate date;
+	private ZonedDateTime dateTime;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mission_id")
@@ -46,15 +47,15 @@ public class MissionStatus {
 	
 	@Builder
 	public MissionStatus(
-			int orders, Long userDurationTime, LocalDateTime startTime, LocalDateTime endTime,
-			Mission mission, LocalDate date
+			int orders, Long userDurationTime, ZonedDateTime startTime, ZonedDateTime endTime,
+			Mission mission, ZonedDateTime dateTime
 	) {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.mission = mission;
-		this.date = date;
+		this.dateTime = dateTime;
 	}
 	
 	public void setMission(Mission mission) {
@@ -66,7 +67,7 @@ public class MissionStatus {
 	}
 	
 	public void updateEndTime(
-			int orders, Long userDurationTime, LocalDateTime endTime
+			int orders, Long userDurationTime, ZonedDateTime endTime
 	) {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;
@@ -74,7 +75,7 @@ public class MissionStatus {
 	}
 	
 	public void updateStartTime(
-			int orders, LocalDateTime startTime
+			int orders, ZonedDateTime startTime
 	) {
 		this.orders = orders;
 		this.startTime = startTime;
@@ -89,6 +90,7 @@ public class MissionStatus {
 		                                  .endTime(endTime)
 		                                  .orders(orders)
 		                                  .startTime(startTime)
+		                                  .userDurationTime(userDurationTime)
 		                                  .build();
 	}
 }

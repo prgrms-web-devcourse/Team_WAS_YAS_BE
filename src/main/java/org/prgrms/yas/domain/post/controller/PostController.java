@@ -25,13 +25,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequiredArgsConstructor
 public class PostController {
-	
+
 	private final PostService postService;
-	
+
 	@Operation(summary = "게시글 등록")
 	@PostMapping("/routines/{id}/posts")
 	public ResponseEntity<ApiResponse<Long>> create(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long routineId, @RequestBody PostCreateRequest postCreateRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.savePost(
@@ -40,11 +40,11 @@ public class PostController {
 				postCreateRequest
 		)));
 	}
-	
+
 	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/posts/{id}")
 	public ResponseEntity<ApiResponse<Long>> delete(
-			final @ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			final @AuthenticationPrincipal JwtAuthentication token,
 			final @PathVariable("id") Long postId
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.deletePost(
@@ -52,7 +52,7 @@ public class PostController {
 				postId
 		)));
 	}
-	
+
 	@Operation(summary = "게시글 단건 조회")
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<ApiResponse<PostDetailResponse>> findOne(
@@ -60,7 +60,7 @@ public class PostController {
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.findOne(postId)));
 	}
-	
+
 	@Operation(summary = "루틴 조회(게시글 등록되지 않은 루틴)")
 	@GetMapping("/routines/posts")
 	public ResponseEntity<ApiResponse<List<RoutineListResponse>>> findAll(
@@ -68,7 +68,7 @@ public class PostController {
 	) {
 		return ResponseEntity.ok(ApiResponse.of(postService.findAll(token.getId())));
 	}
-	
+
 	@Operation(summary = "게시글 전체 조회(최신글 순)")
 	@GetMapping("/posts")
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllPosts(
@@ -77,7 +77,7 @@ public class PostController {
 		return ResponseEntity.ok(ApiResponse.of(category.map(postService::findAllPostWithCategory)
 		                                                .orElse(postService.findAllPost())));
 	}
-	
+
 	@Operation(summary = "게시글 전체 조회(좋아요 순)")
 	@GetMapping("/posts/popular")
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllPopularPosts(
@@ -86,7 +86,7 @@ public class PostController {
 		return ResponseEntity.ok(ApiResponse.of(category.map(postService::findAllLikesWithCategory)
 		                                                .orElse(postService.findAllLikes())));
 	}
-	
+
 	@Operation(summary = "게시글 전체 조회(내가 쓴 게시글)")
 	@GetMapping("/posts/my")
 	public ResponseEntity<ApiResponse<List<PostListResponse>>> findAllMyPost(

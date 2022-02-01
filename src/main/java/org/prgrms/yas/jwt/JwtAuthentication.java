@@ -10,15 +10,13 @@ public class JwtAuthentication {
 	
 	private final String token;
 	private final Long id;
-	private final String username;
 	
-	public JwtAuthentication(Long id, String token, String username) {
+	public JwtAuthentication(Long id, String token) {
 		checkArgument(
-				isNotEmpty(username),
-				"username must be provided"
+				isNotEmpty(token),
+				"token must be provided"
 		);
 		this.id = id;
 		this.token = token;
-		this.username = username;
 	}
 }

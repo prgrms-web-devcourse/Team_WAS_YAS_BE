@@ -5,11 +5,12 @@ import static org.prgrms.yas.global.error.ErrorCode.NOT_FOUND_RESOURCE_ERROR;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.prgrms.yas.domain.mission.dto.MissionCreateRequest;
+import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.repository.MissionRepository;
 import org.prgrms.yas.domain.routine.domain.Routine;
 import org.prgrms.yas.domain.routine.domain.Week;
@@ -25,43 +26,35 @@ import org.prgrms.yas.domain.user.domain.User;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class RoutineService {
 	
+	private static final double IS_NOT_WEEK = 0;
+	
 	private final RoutineRepository routineRepository;
 	private final UserRepository userRepository;
 	private final MissionRepository missionRepository;
-	private static final double IS_NOT_WEEK = 0;
 	
 	@Transactional
 	public Long saveRoutine(Long userId, RoutineCreateRequest routineCreateRequest) {
-		User user = userRepository.findById(userId)
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		Routine routine = Routine.builder()
-		                         .user(user)
-		                         .name(routineCreateRequest.getName())
-		                         .startGoalTime(routineCreateRequest.getStartGoalTime())
-		                         .durationGoalTime(routineCreateRequest.getDurationGoalTime())
-		                         .weeks(routineCreateRequest.getEnumWeeks(routineCreateRequest.getWeeks()))
-		                         .routineCategory(routineCreateRequest.getEnumRoutineCategory(routineCreateRequest.getRoutineCategory()))
-		                         .color(routineCreateRequest.getColor())
-		                         .emoji(routineCreateRequest.getEmoji())
-		                         .build();
+		Routine routine = routineCreateRequest.toEntity(user);
 		
 		return routineRepository.save(routine)
 		                        .getId();
 	}
 	
-	
 	@Transactional
 	public Long deleteRoutine(Long routineId) {
-		Routine routine = routineRepository.findById(routineId)
+		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		routine.deleteRoutine();
-		return routineId;
 		
+		return routineId;
 	}
 	
 	@Transactional
@@ -71,36 +64,29 @@ public class RoutineService {
 		Routine routine = routineRepository.findById(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		routine.updateRoutine(routineUpdateRequest.getEnumWeeks(routineUpdateRequest.getWeeks()));
-		return RoutineUpdateResponse.builder()
-		                            .name(routine.getName())
-		                            .routineId(routine.getId())
-		                            .startGoalTime(routine.getStartGoalTime())
-		                            .durationGoalTime(routine.getDurationGoalTime())
-		                            .weeks(routine.getStringWeeks(routine.getWeeks()))
-		                            .routineCategory(routine.getStringCategory(routine.getRoutineCategory()))
-		                            .color(routine.getColor())
-		                            .emoji(routine.getEmoji())
-		                            .build();
+		
+		return routine.toRoutineUpdateResponse();
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public void findId(Long routineId) {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 	}
 	
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public RoutineDetailResponse findMissions(Long routineId) {
 		Routine routine = routineRepository.findByIdAndIsDeletedFalse(routineId)
 		                                   .orElseThrow(() -> new NotFoundRoutineException(NOT_FOUND_RESOURCE_ERROR));
 		
-		return routine.toRoutineDetailResponse();
+		List<Mission> missions = missionRepository.getByRoutineAndIsDeletedFalse(routine);
+		return routine.toRoutineDetailResponse(missions);
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<RoutineListResponse> findRoutines(Long userId) {
-		User user = userRepository.findById(userId)
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
 		return routines.stream()
@@ -108,13 +94,16 @@ public class RoutineService {
 		               .collect(toList());
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<RoutineListResponse> findFinishRoutines(Long userId, String status) {
-		User user = userRepository.findById(userId)
+		User user = userRepository.findByIdAndIsDeletedFalse(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
 		
 		List<Routine> routines = routineRepository.getByUserAndIsDeletedFalse(user);
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(
+				TimeZone.getTimeZone("Asia/Seoul"),
+				Locale.KOREA
+		);
 		
 		Predicate<Week> isWeek = week -> (week.ordinal() + 1 == calendar.get(Calendar.DAY_OF_WEEK));
 		List<Routine> weekRoutine = routines.stream()
@@ -145,20 +134,14 @@ public class RoutineService {
 	) {
 		User user = userRepository.findById(userId)
 		                          .orElseThrow(() -> new NotFoundUserException(NOT_FOUND_RESOURCE_ERROR));
-		Routine routine = Routine.builder()
-		                         .user(user)
-		                         .name(routineDetailCreateRequest.getName())
-		                         .startGoalTime(routineDetailCreateRequest.getStartGoalTime())
-		                         .durationGoalTime(routineDetailCreateRequest.getDurationGoalTime())
-		                         .weeks(routineDetailCreateRequest.getEnumWeeks(routineDetailCreateRequest.getWeeks()))
-		                         .routineCategory(routineDetailCreateRequest.getEnumRoutineCategory(routineDetailCreateRequest.getRoutineCategory()))
-		                         .color(routineDetailCreateRequest.getColor())
-		                         .emoji(routineDetailCreateRequest.getEmoji())
-		                         .build();
 		
-		for (MissionCreateRequest missionCreateRequest : routineDetailCreateRequest.getMissionCreateRequest()) {
-			missionRepository.save(missionCreateRequest.toEntity(routine));
-		}
+		Routine routine = routineDetailCreateRequest.toEntity(user);
+		
+		routineDetailCreateRequest.getMissionCreateRequest()
+		                          .stream()
+		                          .map(missionCreateRequest -> missionCreateRequest.toEntity(routine))
+		                          .forEach(missionRepository::save);
+		
 		return routineRepository.save(routine)
 		                        .getId();
 	}
