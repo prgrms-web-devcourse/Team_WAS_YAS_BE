@@ -1,20 +1,21 @@
 package org.prgrms.yas.domain.user.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Objects;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.prgrms.yas.config.TestConfig;
+import org.prgrms.yas.config.WithMockJwtAuthentication;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.dto.UserSignInRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
@@ -24,16 +25,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles("test")
 @Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
 @Import(S3Uploader.class)
+@TestConfig
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserControllerTest {
 	
 	@Autowired
@@ -43,12 +44,9 @@ class UserControllerTest {
 	private ObjectMapper objectMapper;
 	
 	@Autowired
-	private UserController userController;
-	
-	@Autowired
 	private UserRepository userRepository;
 	
-	@BeforeEach
+	@BeforeAll
 	void setUp() {
 		userRepository.save(User.builder()
 		                        .email("test@test.com")
@@ -59,34 +57,23 @@ class UserControllerTest {
 	}
 	
 	@DisplayName("회원조회_테스트")
+	@WithMockJwtAuthentication
 	@Test
-	void find() throws Exception {
-		
-		// given
-		UserSignInRequest userSignInTestRequest = new UserSignInRequest(
-				"test@test.com",
-				"password1!"
-		);
-		
-		String token = Objects.requireNonNull(userController.signIn(userSignInTestRequest)
-		                                                    .getBody()
-		                                                    .getData())
-		                      .getToken();
+	void findTest() throws Exception {
 		
 		// when
-		ResultActions result = mockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON)
-		                                                    .header(
-				                                                    "token",
-				                                                    token
-		                                                    ));
+		ResultActions result = mockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON));
 		
 		// then
-		result.andExpect(status().isOk())
-		      .andDo(print())
-		      .andExpect(jsonPath("$.data.email").isString())
-		      .andExpect(jsonPath("$.data.userId").isNumber())
-		      .andExpect(jsonPath("$.data.name").isString())
-		      .andExpect(jsonPath("$.data.nickname").isString());
+		result.andExpectAll(
+				      status().isOk(),
+				      handler().handlerType(UserController.class),
+				      jsonPath("$.data.email").isString(),
+				      jsonPath("$.data.userId").isNumber(),
+				      jsonPath("$.data.name").isString(),
+				      jsonPath("$.data.nickname").isString()
+		      )
+		      .andDo(print());
 	}
 	
 	@DisplayName("중복예외_테스트")
@@ -128,31 +115,6 @@ class UserControllerTest {
 		ResultActions result = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
 		                                                     .content(objectMapper.writeValueAsString(userSignUpTestRequest)));
 		// then
-		result.andExpect(status().isOk())
-		      .andDo(print())
-		      .andExpect(jsonPath("$.data").isNumber());
-	}
-	
-	@DisplayName("회원탈퇴_테스트")
-	@Test
-	void deleteUser() throws Exception {
-		// given
-		UserSignInRequest userSignInTestRequest = new UserSignInRequest(
-				"test@test.com",
-				"password1!"
-		);
-		
-		String token = Objects.requireNonNull(userController.signIn(userSignInTestRequest)
-		                                                    .getBody()
-		                                                    .getData())
-		                      .getToken();
-		// when
-		ResultActions result = mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON)
-		                                                       .header(
-				                                                       "token",
-				                                                       token
-		                                                       ));
-		
 		result.andExpect(status().isOk())
 		      .andDo(print())
 		      .andExpect(jsonPath("$.data").isNumber());
