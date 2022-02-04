@@ -30,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id =?")
 public class User {
 	
 	@Id
@@ -110,5 +109,9 @@ public class User {
 	
 	public void updateUserPasswordInfo(PasswordEncoder passwordEncoder, UserPasswordChangeRequest userPasswordChangeRequest){
 		this.password = passwordEncoder.encode(userPasswordChangeRequest.getNewPassword());
+	}
+	
+	public void updateUserDeleted(){
+		this.isDeleted = true;
 	}
 }
