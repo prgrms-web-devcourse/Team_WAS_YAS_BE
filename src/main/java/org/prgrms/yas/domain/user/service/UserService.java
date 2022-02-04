@@ -111,14 +111,6 @@ public class UserService {
 		return findActiveUser(id).toResponse();
 	}
 	
-	@Transactional(readOnly = true)
-	public Optional<User> findUserByProviderAndProviderId(String provider, String providerId) {
-		return userRepository.findByProviderAndProviderId(
-				provider,
-				providerId
-		);
-	}
-	
 	@Transactional
 	public Long update(Long id, UserUpdateRequest userUpdateRequest, MultipartFile file)
 			throws IOException {
@@ -153,7 +145,8 @@ public class UserService {
 	public Long delete(Long id, UserPasswordRequest userPasswordRequest) {
 		User user = findActiveUser(id);
 		user.checkPassword(passwordEncoder,userPasswordRequest.getPassword());
-		userRepository.deleteById(user.getId());
+		user.updateUserDeleted();
+		
 		return id;
 	}
 	
