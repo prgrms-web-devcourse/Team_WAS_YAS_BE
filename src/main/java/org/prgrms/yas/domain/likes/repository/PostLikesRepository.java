@@ -23,4 +23,6 @@ public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 	List<LikesResponse> getByPost(@Param(value = "postId") Long postId);
 	
 	boolean existsByUserAndRoutinePost(User user, RoutinePost post);
+	
+	void deleteAllByUser(User user);
 }
