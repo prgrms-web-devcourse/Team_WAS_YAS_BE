@@ -19,4 +19,8 @@ public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long
 	List<CommentLikes> findByComment(Long commentId);
 	
 	boolean existsByUserAndComment(User user, Comment comment);
+	
+	List<CommentLikes> findAllByComment(Comment comment);
+	
+	void deleteAllByComment(Comment comment);
 }

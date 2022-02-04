@@ -16,6 +16,11 @@ public class UserUpdateRequest {
 	
 	private String profileImage;
 	
+	public UserUpdateRequest(String nickname, String profileImage) {
+		this.nickname = nickname;
+		this.profileImage = profileImage;
+	}
+	
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}

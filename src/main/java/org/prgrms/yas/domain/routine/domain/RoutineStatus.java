@@ -1,9 +1,10 @@
 package org.prgrms.yas.domain.routine.domain;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,12 +12,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusImageDto;
+import org.prgrms.yas.domain.routine.dto.RoutineStatusListResponse;
 
 @Entity
 @Table(name = "routine_status")
@@ -34,24 +41,37 @@ public class RoutineStatus {
 	
 	private ZonedDateTime dateTime;
 	
+	@ColumnDefault("0")
+	private Integer emotion;
+	
+	@Column(columnDefinition = "TEXT")
+	private String content;
+	
+	@Builder
+	public RoutineStatus(
+			ZonedDateTime startTime, ZonedDateTime endTime, ZonedDateTime dateTime, Integer emotion,
+			String content, List<RoutineStatusImage> routineStatusImages, Long userDurationTime,
+			Routine routine
+	) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.dateTime = dateTime;
+		this.emotion = emotion;
+		this.content = content;
+		this.routineStatusImages = routineStatusImages;
+		this.userDurationTime = userDurationTime;
+		this.routine = routine;
+	}
+	
+	@OneToMany(mappedBy = "routineStatus")
+	private List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
+	
 	@ColumnDefault("-1")
 	private Long userDurationTime;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
-	
-	@Builder
-	public RoutineStatus(
-			ZonedDateTime startTime, ZonedDateTime endTime, Long userDurationTime, Routine routine,
-			ZonedDateTime dateTime
-	) {
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.userDurationTime = userDurationTime;
-		this.routine = routine;
-		this.dateTime = dateTime;
-	}
 	
 	public void setRoutine(Routine routine) {
 		if (Objects.nonNull(this.routine)) {
@@ -75,5 +95,54 @@ public class RoutineStatus {
 	
 	public void setUserDurationTime(Long userDurationTime) {
 		this.userDurationTime = userDurationTime;
+	}
+	
+	public void createRoutineStatus(
+			RoutineStatusCreateRequest routineStatusCreateRequest,
+			List<RoutineStatusImage> routineStatusImages
+	) {
+		this.emotion = routineStatusCreateRequest.getEmotion();
+		this.content = routineStatusCreateRequest.getContent();
+		this.routineStatusImages = routineStatusImages;
+	}
+	
+	public void addRoutineStatusImage(RoutineStatusImage routineStatusImage) {
+		this.routineStatusImages.add(routineStatusImage);
+		routineStatusImage.setRoutineStatus(this);
+	}
+	
+	public RoutineStatus addRoutineStatusImages(List<RoutineStatusImage> routineStatusImages) {
+		routineStatusImages.forEach(this::addRoutineStatusImage);
+		return this;
+	}
+	
+	public RoutineStatusListResponse toRoutineStatusListResponse() {
+		return RoutineStatusListResponse.builder()
+		                                .routineListResponse(routine.toRoutineListResponse())
+		                                .routineStatusId(id)
+		                                .dateTime(dateTime)
+		                                .build();
+	}
+	
+	public List<RoutineStatusImageDto> toRoutineStatusImageDtos() {
+		List<RoutineStatusImageDto> routineStatusImageDtos = new ArrayList<>();
+		for (RoutineStatusImage routineStatusImage : this.getRoutineStatusImages()) {
+			routineStatusImageDtos.add(RoutineStatusImageDto.builder()
+			                                                .routineStatusImageId(routineStatusImage.getId())
+			                                                .imageUrl(routineStatusImage.getReviewImage())
+			                                                .build());
+		}
+		return routineStatusImageDtos;
+	}
+	
+	public RoutineStatusDetailResponse toRoutineStatusDetailResposne(List<Mission> missions) {
+		return RoutineStatusDetailResponse.builder()
+		                                  .routineStatusImage(toRoutineStatusImageDtos())
+		                                  .routineStatusId(id)
+		                                  .dateTime(dateTime)
+		                                  .emotion(emotion)
+		                                  .content(content)
+		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))
+		                                  .build();
 	}
 }

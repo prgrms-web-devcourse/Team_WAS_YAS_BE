@@ -7,11 +7,12 @@ import org.prgrms.yas.domain.user.service.UserService;
 import org.prgrms.yas.jwt.Jwt;
 import org.prgrms.yas.jwt.JwtAuthenticationFilter;
 import org.prgrms.yas.jwt.JwtAuthenticationProvider;
+import org.prgrms.yas.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import org.prgrms.yas.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -20,6 +21,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,7 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final JwtConfig jwtConfig;
 	
-	public WebSecurityConfig(JwtConfig jwtConfig) {
+	public WebSecurityConfig(
+			JwtConfig jwtConfig
+	) {
 		this.jwtConfig = jwtConfig;
 	}
 	
@@ -78,6 +83,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
+	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+		Jwt jwt = getApplicationContext().getBean(Jwt.class);
+		UserService userService = getApplicationContext().getBean(UserService.class);
+		HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository = getApplicationContext().getBean(HttpCookieOAuth2AuthorizationRequestRepository.class);
+		return new OAuth2AuthenticationSuccessHandler(userService,
+				jwt,
+				authorizationRequestRepository);
+	}
+	
+	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
@@ -110,6 +125,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return source;
 	}
 	
+	@Bean
+	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
+		return new HttpCookieOAuth2AuthorizationRequestRepository();
+	}
+	
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring()
@@ -131,6 +151,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .cors()
 		    .and()
 		    .authorizeRequests()
+		    .antMatchers("/swagger-ui/**")
+		    .permitAll()
 		    .antMatchers("/users/login")
 		    .permitAll()
 		    .antMatchers(
@@ -142,6 +164,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				    HttpMethod.GET,
 				    "/posts/**"
 		    )
+		    .permitAll()
+		    .antMatchers(HttpMethod.GET,
+				    "/users/email")
 		    .permitAll()
 		    .anyRequest()
 		    .authenticated()
@@ -161,6 +186,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		    .sessionManagement()
 		    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		    .and()
+		    .oauth2Login()
+		    .authorizationEndpoint()
+		    .authorizationRequestRepository(authorizationRequestRepository())
+		    .and()
+		    .successHandler(oAuth2AuthenticationSuccessHandler())
+		    .and()
 		    .exceptionHandling()
 		    .accessDeniedHandler(accessDeniedHandler())
 		    .and()
@@ -171,4 +202,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 }
-

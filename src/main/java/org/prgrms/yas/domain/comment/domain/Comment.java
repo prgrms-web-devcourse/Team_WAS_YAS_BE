@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -33,8 +34,7 @@ import lombok.AccessLevel;
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Where(clause = "is_deleted = false")
-@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id =?")
+//@Where(clause = "is_deleted = false")
 public class Comment extends BaseEntity {
 
   @Id
@@ -52,7 +52,7 @@ public class Comment extends BaseEntity {
   @JoinColumn(name = "routine_post_id")
   private RoutinePost routinePost;
   
-  @OneToMany(mappedBy = "comment")
+  @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
   private List<CommentLikes> commentLikes = new ArrayList<>();
 
   @Column(nullable = false, columnDefinition = "TINYINT default false")
