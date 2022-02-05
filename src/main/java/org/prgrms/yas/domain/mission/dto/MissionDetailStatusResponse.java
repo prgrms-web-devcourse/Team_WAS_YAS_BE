@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.mission.dto;
 
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MissionDetailStatusResponse {
 	
+	private Long routineStatusId;
 	private Long missionId;
 	private String name;
 	private Long durationGoalTime;
@@ -21,9 +21,10 @@ public class MissionDetailStatusResponse {
 	
 	@Builder
 	public MissionDetailStatusResponse(
-			Long missionId, String name, Long durationGoalTime, int orders, String emoji, String color,
-			MissionStatusDetailResponse missionStatusDetailResponse
+			Long routineStatusId, Long missionId, String name, Long durationGoalTime, int orders,
+			String emoji, String color, MissionStatusDetailResponse missionStatusDetailResponse
 	) {
+		this.routineStatusId = routineStatusId;
 		this.missionId = missionId;
 		this.name = name;
 		this.durationGoalTime = durationGoalTime;

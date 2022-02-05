@@ -22,6 +22,7 @@ import org.prgrms.yas.domain.routine.exception.NotFoundRoutineException;
 import org.prgrms.yas.domain.routine.exception.NotFoundRoutineStatusException;
 import org.prgrms.yas.domain.routine.repository.RoutineRepository;
 import org.prgrms.yas.domain.routine.repository.RoutineStatusRepository;
+import org.prgrms.yas.domain.routine.service.RoutineStatusService;
 import org.prgrms.yas.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class MissionStatusService {
 	
 	private final MissionStatusRepository missionStatusRepository;
 	private final RoutineStatusRepository routineStatusRepository;
+	private final RoutineStatusService routineStatusService;
 	private final RoutineRepository routineRepository;
 	
 	@Transactional
@@ -132,8 +134,15 @@ public class MissionStatusService {
 		                                   .orElseThrow(() -> new NotFoundRoutineException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		List<MissionDetailStatusResponse> result = new ArrayList<>();
 		
+		RoutineStatus routineStatus = routineStatusService.findRoutineStatus(
+				routineId,
+				LocalDate.now()
+				         .toString()
+		);
+		
 		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
-		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDateTime().toLocalDate()
+		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDateTime()
+		                                                                                       .toLocalDate()
 		                                                                                       .isEqual(LocalDate.now()));
 		
 		for (Mission missions : routine.getMissions()) {
@@ -143,7 +152,10 @@ public class MissionStatusService {
 			                                                             .collect(Collectors.toList());
 			
 			for (MissionStatus missionStatus : missionStatuses) {
-				result.add(missions.toMissionDetailStatusResponse(missionStatus));
+				result.add(missions.toMissionDetailStatusResponse(
+						missionStatus,
+						routineStatus.getId()
+				));
 			}
 		}
 		return result;
