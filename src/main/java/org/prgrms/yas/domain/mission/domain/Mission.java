@@ -113,8 +113,11 @@ public class Mission {
 	}
 	
 	
-	public MissionDetailStatusResponse toMissionDetailStatusResponse(MissionStatus missionStatus) {
+	public MissionDetailStatusResponse toMissionDetailStatusResponse(
+			MissionStatus missionStatus, Long routineStatusId
+	) {
 		return MissionDetailStatusResponse.builder()
+		                                  .routineStatusId(routineStatusId)
 		                                  .missionStatusDetailResponse(missionStatus.toMissionStatusDetailResponse())
 		                                  .name(name)
 		                                  .durationGoalTime(durationGoalTime)
