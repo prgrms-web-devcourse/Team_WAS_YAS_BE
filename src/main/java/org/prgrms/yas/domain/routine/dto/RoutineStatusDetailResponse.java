@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class RoutineStatusDetailResponse {
 	
 	private Long routineStatusId;
-	private ZonedDateTime dateTime;
+	private ZonedDateTime startTime;
 	private String content;
 	private int emotion;
 	private RoutineDetailResponse RoutineDetailResponse;
@@ -21,12 +21,12 @@ public class RoutineStatusDetailResponse {
 	
 	@Builder
 	public RoutineStatusDetailResponse(
-			Long routineStatusId, ZonedDateTime dateTime, String content, int emotion,
+			Long routineStatusId, ZonedDateTime startTime, String content, int emotion,
 			org.prgrms.yas.domain.routine.dto.RoutineDetailResponse routineDetailResponse,
 			List<RoutineStatusImageDto> routineStatusImage
 	) {
 		this.routineStatusId = routineStatusId;
-		this.dateTime = dateTime;
+		this.startTime = startTime;
 		this.content = content;
 		this.emotion = emotion;
 		RoutineDetailResponse = routineDetailResponse;

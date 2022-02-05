@@ -1,6 +1,7 @@
 package org.prgrms.yas.domain.mission.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class MissionStatusService {
 		//routineStatus 테이블 생성
 		RoutineStatus routineStatus = RoutineStatus.builder()
 		                                           .routine(routine)
-		                                           .dateTime(ZonedDateTime.now())
+		                                           .dateTime(LocalDateTime.now().plusHours(9))
 		                                           .build();
 		Long routineStatusId = routineStatusRepository.save(routineStatus)
 		                                              .getId();
@@ -55,7 +56,7 @@ public class MissionStatusService {
 		//미션의 갯수만큼 미션 Status 테이블 생성
 		for (Mission mission : routine.getMissions()) {
 			MissionStatus missionStatus = missionStatusRepository.save(MissionStatus.builder()
-			                                                                        .dateTime(ZonedDateTime.now())
+			                                                                        .dateTime(LocalDateTime.now().plusHours(9))
 			                                                                        .mission(mission)
 			                                                                        .build());
 			
