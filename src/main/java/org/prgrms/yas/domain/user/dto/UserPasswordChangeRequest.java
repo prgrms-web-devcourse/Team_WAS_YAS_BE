@@ -24,6 +24,16 @@ public class UserPasswordChangeRequest {
 	@Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "변경할 비밀번호와 일치하지 않습니다.")
 	private String newPasswordCheck;
 	
+	protected UserPasswordChangeRequest(){}
+	
+	public UserPasswordChangeRequest(
+			String nowPassword, String newPassword, String newPasswordCheck
+	) {
+		this.nowPassword = nowPassword;
+		this.newPassword = newPassword;
+		this.newPasswordCheck = newPasswordCheck;
+	}
+	
 	public boolean isDifferentPassword() {
 		if (!this.newPassword.equals(this.newPasswordCheck)) {
 			throw new NotSamePasswordException(ErrorCode.CONFLICT_PASSWORD_ERROR);
