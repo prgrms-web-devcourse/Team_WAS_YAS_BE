@@ -62,7 +62,7 @@ public class CommentService {
 				comment.getUser()
 				       .getId()
 		)) {
-			commentRepository.deleteById(commentId);
+			comment.deleteComment();
 		}
 		return comment.getId();
 	}

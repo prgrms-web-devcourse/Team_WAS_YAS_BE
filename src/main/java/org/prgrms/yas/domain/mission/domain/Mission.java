@@ -31,7 +31,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Table(name = "mission")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
 @Where(clause = "is_deleted=false")
 @DynamicInsert
 @DynamicUpdate
@@ -60,7 +59,7 @@ public class Mission {
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
-	@OneToMany(mappedBy = "mission")
+	@OneToMany(mappedBy = "mission", cascade = CascadeType.REMOVE)
 	private List<MissionStatus> missionStatuses = new ArrayList<>();
 	
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -95,6 +94,10 @@ public class Mission {
 			            .remove(this);
 		}
 		this.routine = routine;
+	}
+	
+	public void deleteMission(){
+		this.isDeleted = true;
 	}
 	
 	public void updateOrders(int orders) {
