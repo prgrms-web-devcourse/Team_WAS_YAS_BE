@@ -27,4 +27,6 @@ public interface PostRepository extends JpaRepository<RoutinePost, Long> {
 	@Query(value = "SELECT b FROM RoutinePost b join fetch b.routine a where a.user.id = :userId ")
 	List<RoutinePost> getByUser(@Param(value = "userId") Long userId);
 	
+	void deleteAllByRoutine(Routine routine);
+	
 }

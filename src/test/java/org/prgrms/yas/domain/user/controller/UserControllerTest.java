@@ -1,14 +1,18 @@
 package org.prgrms.yas.domain.user.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jshell.spi.ExecutionControlProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.prgrms.yas.config.TestConfig;
 import org.prgrms.yas.config.WithMockJwtAuthentication;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
@@ -50,7 +55,7 @@ class UserControllerTest {
 	void setUp() {
 		userRepository.save(User.builder()
 		                        .email("test@test.com")
-		                        .password("$2a$10$QW.b5MvgypXB5kckcYeYS.ME8kevnoQBHlZxUy8ES4gIzSMOrJkCC")
+		                        .password("$2a$10$T.tExdo/vBJ.KyIm5gw4IeEJ9bwMY5CuCC.ndyuDuTflFIpxB/5NK")
 		                        .name("name")
 		                        .nickname("nickname")
 		                        .build());
@@ -118,5 +123,50 @@ class UserControllerTest {
 		result.andExpect(status().isOk())
 		      .andDo(print())
 		      .andExpect(jsonPath("$.data").isNumber());
+	}
+	
+	@DisplayName("회원탈퇴_테스트")
+	@Test
+	@WithMockJwtAuthentication
+	void userDeleteTest() throws Exception {
+		ResultActions result = mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON));
+		
+		result.andExpectAll(
+				      status().isOk(),
+				      jsonPath("$.data").isNumber()
+		      )
+		      .andDo(print());
+	}
+	
+	@DisplayName("회원비밀번호변경_테스트")
+	@Test
+	@WithMockJwtAuthentication
+	void userPasswordChangeTest() throws Exception {
+		UserPasswordRequest userPasswordRequest = new UserPasswordRequest(
+				"skyey98081@",
+				"test98081!",
+				"test98081!"
+		);
+		
+		ResultActions result = mockMvc.perform(put("/users/password").contentType(MediaType.APPLICATION_JSON)
+		                                                             .content(objectMapper.writeValueAsString(userPasswordRequest)));
+		
+		result.andExpectAll(
+				      status().isOk(),
+				      jsonPath("$.data").isNumber()
+		      )
+		      .andDo(print());
+	}
+	
+	@DisplayName("회원가입시_이메일중복확인_테스트")
+	@Test
+	void checkValidEmailTest() throws Exception {
+		ResultActions result = mockMvc.perform(get("/users/email").param("value","test10@test.com"));
+		
+		result.andExpectAll(
+				status().isOk(),
+				jsonPath("$.data").isBoolean()
+		)
+				.andDo(print());
 	}
 }
