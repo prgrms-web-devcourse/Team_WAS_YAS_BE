@@ -81,7 +81,7 @@ public class MissionStatusService {
 		                                                     .orElseThrow(() -> new NotFoundRoutineStatusException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		Long savedUserDurationTime = 0L;
 		//미션 시작할때 루틴 시작도 같이 저장
-		if (missionStatusUpdateRequest.getOrders() == 1
+		if (missionStatusUpdateRequest.getOrders() == 0
 				&& missionStatusUpdateRequest.getStartTime() != null) {
 			if (routineStatus.getEndTime() != null) {
 				routineStatus.setEndTimeIsNull();
@@ -91,7 +91,7 @@ public class MissionStatusService {
 		
 		//마지막 미션이 끝날때 루틴진행 테이블에더 endTime 저장
 		if (missionStatusUpdateRequest.getOrders() == routine.getMissions()
-		                                                     .size()
+		                                                     .size()-1
 				&& missionStatusUpdateRequest.getEndTime() != null) {
 			routineStatus.setEndTime(missionStatusUpdateRequest.getEndTime());
 			routineStatus.setUserDurationTime(savedUserDurationTime);
