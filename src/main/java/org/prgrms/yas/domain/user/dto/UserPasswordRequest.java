@@ -12,4 +12,10 @@ public class UserPasswordRequest {
 	@Size(min = 8, message = "비밀번호는 최소 8글자 이상입니다.")
 	@Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "비밀번호는 숫자,영문,특수문자를 조합해야 합니다.")
 	private String password;
+	
+	protected UserPasswordRequest(){}
+	
+	public UserPasswordRequest(String password) {
+		this.password = password;
+	}
 }
