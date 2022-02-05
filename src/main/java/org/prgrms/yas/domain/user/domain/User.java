@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
-import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
+import org.prgrms.yas.domain.user.dto.UserPasswordChangeRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
 import org.prgrms.yas.domain.user.exception.NotSamePasswordException;
@@ -30,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@SQLDelete(sql = "UPDATE routine SET is_deleted = true WHERE id =?")
 public class User {
 	
 	@Id
@@ -108,7 +107,11 @@ public class User {
 		this.profileImage = userUpdateRequest.getProfileImage();
 	}
 	
-	public void updateUserPasswordInfo(PasswordEncoder passwordEncoder, UserPasswordRequest userPasswordRequest){
-		this.password = passwordEncoder.encode(userPasswordRequest.getNewPassword());
+	public void updateUserPasswordInfo(PasswordEncoder passwordEncoder, UserPasswordChangeRequest userPasswordChangeRequest){
+		this.password = passwordEncoder.encode(userPasswordChangeRequest.getNewPassword());
+	}
+	
+	public void updateUserDeleted(){
+		this.isDeleted = true;
 	}
 }

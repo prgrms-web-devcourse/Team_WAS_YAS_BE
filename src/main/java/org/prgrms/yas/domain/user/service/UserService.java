@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordChangeRequest;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
-import org.prgrms.yas.domain.user.dto.UserEmailRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
@@ -48,7 +48,7 @@ public class UserService {
 	
 	@Transactional(readOnly = true)
 	public User signIn(String username, String credentials) {
-		User user = userRepository.findByEmail(username)
+		User user = userRepository.findByEmailAndIsDeletedFalse(username)
 		                          .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		user.checkPassword(
@@ -111,14 +111,6 @@ public class UserService {
 		return findActiveUser(id).toResponse();
 	}
 	
-	@Transactional(readOnly = true)
-	public Optional<User> findUserByProviderAndProviderId(String provider, String providerId) {
-		return userRepository.findByProviderAndProviderId(
-				provider,
-				providerId
-		);
-	}
-	
 	@Transactional
 	public Long update(Long id, UserUpdateRequest userUpdateRequest, MultipartFile file)
 			throws IOException {
@@ -137,35 +129,41 @@ public class UserService {
 	}
 	
 	@Transactional
-	public Long updatePassword(Long id, UserPasswordRequest userPasswordRequest){
+	public Long updatePassword(Long id, UserPasswordChangeRequest userPasswordChangeRequest){
 		User user = findActiveUser(id);
-		user.checkPassword(passwordEncoder,userPasswordRequest.getNowPassword());
-		if(!userPasswordRequest.isDifferentPassword()){
-			user.updateUserPasswordInfo(passwordEncoder, userPasswordRequest);
+		user.checkPassword(passwordEncoder,
+				userPasswordChangeRequest.getNowPassword());
+		if(!userPasswordChangeRequest.isDifferentPassword()){
+			user.updateUserPasswordInfo(passwordEncoder,
+					userPasswordChangeRequest
+			);
 		}
 		return user.getId();
 	}
 	
 	@Transactional
-	public Long delete(Long id) {
-		userRepository.deleteById(findActiveUser(id).getId());
+	public Long delete(Long id, UserPasswordRequest userPasswordRequest) {
+		User user = findActiveUser(id);
+		user.checkPassword(passwordEncoder,userPasswordRequest.getPassword());
+		user.updateUserDeleted();
+		
 		return id;
 	}
 	
 	@Transactional(readOnly = true)
 	public User findActiveUser(Long id) {
-		return userRepository.findById(id)
+		return userRepository.findByIdAndIsDeletedFalse(id)
 		                     .orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
   }
 	
 	@Transactional(readOnly = true)
 	public boolean isValidEmail(String email){
 		checkArgument(isNotEmpty(email),"이메일은 작성해야 합니다.");
-		return !userRepository.existsByEmail(email);
+		return !userRepository.existsByEmailAndIsDeletedFalse(email);
 	}
 	
 	private boolean isDuplicateUser(UserSignUpRequest userSignUpRequest) {
-		if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
+		if (userRepository.existsByEmailAndIsDeletedFalse(userSignUpRequest.getEmail())) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_VALUE_ERROR);
 		}
 		return false;

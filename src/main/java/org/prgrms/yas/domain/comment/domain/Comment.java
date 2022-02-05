@@ -1,15 +1,12 @@
 package org.prgrms.yas.domain.comment.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,24 +14,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import lombok.NoArgsConstructor;
 import org.prgrms.yas.domain.BaseEntity;
 import org.prgrms.yas.domain.comment.dto.CommentUpdateRequest;
 import org.prgrms.yas.domain.likes.domain.CommentLikes;
 import org.prgrms.yas.domain.post.domain.RoutinePost;
-import org.prgrms.yas.domain.routine.domain.RoutineStatus;
 import org.prgrms.yas.domain.user.domain.User;
-import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
 
 @Entity
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-//@Where(clause = "is_deleted = false")
 public class Comment extends BaseEntity {
 
   @Id
@@ -80,5 +73,9 @@ public class Comment extends BaseEntity {
   public void addCommentLikes(CommentLikes commentLike) {
     this.commentLikes.add(commentLike);
     commentLike.setComment(this);
+  }
+  
+  public void deleteComment(){
+    this.isDeleted = true;
   }
 }

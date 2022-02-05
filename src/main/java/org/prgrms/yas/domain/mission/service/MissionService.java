@@ -44,7 +44,7 @@ public class MissionService {
 		                                   .orElseThrow(() -> new NotFoundMissionException(ErrorCode.NOT_FOUND_RESOURCE_ERROR));
 		
 		routine.minusDurationGoalTime(mission.getDurationGoalTime());
-		missionRepository.deleteById(missionId);
+		mission.deleteMission();
 		
 		return missionId;
 	}
