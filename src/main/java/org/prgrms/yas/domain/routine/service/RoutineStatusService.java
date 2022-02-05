@@ -62,7 +62,12 @@ public class RoutineStatusService {
 				                                                                    .orElseThrow(() -> new NotFoundRoutineStatusImageException(NOT_FOUND_RESOURCE_ERROR));
 				
 				s3Uploader.delete(DELETE_DIRECTORY + routineStatusImage.getReviewImage()
-				                                                       .substring(START_UUID,END_UUID)+"@"+routineStatusImage.getReviewImage().substring(FILE_NAME));
+				                                                       .substring(
+						                                                       START_UUID,
+						                                                       END_UUID
+				                                                       ) + "@"
+						+ routineStatusImage.getReviewImage()
+						                    .substring(FILE_NAME));
 				routineStatusImageRepository.delete(routineStatusImage);
 			}
 		}
@@ -86,8 +91,21 @@ public class RoutineStatusService {
 		return routineStatusCreateRequest.getRoutineStatusId();
 	}
 	
-	@Transactional
-	public List<RoutineStatusListResponse> getRoutineStatuses(String date, Long userId) {
+	public RoutineStatus findRoutineStatus(Long routineId, String date) {
+		List<RoutineStatus> routineStatuses = new ArrayList<>();
+		routineStatuses = routineStatusRepository.getByDate(date);
+		
+		Predicate<RoutineStatus> isRoutine = routineStatus -> (routineStatus.getRoutine()
+		                                                                    .getId()
+		                                                                    .equals(routineId));
+		
+		return routineStatuses.stream()
+		                      .filter(isRoutine)
+		                      .collect(toList())
+		                      .get(0);
+	}
+	
+	public List<RoutineStatus> findRoutineStatusByDate(String date, Long userId) {
 		List<RoutineStatus> routineStatuses = new ArrayList<>();
 		if (date.length() == YEAR_MONTH) {
 			routineStatuses = routineStatusRepository.getByDays(date);
@@ -98,9 +116,19 @@ public class RoutineStatusService {
 		                                                                 .getUser()
 		                                                                 .getId()
 		                                                                 .equals(userId));
-		List<RoutineStatus> routineStatusFourUser = routineStatuses.stream()
-		                                                           .filter(isUSer)
-		                                                           .collect(toList());
+		return routineStatuses.stream()
+		                      .filter(isUSer)
+		                      .collect(toList());
+		
+	}
+	
+	@Transactional
+	public List<RoutineStatusListResponse> getRoutineStatuses(String date, Long userId) {
+		List<RoutineStatus> routineStatusFourUser = findRoutineStatusByDate(
+				date,
+				userId
+		);
+		
 		return routineStatusFourUser.stream()
 		                            .map(RoutineStatus::toRoutineStatusListResponse)
 		                            .collect(toList());

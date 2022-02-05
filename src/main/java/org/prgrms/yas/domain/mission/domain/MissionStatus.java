@@ -39,7 +39,7 @@ public class MissionStatus {
 	private ZonedDateTime startTime;
 	private ZonedDateTime endTime;
 	
-	private ZonedDateTime dateTime;
+	private LocalDateTime dateTime;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mission_id")
@@ -48,7 +48,7 @@ public class MissionStatus {
 	@Builder
 	public MissionStatus(
 			int orders, Long userDurationTime, ZonedDateTime startTime, ZonedDateTime endTime,
-			Mission mission, ZonedDateTime dateTime
+			Mission mission, LocalDateTime dateTime
 	) {
 		this.orders = orders;
 		this.userDurationTime = userDurationTime;

@@ -1,9 +1,11 @@
 package org.prgrms.yas.domain.routine.domain;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +41,7 @@ public class RoutineStatus {
 	
 	private ZonedDateTime endTime;
 	
-	private ZonedDateTime dateTime;
+	private LocalDateTime dateTime;
 	
 	@ColumnDefault("0")
 	private Integer emotion;
@@ -49,7 +51,7 @@ public class RoutineStatus {
 	
 	@Builder
 	public RoutineStatus(
-			ZonedDateTime startTime, ZonedDateTime endTime, ZonedDateTime dateTime, Integer emotion,
+			ZonedDateTime startTime, ZonedDateTime endTime, LocalDateTime dateTime, Integer emotion,
 			String content, List<RoutineStatusImage> routineStatusImages, Long userDurationTime,
 			Routine routine
 	) {
@@ -63,7 +65,7 @@ public class RoutineStatus {
 		this.routine = routine;
 	}
 	
-	@OneToMany(mappedBy = "routineStatus")
+	@OneToMany(mappedBy = "routineStatus",cascade = CascadeType.REMOVE)
 	private List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
 	
 	@ColumnDefault("-1")
@@ -120,7 +122,7 @@ public class RoutineStatus {
 		return RoutineStatusListResponse.builder()
 		                                .routineListResponse(routine.toRoutineListResponse())
 		                                .routineStatusId(id)
-		                                .dateTime(dateTime)
+		                                .startTime(startTime)
 		                                .build();
 	}
 	
@@ -139,7 +141,7 @@ public class RoutineStatus {
 		return RoutineStatusDetailResponse.builder()
 		                                  .routineStatusImage(toRoutineStatusImageDtos())
 		                                  .routineStatusId(id)
-		                                  .dateTime(dateTime)
+		                                  .startTime(startTime)
 		                                  .emotion(emotion)
 		                                  .content(content)
 		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))

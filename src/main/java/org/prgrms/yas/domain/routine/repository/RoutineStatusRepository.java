@@ -16,4 +16,6 @@ public interface RoutineStatusRepository extends JpaRepository<RoutineStatus, Lo
 	
 	@Query("SELECT routineStatus from RoutineStatus routineStatus where substring(routineStatus.dateTime,1,10) = :date AND routineStatus.startTime is Not null ")
 	List<RoutineStatus> getByDate(@Param("date") String date);
+	
+	List<RoutineStatus> deleteAllByRoutine(Routine routine);
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordChangeRequest;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserResponse;
 import org.prgrms.yas.domain.user.dto.UserSignInRequest;
@@ -61,6 +62,7 @@ public class UserController {
 		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) resultToken;
 		JwtAuthentication principal = (JwtAuthentication) jwtAuthenticationToken.getPrincipal();
 		User user = (User) jwtAuthenticationToken.getDetails();
+		userService.findActiveUser(user.getId());
 		
 		return ResponseEntity.ok(ApiResponse.of(new UserToken(
 				user.getId(),
@@ -104,20 +106,21 @@ public class UserController {
 	@Operation(summary = "회원삭제 컨트롤러")
 	@DeleteMapping("/users")
 	public ResponseEntity<ApiResponse<Long>> delete(
-			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token
+			@ApiIgnore @AuthenticationPrincipal JwtAuthentication token,
+			@Valid @RequestBody UserPasswordRequest userPasswordRequest
 	) {
-		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId())));
+		return ResponseEntity.ok(ApiResponse.of(userService.delete(token.getId(),userPasswordRequest)));
 	}
 	
 	@Operation(summary = "회원수정(비밀번호) 컨트롤러")
 	@PutMapping("/users/password")
 	public ResponseEntity<ApiResponse<Long>> updatePassword(
 			@AuthenticationPrincipal JwtAuthentication token,
-			@Valid @RequestBody UserPasswordRequest userPasswordRequest
+			@Valid @RequestBody UserPasswordChangeRequest userPasswordChangeRequest
 	){
 		return ResponseEntity.ok(ApiResponse.of(userService.updatePassword(
 				token.getId(),
-				userPasswordRequest
+				userPasswordChangeRequest
 		)));
 	}
 	

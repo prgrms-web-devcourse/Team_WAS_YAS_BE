@@ -1,6 +1,5 @@
 package org.prgrms.yas.domain.routine.domain;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class Routine {
 	
 	@Column(nullable = false)
 	@ColumnDefault("0")
-	private Long durationGoalTime; // 초가 들어옴
+	private Long durationGoalTime;
 	
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "week", joinColumns = @JoinColumn(name = "id"))
@@ -76,7 +75,7 @@ public class Routine {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "routine")
+	@OneToMany(mappedBy = "routine", cascade = CascadeType.REMOVE)
 	private List<RoutineStatus> routineStatuses = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "routine", orphanRemoval = true)
