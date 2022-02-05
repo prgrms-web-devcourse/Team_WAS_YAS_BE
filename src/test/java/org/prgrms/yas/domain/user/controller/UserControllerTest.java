@@ -20,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.prgrms.yas.config.TestConfig;
 import org.prgrms.yas.config.WithMockJwtAuthentication;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordChangeRequest;
 import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
@@ -129,7 +130,10 @@ class UserControllerTest {
 	@Test
 	@WithMockJwtAuthentication
 	void userDeleteTest() throws Exception {
-		ResultActions result = mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON));
+		UserPasswordRequest userPasswordRequest = new UserPasswordRequest("skyey98081@");
+		
+		ResultActions result = mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON)
+		                                                       .content(objectMapper.writeValueAsString(userPasswordRequest)));
 		
 		result.andExpectAll(
 				      status().isOk(),
@@ -142,7 +146,7 @@ class UserControllerTest {
 	@Test
 	@WithMockJwtAuthentication
 	void userPasswordChangeTest() throws Exception {
-		UserPasswordRequest userPasswordRequest = new UserPasswordRequest(
+		UserPasswordChangeRequest userPasswordRequest = new UserPasswordChangeRequest(
 				"skyey98081@",
 				"test98081!",
 				"test98081!"
@@ -161,12 +165,13 @@ class UserControllerTest {
 	@DisplayName("회원가입시_이메일중복확인_테스트")
 	@Test
 	void checkValidEmailTest() throws Exception {
-		ResultActions result = mockMvc.perform(get("/users/email").param("value","test10@test.com"));
+		ResultActions result = mockMvc.perform(get("/users/email").param("value",
+				"test10@test.com"));
 		
 		result.andExpectAll(
-				status().isOk(),
-				jsonPath("$.data").isBoolean()
-		)
-				.andDo(print());
+				      status().isOk(),
+				      jsonPath("$.data").isBoolean()
+		      )
+		      .andDo(print());
 	}
 }
