@@ -3,6 +3,7 @@ package org.prgrms.yas.domain.routine.service;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,7 +37,7 @@ public enum Status {
 	);
 	
 	public static Predicate<RoutineStatus> isDate = routineStatus -> (routineStatus.getDateTime().toLocalDate()
-	                                                                               .isEqual(LocalDate.now()));
+	                                                                               .isEqual(LocalDateTime.now().plusHours(9).toLocalDate()));
 	
 	public static Long isTodayRoutine(Routine routine) {
 		return routine.getRoutineStatuses()
