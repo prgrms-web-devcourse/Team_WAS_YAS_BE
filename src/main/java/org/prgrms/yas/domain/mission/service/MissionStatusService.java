@@ -48,7 +48,10 @@ public class MissionStatusService {
 		//routineStatus 테이블 생성
 		RoutineStatus routineStatus = RoutineStatus.builder()
 		                                           .routine(routine)
-		                                           .dateTime(LocalDateTime.now().plusHours(9))
+		                                           .dateTime(LocalDateTime.now()
+		                                                                  .plusHours(9))
+		                                           .content(" ")
+		                                           .emotion(0)
 		                                           .build();
 		Long routineStatusId = routineStatusRepository.save(routineStatus)
 		                                              .getId();
@@ -56,7 +59,8 @@ public class MissionStatusService {
 		//미션의 갯수만큼 미션 Status 테이블 생성
 		for (Mission mission : routine.getMissions()) {
 			MissionStatus missionStatus = missionStatusRepository.save(MissionStatus.builder()
-			                                                                        .dateTime(LocalDateTime.now().plusHours(9))
+			                                                                        .dateTime(LocalDateTime.now()
+			                                                                                               .plusHours(9))
 			                                                                        .mission(mission)
 			                                                                        .build());
 			
@@ -92,7 +96,7 @@ public class MissionStatusService {
 		
 		//마지막 미션이 끝날때 루틴진행 테이블에더 endTime 저장
 		if (missionStatusUpdateRequest.getOrders() == routine.getMissions()
-		                                                     .size()-1
+		                                                     .size() - 1
 				&& missionStatusUpdateRequest.getEndTime() != null) {
 			routineStatus.setEndTime(missionStatusUpdateRequest.getEndTime());
 			routineStatus.setUserDurationTime(savedUserDurationTime);
@@ -144,7 +148,9 @@ public class MissionStatusService {
 		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
 		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDateTime()
 		                                                                                       .toLocalDate()
-		                                                                                       .isEqual(LocalDate.now()));
+		                                                                                       .isEqual(LocalDateTime.now()
+		                                                                                                             .plusHours(9)
+		                                                                                                             .toLocalDate()));
 		
 		for (Mission missions : routine.getMissions()) {
 			List<MissionStatus> missionStatuses = missionStatusRepository.getByMission(missions)
