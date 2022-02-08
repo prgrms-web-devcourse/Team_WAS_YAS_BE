@@ -143,4 +143,9 @@ public class RoutineStatusService {
 		                                      .getMissions();
 		return routineStatus.toRoutineStatusDetailResposne(missions);
 	}
+	
+	public Long deleteRoutineStatus(Long id) {
+		routineStatusRepository.deleteById(id);
+		return id;
+	}
 }
