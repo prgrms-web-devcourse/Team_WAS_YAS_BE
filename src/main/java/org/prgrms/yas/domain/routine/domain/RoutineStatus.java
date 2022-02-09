@@ -65,7 +65,7 @@ public class RoutineStatus {
 		this.routine = routine;
 	}
 	
-	@OneToMany(mappedBy = "routineStatus",cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "routineStatus", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<RoutineStatusImage> routineStatusImages = new ArrayList<>();
 	
 	@ColumnDefault("-1")
