@@ -13,6 +13,7 @@ import org.prgrms.yas.global.response.ApiResponse;
 import org.prgrms.yas.jwt.JwtAuthentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,5 +59,12 @@ public class RoutineStatusController {
 			@PathVariable("id") Long id
 	) {
 		return ResponseEntity.ok(ApiResponse.of(routineStatusService.getRoutineStatus(id)));
+	}
+	
+	@Operation(summary = "루틴진행 삭제 컨트롤러")
+	@DeleteMapping("/routineStatus/{id}")
+	public ResponseEntity<ApiResponse<Long>> delete(@PathVariable("id") Long id) {
+		Long deletedRoutineStatusId = routineStatusService.deleteRoutineStatus(id);
+		return ResponseEntity.ok(ApiResponse.of(deletedRoutineStatusId));
 	}
 }
