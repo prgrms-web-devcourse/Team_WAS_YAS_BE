@@ -16,5 +16,8 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 	@Query(value = "select * from routine r "
 			+ "where r.is_posted = false and r.is_deleted = false and r.user_id = ?1", nativeQuery = true)
 	List<Routine> findRoutinesNotPosted(Long id);
+
+	List<Routine> findAllByUser(User user);
 	
+	void deleteAllByUser(User user);
 }

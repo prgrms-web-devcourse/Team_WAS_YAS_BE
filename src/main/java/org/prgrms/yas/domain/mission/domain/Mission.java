@@ -31,7 +31,6 @@ import org.prgrms.yas.domain.routine.domain.Routine;
 @Table(name = "mission")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@SQLDelete(sql = "UPDATE mission SET is_deleted = true WHERE id =?")
 @Where(clause = "is_deleted=false")
 @DynamicInsert
 @DynamicUpdate
@@ -60,7 +59,7 @@ public class Mission {
 	@JoinColumn(name = "routine_id")
 	private Routine routine;
 	
-	@OneToMany(mappedBy = "mission")
+	@OneToMany(mappedBy = "mission", cascade = CascadeType.REMOVE)
 	private List<MissionStatus> missionStatuses = new ArrayList<>();
 	
 	@Column(nullable = false, columnDefinition = "TINYINT default false")
@@ -97,6 +96,10 @@ public class Mission {
 		this.routine = routine;
 	}
 	
+	public void deleteMission(){
+		this.isDeleted = true;
+	}
+	
 	public void updateOrders(int orders) {
 		this.orders = orders;
 	}
@@ -113,8 +116,11 @@ public class Mission {
 	}
 	
 	
-	public MissionDetailStatusResponse toMissionDetailStatusResponse(MissionStatus missionStatus) {
+	public MissionDetailStatusResponse toMissionDetailStatusResponse(
+			MissionStatus missionStatus, Long routineStatusId
+	) {
 		return MissionDetailStatusResponse.builder()
+		                                  .routineStatusId(routineStatusId)
 		                                  .missionStatusDetailResponse(missionStatus.toMissionStatusDetailResponse())
 		                                  .name(name)
 		                                  .durationGoalTime(durationGoalTime)

@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 public class RoutineStatusListResponse {
 	
 	private Long routineStatusId;
-	private ZonedDateTime dateTime;
+	private ZonedDateTime startTime;
 	private RoutineListResponse routineListResponse;
 	
 	@Builder
 	public RoutineStatusListResponse(
-			Long routineStatusId, ZonedDateTime dateTime, RoutineListResponse routineListResponse
+			Long routineStatusId, ZonedDateTime startTime, RoutineListResponse routineListResponse
 	) {
 		this.routineStatusId = routineStatusId;
-		this.dateTime = dateTime;
+		this.startTime = startTime;
 		this.routineListResponse = routineListResponse;
 	}
 }
