@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -19,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.prgrms.yas.domain.user.domain.User;
+import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
 import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
 import org.prgrms.yas.domain.user.repository.UserRepository;
 import org.prgrms.yas.global.aws.S3Uploader;
@@ -45,7 +48,7 @@ public class UserServiceTest {
 	void signInTest() {
 		User user = createUser();
 		given(userRepository.findByEmail(any())).willReturn(Optional.of(user));
-
+		given(userRepository.findByEmailAndIsDeletedFalse(any())).willReturn(Optional.of(user));
 		User findUser = userService.signIn(
 				user.getEmail(),
 				user.getPassword()
@@ -76,32 +79,11 @@ public class UserServiceTest {
 		verify(userRepository).save(any());
 	}
 	
-	@Test
-	@DisplayName("회원 삭제 테스트")
-	void deleteUserTest(){
-		User user = createUser();
-		given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
-		userService.delete(user.getId());
-		
-		verify(userRepository).deleteById(anyLong());
-	}
-	
-	@Test
-	@DisplayName("이메일 유효한지 테스트")
-	void isValidEmailTest(){
-		User user = createUser();
-		given(userRepository.existsByEmail(user.getEmail())).willReturn(true);
-		
-		boolean result = userService.isValidEmail(user.getEmail());
-		
-		Assertions.assertThat(result).isEqualTo(false);
-		verify(userRepository).existsByEmail(anyString());
-	}
-	
 	private static User createUser() {
 		User user = Mockito.mock(User.class);
 		
 		given(user.getId()).willReturn(1L);
+		given(user.getPassword()).willReturn("test123!!");
 		given(user.getNickname()).willReturn("testNickname");
 		given(user.getEmail()).willReturn("test@test.com");
 		given(user.getName()).willReturn("testName");
