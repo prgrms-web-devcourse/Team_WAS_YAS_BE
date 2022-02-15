@@ -43,7 +43,7 @@ public class RoutineStatus {
 	
 	private LocalDateTime dateTime;
 	
-	@ColumnDefault("0")
+	@ColumnDefault("1")
 	private Integer emotion;
 	
 	@Column(columnDefinition = "TEXT")
