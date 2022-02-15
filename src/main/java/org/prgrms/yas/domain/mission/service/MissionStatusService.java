@@ -50,8 +50,8 @@ public class MissionStatusService {
 		                                           .routine(routine)
 		                                           .dateTime(LocalDateTime.now()
 		                                                                  .plusHours(9))
-		                                           .content(" ")
-		                                           .emotion(0)
+		                                           .content("")
+		                                           .emotion(1)
 		                                           .build();
 		Long routineStatusId = routineStatusRepository.save(routineStatus)
 		                                              .getId();
