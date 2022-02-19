@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.mission.domain.MissionStatus;
+import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
+import org.prgrms.yas.domain.mission.repository.MissionStatusRepository;
 import org.prgrms.yas.domain.routine.domain.RoutineStatus;
 import org.prgrms.yas.domain.routine.domain.RoutineStatusImage;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
@@ -32,6 +36,7 @@ public class RoutineStatusService {
 	private final S3Uploader s3Uploader;
 	private final RoutineStatusRepository routineStatusRepository;
 	private final RoutineStatusImageRepository routineStatusImageRepository;
+	private final MissionStatusRepository missionStatusRepository;
 	private final int YEAR_MONTH = 7;
 	private final int START_UUID = 65;
 	private final int END_UUID = 130;
@@ -139,9 +144,30 @@ public class RoutineStatusService {
 		RoutineStatus routineStatus = routineStatusRepository.findById(statusId)
 		                                                     .orElseThrow(() -> new NotFoundRoutineStatusException(NOT_FOUND_RESOURCE_ERROR));
 		
-		List<Mission> missions = routineStatus.getRoutine()
-		                                      .getMissions();
-		return routineStatus.toRoutineStatusDetailResposne(missions);
+		List<MissionDetailStatusResponse> result = new ArrayList<>();
+		
+		//MissionStatus 중 오늘 날짜에 맞는 데이터만 가져옴
+		Predicate<MissionStatus> reservationPredicateCheckOut = missionStatus -> (missionStatus.getDateTime()
+		                                                                                       .toLocalDate()
+		                                                                                       .isEqual(routineStatus.getDateTime()
+		                                                                                                             .toLocalDate()));
+		
+		for (Mission missions : routineStatus.getRoutine()
+		                                     .getMissions()) {
+			List<MissionStatus> missionStatuses = missionStatusRepository.getByMission(missions)
+			                                                             .stream()
+			                                                             .filter(reservationPredicateCheckOut)
+			                                                             .collect(Collectors.toList());
+			
+			for (MissionStatus missionStatus : missionStatuses) {
+				result.add(missions.toMissionDetailStatusResponse(
+						missionStatus,
+						routineStatus.getId()
+				));
+			}
+		}
+		
+		return routineStatus.toRoutineStatusDetailResposne(result);
 	}
 	
 	public Long deleteRoutineStatus(Long id) {

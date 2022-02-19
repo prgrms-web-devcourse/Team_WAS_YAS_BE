@@ -22,6 +22,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.prgrms.yas.domain.mission.domain.Mission;
+import org.prgrms.yas.domain.mission.domain.MissionStatus;
+import org.prgrms.yas.domain.mission.dto.MissionDetailStatusResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusCreateRequest;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineStatusImageDto;
@@ -137,14 +139,17 @@ public class RoutineStatus {
 		return routineStatusImageDtos;
 	}
 	
-	public RoutineStatusDetailResponse toRoutineStatusDetailResposne(List<Mission> missions) {
+	public RoutineStatusDetailResponse toRoutineStatusDetailResposne(
+			List<MissionDetailStatusResponse> missionDetailStatusResponses
+	) {
 		return RoutineStatusDetailResponse.builder()
 		                                  .routineStatusImage(toRoutineStatusImageDtos())
 		                                  .routineStatusId(id)
 		                                  .startTime(startTime)
 		                                  .emotion(emotion)
 		                                  .content(content)
-		                                  .routineDetailResponse(routine.toRoutineDetailResponse(missions))
+		                                  .routineDto(routine.toRoutineDto())
+		                                  .missionDetailStatusResponses(missionDetailStatusResponses)
 		                                  .build();
 	}
 }
