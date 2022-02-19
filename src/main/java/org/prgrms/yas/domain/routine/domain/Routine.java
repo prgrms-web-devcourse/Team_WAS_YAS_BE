@@ -29,6 +29,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.prgrms.yas.domain.mission.domain.Mission;
 import org.prgrms.yas.domain.mission.dto.MissionDetailResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineDetailResponse;
+import org.prgrms.yas.domain.routine.dto.RoutineDto;
 import org.prgrms.yas.domain.routine.dto.RoutineListResponse;
 import org.prgrms.yas.domain.routine.dto.RoutineUpdateResponse;
 import org.prgrms.yas.domain.user.domain.User;
@@ -200,6 +201,19 @@ public class Routine {
 		                            .color(color)
 		                            .emoji(emoji)
 		                            .build();
+	}
+	
+	public RoutineDto toRoutineDto() {
+		return RoutineDto.builder()
+		                 .name(name)
+		                 .routineCategory(getStringCategory(routineCategory))
+		                 .startGoalTime(startGoalTime)
+		                 .durationGoalTime(durationGoalTime)
+		                 .isPosted(isPosted)
+		                 .weeks(getStringWeeks(weeks))
+		                 .emoji(emoji)
+		                 .color(color)
+		                 .build();
 	}
 	
 	public void addDurationGoalTime(Long durationGoalTime) {
