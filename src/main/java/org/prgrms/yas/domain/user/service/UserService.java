@@ -1,17 +1,7 @@
 package org.prgrms.yas.domain.user.service;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
 import org.prgrms.yas.domain.user.domain.User;
-import org.prgrms.yas.domain.user.dto.UserPasswordChangeRequest;
-import org.prgrms.yas.domain.user.dto.UserPasswordRequest;
-import org.prgrms.yas.domain.user.dto.UserResponse;
-import org.prgrms.yas.domain.user.dto.UserSignUpRequest;
-import org.prgrms.yas.domain.user.dto.UserUpdateRequest;
+import org.prgrms.yas.domain.user.dto.*;
 import org.prgrms.yas.domain.user.exception.DuplicateUserException;
 import org.prgrms.yas.domain.user.exception.NotFoundUserException;
 import org.prgrms.yas.domain.user.repository.UserRepository;
@@ -24,6 +14,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Service
 public class UserService {
