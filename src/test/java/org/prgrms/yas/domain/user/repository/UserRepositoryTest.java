@@ -23,9 +23,6 @@ public class UserRepositoryTest {
 	@Autowired
 	private UserRepository userRepository;
 
-	@PersistenceContext
-	EntityManager em;
-
 	@AfterEach
 	void tearDown(){
 		userRepository.deleteAll();
